@@ -1,3 +1,4 @@
+"use client";
 import ContactPage from "../Contact";
 import { CenterHeader } from "../doza_center/CenterHeader";
 import Footer from "../Footer";
