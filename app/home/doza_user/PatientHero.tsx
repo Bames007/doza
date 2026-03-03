@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import router from "next/dist/shared/lib/router/router";
 
 const colors = {
   green: { primary: "#239C3E", light: "#4CAF50", dark: "#1B7930" },
@@ -113,6 +115,7 @@ function HeroContent() {
 }
 
 function CTAButtons() {
+  const router = useRouter();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -121,6 +124,7 @@ function CTAButtons() {
       className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
     >
       <button
+        onClick={() => router.push("/registration/user")}
         className="px-8 py-4 rounded-xl font-semibold text-lg text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl flex items-center gap-3 justify-center"
         style={{ backgroundColor: colors.green.primary }}
       >
@@ -240,14 +244,14 @@ function FloatingElement({
           position === "top"
             ? [0, -10, 0]
             : position === "bottom"
-            ? [0, 10, 0]
-            : [0, 0, 0],
+              ? [0, 10, 0]
+              : [0, 0, 0],
         x:
           position === "left"
             ? [0, -10, 0]
             : position === "right"
-            ? [0, 10, 0]
-            : [0, 0, 0],
+              ? [0, 10, 0]
+              : [0, 0, 0],
       }}
       transition={{
         duration: 3,

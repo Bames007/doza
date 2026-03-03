@@ -35,6 +35,15 @@ const MedicRegistration: React.FC = () => {
     getLocationFromMap,
   } = useMedicRegistration();
 
+  const onSubmitLegal = async () => {
+    try {
+      await handleSubmit();
+      setCurrentStep("success");
+    } catch (error) {
+      console.error("Submission failed", error);
+    }
+  };
+
   const steps: {
     id: RegistrationStep;
     label: string;
@@ -101,7 +110,7 @@ const MedicRegistration: React.FC = () => {
             formData={formData}
             updateFormData={updateFormData}
             onBack={() => setCurrentStep("credentials")}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmitLegal}
             isSubmitting={isSubmitting}
           />
         );
@@ -113,36 +122,36 @@ const MedicRegistration: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 py-6 px-3 sm:py-8 sm:px-4 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">
             Join Our Healthcare Network
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-2">
             Connect with patients and build your practice through our trusted
             healthcare platform
           </p>
         </div>
 
-        {/* Progress Bar */}
-        <div className="mb-8 bg-white rounded-2xl p-6 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
+        {/* Progress Bar – Mobile Optimised */}
+        <div className="mb-6 sm:mb-8 bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg overflow-hidden">
+          <div className="flex items-center justify-between mb-2 sm:mb-4">
             {steps.map((step, index) => (
-              <div key={step.id} className="flex items-center flex-1">
+              <div key={step.id} className="flex items-center flex-1 min-w-0">
                 <div className="flex items-center justify-center">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 transition-all text-xs sm:text-sm ${
                       currentStep === step.id
                         ? "bg-blue-600 border-blue-600 text-white"
                         : currentStep > step.id
-                        ? "bg-green-500 border-green-500 text-white"
-                        : "bg-white border-gray-300 text-gray-500"
+                          ? "bg-green-500 border-green-500 text-white"
+                          : "bg-white border-gray-300 text-gray-500"
                     }`}
                   >
                     {currentStep > step.id ? (
-                      <CheckCircle size={16} />
+                      <CheckCircle size={14} className="sm:w-4 sm:h-4" />
                     ) : (
                       step.icon
                     )}
@@ -150,7 +159,7 @@ const MedicRegistration: React.FC = () => {
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-1 mx-2 transition-all ${
+                    className={`flex-1 h-0.5 sm:h-1 mx-1 sm:mx-2 transition-all ${
                       currentStep > step.id ? "bg-green-500" : "bg-gray-200"
                     }`}
                   />
@@ -158,12 +167,18 @@ const MedicRegistration: React.FC = () => {
               </div>
             ))}
           </div>
-          <div className="flex justify-between text-sm text-gray-600 px-2">
+          {/* Labels – hidden on very small screens, visible on sm and up */}
+          <div className="hidden sm:flex justify-between text-xs sm:text-sm text-gray-600 px-2">
             {steps.map((step) => (
-              <span key={step.id} className="text-center flex-1">
+              <span key={step.id} className="text-center flex-1 truncate px-1">
                 {step.label}
               </span>
             ))}
+          </div>
+          {/* Optional: show current step name on mobile */}
+          <div className="sm:hidden text-center text-sm font-medium text-gray-700 mt-2">
+            Step {steps.findIndex((s) => s.id === currentStep) + 1} of{" "}
+            {steps.length}: {steps.find((s) => s.id === currentStep)?.label}
           </div>
         </div>
 

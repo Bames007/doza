@@ -28,7 +28,7 @@ interface LegalStepProps {
   onNestedInputChange: (
     section: keyof CenterRegistrationData,
     field: string,
-    value: string | boolean | number
+    value: string | boolean | number,
   ) => void;
   isSubmitting: boolean;
   onBack: () => void;
@@ -131,7 +131,7 @@ const LegalStep: React.FC<LegalStepProps> = ({
 
   // Upload logo to Firebase Storage
   const uploadLogoToStorage = async (
-    logoData: string | File | null
+    logoData: string | File | null,
   ): Promise<string | null> => {
     if (!logoData) {
       return null;
@@ -161,7 +161,7 @@ const LegalStep: React.FC<LegalStepProps> = ({
 
       const logoRef = storageRef(
         storage,
-        `doza_centers/${centerId}/logo/${centerId}_logo.${fileExtension}`
+        `doza_centers/${centerId}/logo/${centerId}_logo.${fileExtension}`,
       );
 
       const snapshot = await uploadBytes(logoRef, blob);

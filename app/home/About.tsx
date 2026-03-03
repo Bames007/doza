@@ -131,7 +131,7 @@ export default function ModernDozaExperience() {
               end: "bottom 20%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       });
 
@@ -189,7 +189,7 @@ export default function ModernDozaExperience() {
     },
     {
       id: "patients",
-      title: "Doza Patients",
+      title: "Doza Users",
       description:
         "Your personalized healthcare journey with 24/7 access to medical professionals and comprehensive health management.",
       image:
@@ -475,8 +475,8 @@ export default function ModernDozaExperience() {
                       {experience.id === "medics"
                         ? "For Professionals"
                         : experience.id === "patients"
-                        ? "For Patients"
-                        : "Our Facilities"}
+                          ? "For Patients"
+                          : "Our Facilities"}
                     </div>
                   </div>
                 </motion.div>

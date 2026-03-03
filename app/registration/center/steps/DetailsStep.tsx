@@ -34,7 +34,7 @@ const centerRequirements = {
     },
     { field: "icuBeds", label: "ICU Beds", type: "number", required: true },
   ],
-  "eye-center": [
+  optical_center: [
     {
       field: "ophthalmologists",
       label: "Ophthalmologists",
@@ -55,13 +55,13 @@ interface DetailsStepProps {
   selectedCenterType: string;
   onInputChange: (
     field: keyof CenterRegistrationData,
-    value: string | Record<string, string | number | boolean> | File
+    value: string | Record<string, string | number | boolean> | File,
   ) => void;
   onDeepNestedInputChange: (
     section: "location" | "registrationNumbers" | "contact",
     subSection: string,
     field: string,
-    value: string
+    value: string,
   ) => void;
   onBack: () => void;
   onNext: () => void;

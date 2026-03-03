@@ -151,7 +151,6 @@ function BrandSection() {
             transition={{ delay: 0.3 }}
             className={`text-green-600 text-sm font-medium ${poppins.className} flex items-center gap-1`}
           >
-            <Sparkles size={12} className="text-green-500" />
             Healthcare Ecosystem
           </motion.p>
         </div>

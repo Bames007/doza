@@ -51,7 +51,7 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
   };
 
   const toggleConsultationType = (
-    type: keyof typeof formData.practiceInfo.consultationTypes
+    type: keyof typeof formData.practiceInfo.consultationTypes,
   ) => {
     updateFormData({
       practiceInfo: {
@@ -88,40 +88,42 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
     formData.location.state.trim() !== "" &&
     formData.location.country.trim() !== "" &&
     Object.values(formData.practiceInfo.consultationTypes).some(
-      (value) => value
+      (value) => value,
     ) &&
     formData.practiceInfo.availability.days.length > 0;
 
   return (
-    <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg">
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <DollarSign className="text-purple-600" size={32} />
+    <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg">
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <DollarSign className="text-purple-600" size={24} />
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
           Practice & Availability
         </h2>
-        <p className="text-gray-600">
+        <p className="text-sm sm:text-base text-gray-600">
           Set up your practice details and availability
         </p>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Consultation Types */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
             Consultation Types *
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <label
-              className={`flex flex-col items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+              className={`flex flex-col items-center p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${
                 formData.practiceInfo.consultationTypes.inPerson
                   ? "border-blue-600 bg-blue-50"
                   : "border-gray-200 bg-gray-50 hover:border-blue-400"
               }`}
             >
-              <User size={24} className="mb-2 text-gray-600" />
-              <span className="font-medium text-gray-700">In-Person</span>
+              <User size={20} className="mb-1 sm:mb-2 text-gray-600" />
+              <span className="font-medium text-gray-700 text-sm sm:text-base">
+                In-Person
+              </span>
               <input
                 type="checkbox"
                 checked={formData.practiceInfo.consultationTypes.inPerson}
@@ -131,14 +133,16 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
             </label>
 
             <label
-              className={`flex flex-col items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+              className={`flex flex-col items-center p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${
                 formData.practiceInfo.consultationTypes.online
                   ? "border-blue-600 bg-blue-50"
                   : "border-gray-200 bg-gray-50 hover:border-blue-400"
               }`}
             >
-              <Video size={24} className="mb-2 text-gray-600" />
-              <span className="font-medium text-gray-700">Online</span>
+              <Video size={20} className="mb-1 sm:mb-2 text-gray-600" />
+              <span className="font-medium text-gray-700 text-sm sm:text-base">
+                Online
+              </span>
               <input
                 type="checkbox"
                 checked={formData.practiceInfo.consultationTypes.online}
@@ -148,14 +152,16 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
             </label>
 
             <label
-              className={`flex flex-col items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+              className={`flex flex-col items-center p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${
                 formData.practiceInfo.consultationTypes.homeVisit
                   ? "border-blue-600 bg-blue-50"
                   : "border-gray-200 bg-gray-50 hover:border-blue-400"
               }`}
             >
-              <Home size={24} className="mb-2 text-gray-600" />
-              <span className="font-medium text-gray-700">Home Visit</span>
+              <Home size={20} className="mb-1 sm:mb-2 text-gray-600" />
+              <span className="font-medium text-gray-700 text-sm sm:text-base">
+                Home Visit
+              </span>
               <input
                 type="checkbox"
                 checked={formData.practiceInfo.consultationTypes.homeVisit}
@@ -168,13 +174,13 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
 
         {/* Hourly Rate */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
             Consultation Rate *
           </h3>
           <div className="relative max-w-xs">
             <DollarSign
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
+              size={18}
             />
             <input
               type="number"
@@ -189,24 +195,26 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                   },
                 })
               }
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
+              className="w-full pl-10 pr-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
               placeholder="Hourly rate in USD"
             />
-            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-              / hour
+            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
+              / hr
             </span>
           </div>
         </div>
 
         {/* Availability */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
             Availability *
           </h3>
 
           {/* Days */}
           <div className="mb-4">
-            <label className="block text-gray-700 mb-3">Available Days</label>
+            <label className="block text-gray-700 mb-2 text-sm sm:text-base">
+              Available Days
+            </label>
             <div className="flex flex-wrap gap-2">
               {[
                 "monday",
@@ -219,16 +227,16 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
               ].map((day) => (
                 <label
                   key={day}
-                  className={`px-4 py-2 rounded-lg border cursor-pointer transition-all ${
+                  className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border cursor-pointer transition-all text-xs sm:text-sm ${
                     formData.practiceInfo.availability.days.includes(day)
                       ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-gray-100 text-gray-700 border-gray-300 text-gray-900 hover:border-blue-400"
+                      : "bg-gray-100 text-gray-700 border-gray-300 hover:border-blue-400"
                   }`}
                 >
                   <input
                     type="checkbox"
                     checked={formData.practiceInfo.availability.days.includes(
-                      day
+                      day,
                     )}
                     onChange={() => toggleDay(day)}
                     className="hidden"
@@ -240,13 +248,15 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
           </div>
 
           {/* Hours */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label className="block text-gray-700 mb-2">Start Time</label>
+              <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
+                Start Time
+              </label>
               <div className="relative">
                 <Clock
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
+                  size={18}
                 />
                 <input
                   type="time"
@@ -265,16 +275,18 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                       },
                     })
                   }
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
+                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-gray-700 mb-2">End Time</label>
+              <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
+                End Time
+              </label>
               <div className="relative">
                 <Clock
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
+                  size={18}
                 />
                 <input
                   type="time"
@@ -293,14 +305,14 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                       },
                     })
                   }
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
+                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
                 />
               </div>
             </div>
           </div>
 
           {/* Emergency Availability */}
-          <label className="flex items-center gap-3 mt-4">
+          <label className="flex items-center gap-2 mt-3 sm:mt-4">
             <input
               type="checkbox"
               checked={formData.practiceInfo.availability.emergencyAvailable}
@@ -315,9 +327,9 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                   },
                 })
               }
-              className="rounded border-gray-300 text-gray-900 text-blue-600 focus:ring-blue-600"
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-600"
             />
-            <span className="text-gray-700">
+            <span className="text-gray-700 text-sm sm:text-base">
               Available for emergency consultations
             </span>
           </label>
@@ -325,20 +337,20 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
 
         {/* Languages */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
             Languages Spoken
           </h3>
           <div className="flex flex-wrap gap-2">
             {commonLanguages.map((language) => (
               <label
                 key={language}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border cursor-pointer transition-all text-xs sm:text-sm ${
                   formData.practiceInfo.languages.includes(language)
                     ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-gray-100 text-gray-700 border-gray-300 text-gray-900 hover:border-blue-400"
+                    : "bg-gray-100 text-gray-700 border-gray-300 hover:border-blue-400"
                 }`}
               >
-                <Languages size={16} />
+                <Languages size={14} />
                 <input
                   type="checkbox"
                   checked={formData.practiceInfo.languages.includes(language)}
@@ -353,16 +365,18 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
 
         {/* Location */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
             Practice Location *
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <div>
-              <label className="block text-gray-700 mb-2">Street Address</label>
+              <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
+                Street Address
+              </label>
               <div className="relative">
                 <MapPin
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
+                  size={18}
                 />
                 <input
                   type="text"
@@ -375,15 +389,17 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                       },
                     })
                   }
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
+                  className="w-full pl-10 pr-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
                   placeholder="Enter your practice address"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-gray-700 mb-2">City</label>
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
+                  City
+                </label>
                 <input
                   type="text"
                   value={formData.location.city}
@@ -395,12 +411,14 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                       },
                     })
                   }
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
+                  className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
                   placeholder="City"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 mb-2">State</label>
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
+                  State
+                </label>
                 <input
                   type="text"
                   value={formData.location.state}
@@ -412,12 +430,14 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                       },
                     })
                   }
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
+                  className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
                   placeholder="State"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 mb-2">Country</label>
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
+                  Country
+                </label>
                 <input
                   type="text"
                   value={formData.location.country}
@@ -429,7 +449,7 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                       },
                     })
                   }
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none"
+                  className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
                   placeholder="Country"
                 />
               </div>
@@ -438,7 +458,7 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
             {/* Service Radius */}
             {formData.practiceInfo.consultationTypes.homeVisit && (
               <div>
-                <label className="block text-gray-700 mb-2">
+                <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
                   Home Visit Service Radius (km)
                 </label>
                 <input
@@ -457,7 +477,7 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
                   }
                   className="w-full"
                 />
-                <div className="text-center text-gray-600 mt-2">
+                <div className="text-center text-gray-600 mt-1 text-sm">
                   Up to {formData.location.serviceRadius} kilometers
                 </div>
               </div>
@@ -466,26 +486,26 @@ const PracticeInfo: React.FC<PracticeInfoProps> = ({
             <button
               type="button"
               onClick={getLocationFromMap}
-              className="flex items-center gap-2 text-blue-600 font-semibold"
+              className="flex items-center gap-2 text-blue-600 font-semibold text-sm sm:text-base"
             >
-              <MapPin size={20} />
+              <MapPin size={16} />
               Select location on map
             </button>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between mt-8">
+      <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 mt-6 sm:mt-8">
         <button
           onClick={onBack}
-          className="px-6 py-3 border border-gray-300 text-gray-900 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors"
+          className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 rounded-xl text-sm sm:text-base text-gray-600 hover:bg-gray-50 transition-colors order-2 sm:order-1"
         >
           Back
         </button>
         <button
           onClick={onNext}
           disabled={!isFormValid}
-          className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 bg-blue-600 text-white rounded-xl font-semibold text-sm sm:text-base hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors order-1 sm:order-2"
         >
           Continue to Documents
         </button>

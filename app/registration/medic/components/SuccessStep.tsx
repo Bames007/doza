@@ -56,6 +56,25 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ formData }) => {
         </ul>
       </div>
 
+      {/* Professional Dashboard Login */}
+      <div className="bg-green-50 rounded-xl p-6 max-w-md mx-auto mb-8">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          Your Professional Dashboard
+        </h3>
+        <p className="text-gray-700 mb-3">Once approved, you can log in at:</p>
+        <a
+          href="https://dashboard.doza-medic.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors"
+        >
+          dashboard.doza-medic.com
+        </a>
+        <p className="text-sm text-gray-600 mt-3">
+          Use the email and password you registered with.
+        </p>
+      </div>
+
       {/* Contact Information */}
       <div className="border-t pt-6">
         <p className="text-gray-600 mb-4">

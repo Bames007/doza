@@ -72,7 +72,7 @@ const mockUsers = [
     otp: "654321",
     role: "center_owner",
     centerData: {
-      centerType: "eye-center",
+      centerType: "optical_center",
       customType: "",
       centerName: "City Eye Care Specialists",
       logo: null,
@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
         (u.centerName.toLowerCase().includes(centerName.toLowerCase()) ||
           u.centerData.centerName
             .toLowerCase()
-            .includes(centerName.toLowerCase()))
+            .includes(centerName.toLowerCase())),
     );
 
     if (!user) {
@@ -206,7 +206,7 @@ export async function POST(request: NextRequest) {
             "Invalid credentials. Please check your name and center details.",
           attemptsLeft: 2,
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -218,7 +218,7 @@ export async function POST(request: NextRequest) {
           message: "Invalid OTP. Please check today's code and try again.",
           attemptsLeft: 2,
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -243,7 +243,7 @@ export async function POST(request: NextRequest) {
         success: false,
         message: "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

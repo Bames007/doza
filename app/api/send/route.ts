@@ -8,6 +8,8 @@
 //   subject: "Hello World",
 //   html: "<p>Congrats on sending your <strong>first email</strong>!</p>",
 // });
+
+//api/send/route.ts
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 

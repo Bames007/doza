@@ -11,8 +11,11 @@ import {
   DollarSign,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
+import { useRouter } from "next/navigation";
 
 export default function MedicStories() {
+  const router = useRouter();
+
   const successStories = [
     {
       name: "Dr. Adebayo Ogunlesi",
@@ -262,7 +265,10 @@ export default function MedicStories() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
-              <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-lg bg-green-600 text-white hover:bg-green-700 transition-all duration-300 hover:scale-105">
+              <button
+                onClick={() => router.push("/registration/medic")}
+                className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-lg bg-green-600 text-white hover:bg-green-700 transition-all duration-300 hover:scale-105"
+              >
                 Start Your Success Story
               </button>
               <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-lg border-2 border-white text-white hover:bg-white hover:text-slate-900 transition-all duration-300 hover:scale-105">

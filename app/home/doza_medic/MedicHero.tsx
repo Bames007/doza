@@ -18,6 +18,7 @@ import {
   PlayCircle,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
+import { useRouter } from "next/navigation";
 
 const colors = {
   green: { primary: "#239C3E", light: "#4CAF50", dark: "#1B7930" },
@@ -26,6 +27,7 @@ const colors = {
 };
 
 export default function MedicHero({ onBack }: { onBack: () => void }) {
+  const router = useRouter();
   const medicBenefits = [
     {
       icon: DollarSign,
@@ -146,6 +148,7 @@ export default function MedicHero({ onBack }: { onBack: () => void }) {
                 className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-8 md:mb-12"
               >
                 <button
+                  onClick={() => router.push("/registration/medic")}
                   className="group px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl font-semibold text-base md:text-lg text-white transition-all duration-300 hover:scale-105 hover:shadow-xl md:hover:shadow-2xl flex items-center justify-center gap-2 md:gap-3"
                   style={{
                     background: `linear-gradient(135deg, ${colors.blue.primary}, ${colors.green.primary})`,
@@ -407,6 +410,7 @@ export default function MedicHero({ onBack }: { onBack: () => void }) {
                     patients and cutting-edge medical centers.
                   </p>
                   <button
+                    onClick={() => router.push("/registration/medic")}
                     className="px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl font-semibold text-white transition-all duration-300 hover:scale-105 text-sm md:text-base"
                     style={{ background: colors.blue.primary }}
                   >
@@ -509,6 +513,7 @@ export default function MedicHero({ onBack }: { onBack: () => void }) {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
               <button
+                onClick={() => router.push("/registration/medic")}
                 className="group px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl font-semibold text-base md:text-lg text-white transition-all duration-300 hover:scale-105 hover:shadow-xl md:hover:shadow-2xl flex items-center justify-center gap-2 md:gap-3"
                 style={{
                   background: `linear-gradient(135deg, ${colors.blue.primary}, ${colors.green.primary})`,

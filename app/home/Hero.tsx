@@ -101,7 +101,7 @@ function RoleSelectionScreen({
   const roles = [
     {
       id: "patient",
-      title: "Doza Patient",
+      title: "Doza U",
       description:
         "Find care, manage health, and connect with medical professionals",
       icon: Heart,

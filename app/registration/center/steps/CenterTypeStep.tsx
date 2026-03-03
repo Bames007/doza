@@ -46,7 +46,7 @@ const centerTypes = [
     gradient: "from-green-500 to-emerald-600",
   },
   {
-    id: "eye-center",
+    id: "optical_center",
     icon: Eye,
     title: "Eye Center",
     description: "Ophthalmology and vision care services",
@@ -60,7 +60,7 @@ const centerTypes = [
     gradient: "from-lime-500 to-green-600",
   },
   {
-    id: "laboratory",
+    id: "diagnostic-lab",
     icon: FlaskRound,
     title: "Laboratory",
     description: "Medical testing and diagnostic services",

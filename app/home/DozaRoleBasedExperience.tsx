@@ -86,7 +86,7 @@ export default function DozaRoleBasedExperience({
   const experiences = [
     {
       id: "patient",
-      title: "Doza Patient",
+      title: "Doza User",
       tagline: "Your Health, Revolutionized",
       description:
         "Experience personalized healthcare with AI-powered diagnostics and 24/7 medical support designed around your needs.",
