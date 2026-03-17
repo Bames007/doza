@@ -198,7 +198,7 @@ const MagneticButton = ({ children, onClick, className }: any) => {
   );
 };
 
-// --- Data for pillars, features, advantages, role cards (rewritten for persuasion) ---
+// --- Data for pillars, features, advantages, role cards ---
 
 const ECOSYSTEM_PILLARS = [
   {
@@ -260,7 +260,6 @@ const ECOSYSTEM_PILLARS = [
   },
 ];
 
-// Medic features – practical, no AI hype
 const MEDIC_FEATURES = [
   {
     icon: FileText,
@@ -489,18 +488,20 @@ export default function DozaExplainer({
 
   return (
     <div
-      className="relative min-h-screen bg-[#FAFAFA] overflow-x-hidden text-slate-900 selection:bg-emerald-200"
+      className="relative min-h-screen bg-[#FAFAFA] overflow-x-hidden text-slate-900 selection:bg-emerald-200 flex flex-col"
       ref={containerRef}
     >
       <GrainOverlay />
       <LuxuryCursor />
 
       {/* Parallax background – soft emerald glow */}
-      <motion.div style={{ x: bgX, y: bgY }} className="absolute inset-0 z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-50 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-100/60 blur-[150px] rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-emerald-50/30 blur-[200px] rounded-full" />
-      </motion.div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div style={{ x: bgX, y: bgY }} className="absolute inset-0">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-50 blur-[150px] rounded-full" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-100/60 blur-[150px] rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-emerald-50/30 blur-[200px] rounded-full" />
+        </motion.div>
+      </div>
 
       {/* Back button */}
       {showBackButton && onBack && (
@@ -517,7 +518,7 @@ export default function DozaExplainer({
         </motion.button>
       )}
 
-      {/* Floating Navigation with correct scroll targets */}
+      {/* Floating Navigation */}
       <nav className="fixed top-6 left-1/2 z-[100] hidden -translate-x-1/2 w-fit md:block">
         <div className="flex items-center gap-8 rounded-full border border-white/40 bg-white/60 px-8 py-3 backdrop-blur-xl shadow-lg ring-1 ring-black/5">
           <span
@@ -545,7 +546,7 @@ export default function DozaExplainer({
               Experience
             </button>
             <button
-              onClick={() => scrollTo("advantages")} // Investors → advantages
+              onClick={() => scrollTo("advantages")}
               className={`text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-emerald-600 transition-colors ${poppins.className}`}
             >
               Investors
@@ -584,17 +585,18 @@ export default function DozaExplainer({
         ))}
       </div>
 
-      <div className="relative z-10">
-        {/* --- HERO SECTION with massive typography and parallax zoom --- */}
+      {/* MAIN CONTENT - takes all remaining space */}
+      <div className="relative z-10 flex-grow">
+        {/* --- HERO SECTION with improved mobile UI --- */}
         <section
           id="hero"
-          className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20"
+          className="relative flex min-h-screen flex-col items-center justify-center px-4 pt-20 md:px-6"
         >
           <div className="container relative z-10 mx-auto max-w-7xl text-center">
             <SectionLabel text="Your Health, Connected" />
 
             <h1
-              className={`mb-8 text-[13vw] font-bold leading-[0.8] tracking-tighter md:text-[9rem] lg:text-[11rem] ${bebasNeue.className}`}
+              className={`mb-6 text-[15vw] font-bold leading-[0.9] tracking-tighter md:text-[9rem] lg:text-[11rem] ${bebasNeue.className}`}
             >
               CARE WITHOUT <br />
               <span className="bg-gradient-to-b from-emerald-600 to-emerald-900 bg-clip-text text-transparent">
@@ -603,17 +605,17 @@ export default function DozaExplainer({
             </h1>
 
             <p
-              className={`mx-auto mb-12 max-w-2xl text-lg font-light leading-relaxed text-slate-500 md:text-xl ${poppins.className}`}
+              className={`mx-auto mb-10 max-w-2xl text-base font-light leading-relaxed text-slate-500 md:text-xl ${poppins.className}`}
             >
               A unified platform that connects patients, doctors, and medical
               centers—so every visit builds on the last, and every prescription
               is followed through.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
               <MagneticButton
                 onClick={() => scrollTo("ecosystem")}
-                className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-emerald-600 px-10 py-5 text-white transition-all hover:bg-emerald-700 hover:shadow-2xl hover:shadow-emerald-500/40"
+                className="group relative flex items-center justify-center gap-3 overflow-hidden rounded-full bg-emerald-600 px-8 py-4 text-white transition-all hover:bg-emerald-700 hover:shadow-2xl hover:shadow-emerald-500/40 sm:px-10 sm:py-5"
               >
                 <span className="font-bold uppercase tracking-widest text-sm">
                   Explore Ecosystem
@@ -625,7 +627,7 @@ export default function DozaExplainer({
               </MagneticButton>
               <button
                 onClick={openVideoModal}
-                className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-10 py-5 transition-all hover:bg-slate-50"
+                className="flex items-center justify-center gap-3 rounded-full border border-slate-200 bg-white px-8 py-4 transition-all hover:bg-slate-50 sm:px-10 sm:py-5"
               >
                 <Play size={18} fill="currentColor" />
                 <span className="font-bold uppercase tracking-widest text-slate-900 text-sm">
@@ -635,18 +637,19 @@ export default function DozaExplainer({
             </div>
           </div>
 
-          {/* Hero Visual with Parallax Zoom */}
+          {/* Hero Visual - improved for mobile */}
           <motion.div
             style={{ scale: zoom }}
-            className="mt-24 w-full max-w-6xl px-6"
+            className="mt-16 w-full max-w-6xl px-4 md:mt-24 md:px-6"
           >
-            <div className="relative aspect-[21/9] overflow-hidden rounded-[3rem] border border-white bg-white/50 p-3 shadow-2xl backdrop-blur-sm">
-              <div className="relative h-full w-full overflow-hidden rounded-[2.5rem]">
+            <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white/50 p-2 shadow-2xl backdrop-blur-sm md:rounded-[3rem] md:p-3">
+              <div className="relative h-48 w-full overflow-hidden rounded-[1.5rem] sm:h-64 md:h-80 lg:h-96 md:rounded-[2.5rem]">
                 <Image
                   src="https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2000"
                   alt="Modern Hospital"
                   fill
                   className="object-cover brightness-90"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
               </div>
@@ -654,7 +657,7 @@ export default function DozaExplainer({
           </motion.div>
         </section>
 
-        {/* --- ECOSYSTEM PILLARS with case studies --- */}
+        {/* --- ECOSYSTEM PILLARS --- */}
         <section id="ecosystem" className="py-24 px-6">
           <div className="container mx-auto max-w-7xl">
             <motion.div
@@ -826,7 +829,7 @@ export default function DozaExplainer({
           </div>
         </section>
 
-        {/* --- DOZA MEDIC DEEP DIVE with bento grid --- */}
+        {/* --- DOZA MEDIC DEEP DIVE --- */}
         <section id="medic" className="py-24 px-6 bg-slate-50/80">
           <div className="container mx-auto max-w-7xl">
             <motion.div
@@ -939,7 +942,7 @@ export default function DozaExplainer({
               </PremiumCard>
             </div>
 
-            {/* Workflow illustration with Doza logo */}
+            {/* Workflow illustration */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1052,7 +1055,7 @@ export default function DozaExplainer({
               ))}
             </div>
 
-            {/* Data Moat with varied icons */}
+            {/* Data Moat */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1102,7 +1105,7 @@ export default function DozaExplainer({
               </div>
             </motion.div>
 
-            {/* Dark Luxury Investor Section */}
+            {/* Dark Luxury Investor Section - Enhanced */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1114,22 +1117,68 @@ export default function DozaExplainer({
               </div>
 
               <div className="container relative z-10 mx-auto max-w-7xl">
-                <div className="grid lg:grid-cols-2 gap-24 items-center">
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
                   <div>
                     <SectionLabel text="Investment Thesis" />
                     <h2
-                      className={`text-7xl md:text-9xl font-bold leading-none mb-10 ${bebasNeue.className}`}
+                      className={`text-7xl md:text-9xl font-bold leading-none mb-6 ${bebasNeue.className}`}
                     >
                       OWN THE <br />{" "}
                       <span className="text-emerald-400 italic">STACK</span>
                     </h2>
                     <p
-                      className={`text-xl text-slate-400 font-light leading-relaxed mb-12 ${poppins.className}`}
+                      className={`text-xl text-slate-400 font-light leading-relaxed mb-8 ${poppins.className}`}
                     >
                       Doza is digital infrastructure for the $9T healthcare
                       market. We capture value from symptom check to final
-                      recovery.
+                      recovery by owning the entire patient journey.
                     </p>
+                    <p
+                      className={`text-lg text-slate-500 font-light mb-10 ${poppins.className}`}
+                    >
+                      Unlike point solutions (telemedicine apps, EMRs,
+                      prescription tools), Doza integrates all layers into one
+                      ecosystem. This creates a powerful moat:
+                    </p>
+                    <ul className="space-y-4 mb-12">
+                      <li className="flex items-start gap-3">
+                        <CheckCircle
+                          className="text-emerald-500 flex-shrink-0 mt-1"
+                          size={20}
+                        />
+                        <span className={`text-slate-300 ${poppins.className}`}>
+                          <strong className="text-white">
+                            Network effects
+                          </strong>{" "}
+                          – Each new patient, doctor, or center increases value
+                          for all.
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle
+                          className="text-emerald-500 flex-shrink-0 mt-1"
+                          size={20}
+                        />
+                        <span className={`text-slate-300 ${poppins.className}`}>
+                          <strong className="text-white">Data flywheel</strong>{" "}
+                          – More usage generates richer insights, improving care
+                          and stickiness.
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle
+                          className="text-emerald-500 flex-shrink-0 mt-1"
+                          size={20}
+                        />
+                        <span className={`text-slate-300 ${poppins.className}`}>
+                          <strong className="text-white">
+                            Switching costs
+                          </strong>{" "}
+                          – Once a hospital runs on Doza, replacing it would
+                          disrupt every department.
+                        </span>
+                      </li>
+                    </ul>
 
                     <div className="flex gap-12">
                       <div>
@@ -1160,12 +1209,12 @@ export default function DozaExplainer({
                       {
                         icon: Zap,
                         title: "Platform Velocity",
-                        desc: "Exponential growth through network effects.",
+                        desc: "Exponential growth through network effects. Every new user accelerates adoption.",
                       },
                       {
                         icon: ShieldCheck,
                         title: "Defensive Moat",
-                        desc: "Deep EMR integration makes switching impossible.",
+                        desc: "Deep EMR integration and daily workflow dependency make switching impossible.",
                       },
                     ].map((item, i) => (
                       <div
@@ -1181,7 +1230,7 @@ export default function DozaExplainer({
                         >
                           {item.title}
                         </h4>
-                        <p className="text-sm text-slate-500 font-light">
+                        <p className="text-sm text-slate-400 font-light">
                           {item.desc}
                         </p>
                       </div>
@@ -1193,7 +1242,7 @@ export default function DozaExplainer({
           </div>
         </section>
 
-        {/* --- FAQ SECTION (compact) --- */}
+        {/* --- FAQ SECTION --- */}
         <section id="faq" className="py-20 px-6 bg-slate-50/80">
           <div className="container mx-auto max-w-4xl">
             <motion.div
@@ -1235,7 +1284,7 @@ export default function DozaExplainer({
           </div>
         </section>
 
-        {/* --- CHOOSE YOUR PATH (Role Cards) with reduced padding --- */}
+        {/* --- CHOOSE YOUR PATH --- */}
         <section id="choose" className="py-20 px-6">
           <div className="container mx-auto max-w-7xl">
             <motion.div
@@ -1330,32 +1379,30 @@ export default function DozaExplainer({
             </div>
           </div>
         </section>
-
-        {/* --- FOOTER (compact) --- */}
-        <footer className="py-10 border-t border-slate-200">
-          <div className="container mx-auto px-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 relative">
-              <Image
-                src="/logo.png"
-                alt="Doza"
-                fill
-                className="object-contain opacity-60"
-              />
-            </div>
-            <p
-              className={`text-sm text-slate-500 font-medium tracking-wider ${poppins.className}`}
-            >
-              ENGINEERED BY{" "}
-              <span className="font-bold text-slate-700">
-                EBCOM TECHNOLOGIES
-              </span>
-            </p>
-            <p className={`text-xs text-slate-400 mt-4 ${poppins.className}`}>
-              © 2026 Doza. All rights reserved.
-            </p>
-          </div>
-        </footer>
       </div>
+
+      {/* FOOTER - compact, now outside main content */}
+      <footer className="py-8 border-t border-slate-200">
+        <div className="container mx-auto px-6 text-center">
+          <div className="w-16 h-16 mx-auto mb-3 relative">
+            <Image
+              src="/logo.png"
+              alt="Doza"
+              fill
+              className="object-contain opacity-60"
+            />
+          </div>
+          <p
+            className={`text-sm text-slate-500 font-medium tracking-wider ${poppins.className}`}
+          >
+            ENGINEERED BY{" "}
+            <span className="font-bold text-slate-700">EBCOM TECHNOLOGIES</span>
+          </p>
+          <p className={`text-xs text-slate-400 mt-2 ${poppins.className}`}>
+            © 2026 Doza. All rights reserved.
+          </p>
+        </div>
+      </footer>
 
       {/* Video Modal */}
       <AnimatePresence>
@@ -1376,7 +1423,7 @@ export default function DozaExplainer({
             >
               <iframe
                 className="w-full h-full"
-                src="https://youtu.be/1Bpj38bxJ60?si=8U8oqpQndM10Zjqn"
+                src="https://www.youtube.com/embed/1Bpj38bxJ60?si=eP66oKXsbHvFhYgM"
                 title="Doza Overview"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -1397,7 +1444,7 @@ export default function DozaExplainer({
   );
 }
 
-// LuxuryCursor component (needed)
+// LuxuryCursor component
 const LuxuryCursor = () => {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
