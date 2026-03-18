@@ -7,230 +7,189 @@ import {
   Users,
   Award,
   Zap,
-  CheckCircle,
   Activity,
   Bell,
   MapPin,
   Smartphone,
   Target,
   RefreshCw,
+  ArrowRight,
 } from "lucide-react";
-import { Bebas_Neue, Poppins } from "next/font/google";
-
-const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
-const poppins = Poppins({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-});
-
-const colors = {
-  green: { primary: "#239C3E", light: "#4CAF50", dark: "#1B7930" },
-  blue: { primary: "#1D4ED8", light: "#3B82F6", dark: "#1E40AF" },
-};
+import { bebasNeue, poppins } from "../doza_center/constant";
+import { SectionLabel, PremiumCard, GrainOverlay } from "@/app/ui/Premium";
 
 export default function PatientFeatures() {
-  const features = [
+  const mainFeatures = [
     {
       icon: Shield,
-      title: "Emergency Ready Medical Profile",
-      description:
-        "Critical information available to emergency responders with your consent",
+      title: "EMERGENCY VAULT",
+      desc: "One-tap medical history for first responders.",
+      color: "#0086DB",
     },
     {
       icon: TrendingUp,
-      title: "AI-Powered Health Insights",
-      description:
-        "Get personalized recommendations based on your health data trends",
+      title: "BIO-ANALYTICS",
+      desc: "Deep-learning insights from your vitals.",
+      color: "#2BB14B",
     },
     {
       icon: Users,
-      title: "Family Health Management",
-      description:
-        "Monitor and manage health for your entire family in one place",
+      title: "FAMILY HUB",
+      desc: "Manage 360° health for your inner circle.",
+      color: "#0086DB",
     },
     {
       icon: Award,
-      title: "Health Goals & Rewards",
-      description:
-        "Set goals, track progress, and earn rewards for healthy habits",
+      title: "ELITE REWARDS",
+      desc: "Turn healthy habits into premium benefits.",
+      color: "#2BB14B",
     },
   ];
 
-  const assistantFeatures = [
-    { icon: Activity, text: "Tracks your daily vitals automatically" },
-    { icon: Bell, text: "Sends medication reminders" },
-    { icon: MapPin, text: "Finds the best care options nearby" },
-    { icon: Smartphone, text: "Syncs with your health devices" },
-    { icon: Target, text: "Provides personalized health tips" },
-    { icon: RefreshCw, text: "Coordinates with your care team" },
+  const aiStats = [
+    { icon: Activity, text: "Continuous Vital Syncing", val: "99.9%" },
+    { icon: Bell, text: "Medication Adherence", val: "100%" },
+    { icon: Target, text: "Health Goal Accuracy", val: "94%" },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-green-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Header />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          <FeatureList features={features} />
-          <AssistantShowcase features={assistantFeatures} />
+    <section className="relative py-24 lg:py-32 px-6 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          {/* --- Left Content --- */}
+          <div className="lg:col-span-5 space-y-8">
+            <div>
+              <SectionLabel text="The Doza Ecosystem" />
+              <h2
+                className={`mt-6 text-6xl md:text-7xl font-bold text-slate-950 leading-[0.9] tracking-tighter ${bebasNeue.className}`}
+              >
+                TOTAL CONTROL. <br />
+                <span className="text-[#0086DB]">ZERO COMPROMISE.</span>
+              </h2>
+              <p
+                className={`mt-6 text-slate-500 text-lg leading-relaxed ${poppins.className}`}
+              >
+                We’ve condensed a full medical team into a single, intuitive
+                interface. Proactive, precise, and permanently yours.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {mainFeatures.map((feat, i) => (
+                <motion.div
+                  key={feat.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-6 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-xl hover:shadow-blue-500/5 transition-all group"
+                >
+                  <feat.icon
+                    size={24}
+                    className="mb-4 transition-colors"
+                    style={{ color: feat.color }}
+                  />
+                  <h3
+                    className={`text-xl font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
+                  >
+                    {feat.title}
+                  </h3>
+                  <p
+                    className={`text-xs text-slate-500 leading-snug ${poppins.className}`}
+                  >
+                    {feat.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* --- Right: The AI Console --- */}
+          <div className="lg:col-span-7 relative">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#0086DB]/10 to-[#2BB14B]/10 blur-[100px] -z-10 rounded-full" />
+
+            <PremiumCard className="relative overflow-hidden !p-0 border-white/40 bg-white/60 backdrop-blur-2xl shadow-2xl">
+              <div className="p-8 border-b border-slate-100 bg-white/40 flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#0086DB] flex items-center justify-center text-white animate-pulse">
+                    <Zap size={20} fill="currentColor" />
+                  </div>
+                  <div>
+                    <h3
+                      className={`text-2xl font-bold text-slate-900 ${bebasNeue.className}`}
+                    >
+                      DOZA AI ASSISTANT
+                    </h3>
+                    <p
+                      className={`text-[10px] font-bold text-[#2BB14B] tracking-[0.2em] uppercase ${poppins.className}`}
+                    >
+                      System: Active
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden sm:flex gap-1">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="w-1.5 h-1.5 rounded-full bg-slate-200"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-8 space-y-4">
+                {aiStats.map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + idx * 0.1 }}
+                    className="flex items-center justify-between p-4 rounded-2xl bg-white border border-slate-50 shadow-sm group hover:border-[#0086DB]/30 transition-all"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-[#0086DB] group-hover:bg-[#0086DB] group-hover:text-white transition-colors">
+                        <item.icon size={18} />
+                      </div>
+                      <span
+                        className={`text-sm font-medium text-slate-700 ${poppins.className}`}
+                      >
+                        {item.text}
+                      </span>
+                    </div>
+                    <span
+                      className={`text-lg font-bold text-[#2BB14B] ${bebasNeue.className}`}
+                    >
+                      {item.val}
+                    </span>
+                  </motion.div>
+                ))}
+
+                {/* Visual Data Representation */}
+                <div className="mt-6 p-6 rounded-2xl bg-slate-950 text-white relative overflow-hidden">
+                  <GrainOverlay />
+                  <div className="relative z-10">
+                    <p
+                      className={`text-[10px] font-bold tracking-[0.3em] text-slate-400 mb-4 ${poppins.className}`}
+                    >
+                      NETWORK SYNCHRONIZATION
+                    </p>
+                    <div className="flex items-end gap-1.5 h-12">
+                      {[30, 60, 45, 90, 100, 70, 85, 40, 60, 90].map((h, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ height: 0 }}
+                          whileInView={{ height: `${h}%` }}
+                          transition={{ delay: i * 0.05, duration: 1 }}
+                          className="flex-1 bg-[#2BB14B] rounded-t-sm opacity-80"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </PremiumCard>
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function Header() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="text-center mb-16"
-    >
-      <h2
-        className={`text-5xl sm:text-6xl font-bold text-slate-900 mb-6 tracking-tight ${bebasNeue.className}`}
-      >
-        Your <span style={{ color: colors.green.primary }}>All-in-One</span>{" "}
-        Health Companion
-      </h2>
-      <p
-        className={`text-xl text-slate-600 max-w-2xl mx-auto ${poppins.className}`}
-      >
-        Comprehensive healthcare features designed to keep you and your family
-        healthy
-      </p>
-    </motion.div>
-  );
-}
-
-function FeatureList({ features }: { features: Array<any> }) {
-  return (
-    <div className="space-y-6">
-      {features.map((feature, index) => (
-        <motion.div
-          key={feature.title}
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{
-            duration: 0.6,
-            delay: index * 0.1,
-            type: "spring",
-            stiffness: 100,
-          }}
-          viewport={{ once: true }}
-          whileHover={{ scale: 1.02 }}
-          className="flex items-start gap-6 p-6 rounded-2xl bg-white/70 backdrop-blur-sm border border-white/50 shadow-sm hover:shadow-md transition-all duration-300"
-        >
-          <div
-            className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
-            style={{
-              backgroundColor: `${colors.green.primary}15`,
-              boxShadow: `0 4px 12px ${colors.green.primary}20`,
-            }}
-          >
-            <feature.icon size={28} style={{ color: colors.green.primary }} />
-          </div>
-          <div className="flex-1">
-            <h3
-              className={`text-2xl font-bold text-slate-800 mb-3 tracking-tight ${bebasNeue.className}`}
-            >
-              {feature.title}
-            </h3>
-            <p
-              className={`text-slate-600 leading-relaxed text-lg ${poppins.className}`}
-            >
-              {feature.description}
-            </p>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-function AssistantShowcase({
-  features,
-}: {
-  features: Array<{ icon: any; text: string }>;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200/60 relative overflow-hidden"
-    >
-      {/* Background decoration */}
-      <div
-        className="absolute top-0 right-0 w-32 h-32 rounded-full -mr-16 -mt-16 opacity-10"
-        style={{ backgroundColor: colors.blue.primary }}
-      />
-      <div
-        className="absolute bottom-0 left-0 w-24 h-24 rounded-full -ml-12 -mb-12 opacity-10"
-        style={{ backgroundColor: colors.blue.primary }}
-      />
-
-      <div className="text-center mb-10 relative z-10">
-        <div
-          className="w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center transition-all duration-300 hover:scale-105"
-          style={{
-            backgroundColor: `${colors.blue.primary}15`,
-            boxShadow: `0 8px 24px ${colors.blue.primary}20`,
-          }}
-        >
-          <Zap size={36} style={{ color: colors.blue.primary }} />
-        </div>
-        <h3
-          className={`text-3xl font-bold text-slate-800 mb-3 tracking-tight ${bebasNeue.className}`}
-        >
-          Smart Health Assistant
-        </h3>
-        <p className={`text-slate-600 text-lg ${poppins.className}`}>
-          Your AI-powered health companion that works around the clock
-        </p>
-      </div>
-
-      <div className="space-y-4 relative z-10">
-        {features.map((item, index) => (
-          <motion.div
-            key={item.text}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.4,
-              delay: 0.5 + index * 0.1,
-              type: "spring",
-              stiffness: 120,
-            }}
-            viewport={{ once: true }}
-            whileHover={{ x: 4 }}
-            className="flex items-center gap-4 p-4 rounded-xl bg-slate-50/80 hover:bg-slate-100/80 transition-all duration-300 group"
-          >
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors duration-300"
-              style={{ backgroundColor: `${colors.blue.primary}15` }}
-            >
-              <item.icon size={20} style={{ color: colors.blue.primary }} />
-            </div>
-            <span
-              className={`text-slate-700 text-lg font-medium ${poppins.className} group-hover:text-slate-900 transition-colors`}
-            >
-              {item.text}
-            </span>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Floating action button style element */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1, type: "spring" }}
-        className="absolute top-6 right-6"
-      >
-        <div className="w-4 h-4 rounded-full bg-green-400 animate-pulse" />
-      </motion.div>
-    </motion.div>
   );
 }

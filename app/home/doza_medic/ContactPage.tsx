@@ -10,11 +10,14 @@ import {
   Users,
   ArrowRight,
   Send,
+  CheckCircle2,
+  Building2,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
 import { useState } from "react";
 
 export default function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,450 +29,326 @@ export default function ContactPage() {
   const contactMethods = [
     {
       icon: Phone,
-      title: "Phone Support",
-      description: "Speak directly with our medical professional support team",
+      title: "Direct Line",
       contact: "+234 812 772 8084",
       hours: "24/7 Emergency Support",
-      color: "green",
+      gradient: "from-emerald-500 to-green-600",
     },
     {
       icon: Mail,
-      title: "Email Support",
-      description: "Get detailed responses from our expert team",
+      title: "Email Liaison",
       contact: "medics@doza.com",
-      hours: "Response within 2 hours",
-      color: "green",
+      hours: "Response < 2 hours",
+      gradient: "from-blue-500 to-emerald-600",
     },
     {
       icon: MessageCircle,
-      title: "Live Chat",
-      description: "Instant messaging with our support specialists",
-      contact: "Start Chat Now",
-      hours: "Mon-Fri, 6AM-9PM WAT",
-      color: "green",
+      title: "Partner Chat",
+      contact: "WhatsApp Support",
+      hours: "Mon-Fri, 6AM-9PM",
+      gradient: "from-green-400 to-emerald-500",
     },
   ];
 
-  const supportAreas = [
-    {
-      title: "Onboarding & Setup",
-      description: "Get your practice set up and running smoothly",
-    },
-    {
-      title: "Technical Support",
-      description: "Technical issues and platform questions",
-    },
-    {
-      title: "Practice Partnership",
-      description: "Maximize your practice growth and efficiency",
-    },
-    {
-      title: "Professional Collaboration",
-      description: "Connect with other healthcare professionals",
-    },
-  ];
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
+    setIsSubmitting(true);
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsSubmitting(false);
     console.log("Form submitted:", formData);
   };
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-slate-50 overflow-x-hidden">
-      {/* Header Section */}
-      <section className="pt-16 md:pt-20 pb-12 md:pb-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 md:mb-6 ${bebasNeue.className}`}
-          >
-            Get In <span className="text-green-600">Touch</span>
-          </motion.h1>
-          <motion.p
+    <div
+      className={`min-h-screen bg-white text-slate-900 selection:bg-green-100 ${poppins.className}`}
+    >
+      {/* Hero Header */}
+      <section className="relative pt-24 pb-16 px-6 overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl pointer-events-none">
+          <div className="absolute top-10 left-10 w-64 h-64 bg-green-100 rounded-full blur-3xl opacity-60" />
+          <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-60" />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className={`text-base sm:text-lg md:text-xl text-slate-600 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed ${poppins.className}`}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 border border-green-100 text-green-700 text-xs font-bold uppercase tracking-widest mb-6"
           >
-            Join our network of healthcare professionals. Contact us to learn
-            about partnership opportunities and how Doza Medics can help grow
-            your practice.
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            Support Active
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className={`text-5xl md:text-7xl font-bold tracking-tight text-slate-950 mb-6 ${bebasNeue.className}`}
+          >
+            LET’S BUILD THE <span className="text-green-600">FUTURE</span> OF
+            CARE
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+          >
+            Whether you're a solo practitioner or a multi-specialist clinic,
+            we're here to streamline your operations and expand your reach.
           </motion.p>
         </div>
       </section>
 
-      {/* Contact Methods */}
-      <section className="py-12 md:py-16 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {contactMethods.map((method, index) => (
-              <motion.div
-                key={method.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="text-center p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-lg transition-all duration-300"
+      {/* Modern Contact Cards */}
+      <section className="pb-20 px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+          {contactMethods.map((method, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -5 }}
+              className="p-8 rounded-3xl bg-slate-50 border border-slate-100 flex flex-col items-center text-center group transition-all hover:bg-white hover:shadow-2xl hover:shadow-green-500/5"
+            >
+              <div
+                className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${method.gradient} flex items-center justify-center text-white mb-6 shadow-lg transform group-hover:rotate-12 transition-transform`}
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-4 sm:mb-6 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center bg-green-100">
-                  <method.icon
-                    size={24}
-                    className="sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-600"
-                  />
-                </div>
-                <h3
-                  className={`text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-2 sm:mb-3 md:mb-4 ${bebasNeue.className}`}
-                >
-                  {method.title}
-                </h3>
-                <p
-                  className={`text-slate-600 mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base ${poppins.className}`}
-                >
-                  {method.description}
-                </p>
-                <div className="font-semibold text-base sm:text-lg md:text-lg text-green-600 mb-1 sm:mb-2">
-                  {method.contact}
-                </div>
-                <div
-                  className={`text-slate-500 text-xs sm:text-sm ${poppins.className}`}
-                >
-                  {method.hours}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                <method.icon size={28} />
+              </div>
+              <h3
+                className={`text-xl font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
+              >
+                {method.title}
+              </h3>
+              <p className="text-green-600 font-bold mb-1">{method.contact}</p>
+              <p className="text-slate-400 text-sm font-medium">
+                {method.hours}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* Contact Form & Information */}
-      <section className="py-12 md:py-16 lg:py-20 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-50px" }}
-              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-slate-200"
-            >
-              <h2
-                className={`text-2xl sm:text-3xl font-bold text-slate-900 mb-4 sm:mb-6 ${bebasNeue.className}`}
-              >
-                Partner With Us
-              </h2>
-
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
-                    <label
-                      className={`block text-slate-700 mb-2 text-sm sm:text-base ${poppins.className}`}
-                    >
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 text-gray-900 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-sm sm:text-base"
-                      placeholder="Dr. John Smith"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      className={`block text-slate-700 mb-2 text-sm sm:text-base ${poppins.className}`}
-                    >
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 text-gray-900 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-sm sm:text-base"
-                      placeholder="your.email@example.com"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
-                    <label
-                      className={`block text-slate-700 mb-2 text-sm sm:text-base ${poppins.className}`}
-                    >
-                      Profession *
-                    </label>
-                    <select
-                      name="profession"
-                      value={formData.profession}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-3 text-gray-900 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-sm sm:text-base"
-                    >
-                      <option value="">Select your profession</option>
-                      <option value="doctor">Doctor/Physician</option>
-                      <option value="nurse">Nurse/Nurse Practitioner</option>
-                      <option value="nutritionist">
-                        Nutritionist/Dietitian
-                      </option>
-                      <option value="therapist">Therapist/Specialist</option>
-                      <option value="other">
-                        Other Healthcare Professional
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      className={`block text-slate-700 mb-2 text-sm sm:text-base ${poppins.className}`}
-                    >
-                      Practice/Organization
-                    </label>
-                    <input
-                      type="text"
-                      name="practice"
-                      value={formData.practice}
-                      onChange={handleChange}
-                      className="w-full px-3 text-gray-900 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-sm sm:text-base"
-                      placeholder="Your practice name"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-slate-700 mb-2 text-sm sm:text-base ${poppins.className}`}
-                  >
-                    Message *
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={4}
-                    className="w-full text-gray-900 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 resize-none text-sm sm:text-base"
-                    placeholder="Tell us about your practice and partnership interests..."
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-green-600 text-white py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold hover:bg-green-700 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
-                >
-                  <Send size={16} className="sm:w-5 sm:h-5" />
-                  Send Partnership Request
-                  <ArrowRight size={14} className="sm:w-4 sm:h-4" />
-                </button>
-
-                <p
-                  className={`text-slate-500 text-xs sm:text-sm text-center ${poppins.className}`}
-                >
-                  ✓ No upfront costs • Free partnership • Grow your practice
-                </p>
-              </form>
-            </motion.div>
-
-            {/* Contact Information & Support Areas */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true, margin: "-50px" }}
-              className="space-y-4 sm:space-y-6 md:space-y-8"
-            >
-              {/* Office Information */}
-              <div className="bg-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 text-white">
-                <h3
-                  className={`text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 ${bebasNeue.className}`}
-                >
-                  Our Locations
-                </h3>
-
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <MapPin
-                      size={20}
-                      className="sm:w-6 sm:h-6 text-green-400 flex-shrink-0 mt-0.5"
-                    />
-                    <div>
-                      <div
-                        className={`font-semibold text-sm sm:text-base ${poppins.className}`}
-                      >
-                        Lagos Headquarters
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        123 Medical District, Victoria Island
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        Lagos, Nigeria
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <MapPin
-                      size={20}
-                      className="sm:w-6 sm:h-6 text-green-400 flex-shrink-0 mt-0.5"
-                    />
-                    <div>
-                      <div
-                        className={`font-semibold text-sm sm:text-base ${poppins.className}`}
-                      >
-                        Abuja Office
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        456 Healthcare Avenue, Maitama
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        Abuja, Nigeria
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <Clock
-                      size={20}
-                      className="sm:w-6 sm:h-6 text-green-400 flex-shrink-0 mt-0.5"
-                    />
-                    <div>
-                      <div
-                        className={`font-semibold text-sm sm:text-base ${poppins.className}`}
-                      >
-                        Support Hours
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        24/7 Emergency Technical Support
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        Business: Mon-Fri, 6AM-9PM WAT
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <Users
-                      size={20}
-                      className="sm:w-6 sm:h-6 text-green-400 flex-shrink-0 mt-0.5"
-                    />
-                    <div>
-                      <div
-                        className={`font-semibold text-sm sm:text-base ${poppins.className}`}
-                      >
-                        Partnership Benefits
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        No subscription fees • Free setup
-                      </div>
-                      <div className="text-slate-300 text-xs sm:text-sm">
-                        Revenue sharing model
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Support Areas */}
-              <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-slate-200">
-                <h3
-                  className={`text-xl sm:text-2xl font-bold text-slate-900 mb-4 sm:mb-6 ${bebasNeue.className}`}
-                >
-                  Partnership Opportunities
-                </h3>
-
-                <div className="space-y-3 sm:space-y-4">
-                  {supportAreas.map((area, index) => (
-                    <div
-                      key={area.title}
-                      className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors duration-300"
-                    >
-                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <h4
-                          className={`font-semibold text-slate-900 text-sm sm:text-base ${poppins.className}`}
-                        >
-                          {area.title}
-                        </h4>
-                        <p
-                          className={`text-slate-600 text-xs sm:text-sm ${poppins.className}`}
-                        >
-                          {area.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Partnership Benefits Banner */}
-      <section className="py-12 md:py-16 px-4 sm:px-6 bg-gradient-to-r from-green-600 to-emerald-600">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* Main Form & Info Section */}
+      <section className="py-20 px-6 bg-slate-50">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Partnership Form */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true, margin: "-50px" }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-7 bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-slate-200"
           >
-            <h2
-              className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 ${bebasNeue.className}`}
-            >
-              Free Partnership - Grow Your Practice
-            </h2>
-            <p
-              className={`text-base sm:text-lg md:text-xl text-green-100 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed ${poppins.className}`}
-            >
-              Join Doza Medics at no cost. We invest in your success with our
-              revenue-sharing model. No upfront fees, no hidden charges.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
-              <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-lg bg-white text-green-600 hover:bg-slate-100 transition-all duration-300 hover:scale-105 flex items-center gap-2 sm:gap-3">
-                <Phone size={18} className="sm:w-5 sm:h-5" />
-                Call Partnership Team
-                <ArrowRight size={16} className="sm:w-4 sm:h-4" />
-              </button>
-              <div className="text-white font-semibold text-sm sm:text-lg">
-                +234 812 772 8084
-              </div>
+            <div className="mb-10">
+              <h2 className={`text-4xl font-bold mb-2 ${bebasNeue.className}`}>
+                PARTNERSHIP INQUIRY
+              </h2>
+              <p className="text-slate-500">
+                Fill out the form below and our onboarding specialist will
+                contact you.
+              </p>
             </div>
-            <div className="mt-4 sm:mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">
-              {[
-                "No Setup Fees",
-                "Free Training",
-                "Revenue Share",
-                "NGN 0 Upfront",
-              ].map((benefit, index) => (
-                <div
-                  key={benefit}
-                  className="bg-green-500/20 rounded-lg p-2 sm:p-3"
-                >
-                  <div className="text-white font-semibold text-xs sm:text-sm">
-                    {benefit}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputGroup
+                  label="Full Name"
+                  name="name"
+                  placeholder="Dr. Sarah Johnson"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <InputGroup
+                  label="Medical Email"
+                  name="email"
+                  type="email"
+                  placeholder="sarah@clinic.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">
+                    Profession
+                  </label>
+                  <select
+                    name="profession"
+                    value={formData.profession}
+                    onChange={handleChange}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all outline-none appearance-none"
+                  >
+                    <option value="">Select Specialization</option>
+                    <option value="doctor">Medical Doctor</option>
+                    <option value="pharmacy">Pharmacist</option>
+                    <option value="specialist">Therapist/Specialist</option>
+                    <option value="admin">Clinic Administrator</option>
+                  </select>
+                </div>
+                <InputGroup
+                  label="Practice Name"
+                  name="practice"
+                  placeholder="Lagos Central Hospital"
+                  value={formData.practice}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">
+                  How can we help?
+                </label>
+                <textarea
+                  name="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Tell us about your practice goals..."
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all outline-none resize-none"
+                />
+              </div>
+
+              <button
+                disabled={isSubmitting}
+                className="group w-full bg-slate-950 text-white py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-green-600 transition-all active:scale-[0.98] disabled:opacity-70"
+              >
+                {isSubmitting ? (
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <Send size={20} />
+                    <span>Submit Partnership Request</span>
+                    <ArrowRight
+                      size={18}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
+                  </>
+                )}
+              </button>
+            </form>
+          </motion.div>
+
+          {/* Contact Info Sidebar */}
+          <div className="lg:col-span-5 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-2xl"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-10">
+                <Building2 size={120} />
+              </div>
+
+              <h3 className={`text-3xl font-bold mb-8 ${bebasNeue.className}`}>
+                LOCAL HUBS
+              </h3>
+
+              <div className="space-y-8 relative z-10">
+                <LocationItem city="Doza Abuja" address="Wuye, Abuja" />
+
+                <hr className="border-white/10" />
+
+                <div className="flex items-center gap-4 group cursor-pointer">
+                  <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-green-500 transition-colors">
+                    <Clock
+                      className="text-green-400 group-hover:text-white"
+                      size={20}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-400 uppercase">
+                      Response Time
+                    </p>
+                    <p className="font-semibold text-white">
+                      Under 2 Hours (Standard)
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-green-600 rounded-[2.5rem] p-8 text-white"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <Users className="text-green-200" size={32} />
+                <h4 className={`text-2xl font-bold ${bebasNeue.className}`}>
+                  WHY PARTNER?
+                </h4>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  "NGN 0 Initial Investment",
+                  "Advanced Telemedicine Tools",
+                  "Unified Patient Records",
+                  "Automated Revenue Share",
+                ].map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-3 text-sm font-medium"
+                  >
+                    <CheckCircle2
+                      size={18}
+                      className="text-green-300 flex-shrink-0"
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
         </div>
       </section>
     </div>
   );
 }
+
+// --- Helper Components ---
+
+const InputGroup = ({ label, ...props }: any) => (
+  <div className="space-y-2">
+    <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1">
+      {label}
+    </label>
+    <input
+      {...props}
+      className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all outline-none"
+    />
+  </div>
+);
+
+const LocationItem = ({ city, address }: { city: string; address: string }) => (
+  <div className="flex gap-4">
+    <div className="mt-1">
+      <MapPin className="text-green-500" size={20} />
+    </div>
+    <div>
+      <h4 className="font-bold text-lg mb-1">{city}</h4>
+      <p className="text-slate-400 text-sm leading-relaxed">{address}</p>
+    </div>
+  </div>
+);

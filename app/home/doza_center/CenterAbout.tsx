@@ -1,7 +1,7 @@
+"use client";
 import React from "react";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  CheckCircle,
   Building,
   Stethoscope,
   Pill,
@@ -11,327 +11,206 @@ import {
   Cloud,
   Brain,
   Network,
+  CheckCircle2,
+  ArrowRight,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./constant";
-import { CenterType } from "./type";
 
 const CenterAbout: React.FC = () => {
-  const centerTypes: CenterType[] = [
+  const centerTypes = [
     {
       icon: Building,
       title: "Hospitals",
-      description:
-        "Comprehensive hospital management with integrated departments and emergency response",
-      features: [
-        "Multi-department EMR",
-        "Emergency coordination",
-        "Staff management",
-        "Resource allocation",
-      ],
+      desc: "Full-stack EMR for multi-department coordination and ward management.",
+      status: "Enterprise Ready",
+      color: "from-blue-500/20",
     },
     {
       icon: Stethoscope,
       title: "Clinics",
-      description:
-        "Streamlined clinic operations with patient management and appointment scheduling",
-      features: [
-        "Appointment scheduling",
-        "Patient records",
-        "Billing integration",
-        "Telehealth ready",
-      ],
+      desc: "Streamlined digital scheduling and rapid patient history retrieval.",
+      status: "Instant Setup",
+      color: "from-emerald-500/20",
     },
     {
       icon: Pill,
       title: "Pharmacies",
-      description:
-        "Advanced pharmacy management with inventory control and prescription tracking",
-      features: [
-        "Inventory management",
-        "Prescription tracking",
-        "Drug interactions",
-        "Online ordering",
-      ],
+      desc: "Real-time inventory control linked to automated e-prescriptions.",
+      status: "Sync Active",
+      color: "from-purple-500/20",
     },
     {
       icon: Eye,
       title: "Eye Centers",
-      description:
-        "Specialized solutions for ophthalmology practices and vision care centers",
-      features: [
-        "Vision test records",
-        "Appointment management",
-        "Equipment tracking",
-        "Patient education",
-      ],
+      desc: "Specialized ophthalmology workflows and vision-specific charting.",
+      status: "Custom Modules",
+      color: "from-amber-500/20",
     },
     {
       icon: FlaskRound,
       title: "Laboratories",
-      description:
-        "Efficient lab management with test tracking and result delivery systems",
-      features: [
-        "Test tracking",
-        "Result delivery",
-        "Quality control",
-        "Equipment maintenance",
-      ],
+      desc: "End-to-end test tracking and instant result delivery to patients.",
+      status: "LIMS Integrated",
+      color: "from-rose-500/20",
     },
     {
       icon: Ambulance,
-      title: "Emergency Services",
-      description: "Rapid response coordination and emergency care management",
-      features: [
-        "Dispatch coordination",
-        "Patient tracking",
-        "Hospital integration",
-        "Response analytics",
-      ],
+      title: "Emergency",
+      desc: "Real-time dispatch coordination and trauma record synchronization.",
+      status: "Critical Link",
+      color: "from-orange-500/20",
     },
   ];
 
-  // Animation variants for better performance
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
-
-  // const cardHoverVariants = {
-  //   rest: {
-  //     y: 0,
-  //     scale: 1,
-  //     transition: { duration: 0.3, ease: "easeInOut" },
-  //   },
-  //   hover: {
-  //     y: -8,
-  //     scale: 1.02,
-  //     transition: { duration: 0.3, ease: "easeOut" },
-  //   },
-  // };
-
   return (
-    <section id="about" className="py-16 lg:py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
-          }}
-          viewport={{
-            once: true,
-            margin: "-50px", // Starts animation slightly earlier
-          }}
-          className="text-center mb-12 lg:mb-16"
-        >
-          <h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 sm:mb-6 ${bebasNeue.className}`}
-          >
-            Built for Every
-            <span className="block bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Healthcare Facility
-            </span>
-          </h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            viewport={{ once: true }}
-            className={`text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed ${poppins.className} px-2 sm:px-0`}
-          >
-            Doza Center provides specialized solutions for all types of
-            healthcare providers, creating a unified network that enhances
-            patient care and operational efficiency.
-          </motion.p>
-        </motion.div>
+    <section
+      className={`py-28 bg-[#F8FAFC] relative overflow-hidden ${poppins.className}`}
+    >
+      {/* Dynamic Aura Background */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-100/30 rounded-full blur-[120px] -z-10 animate-pulse" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-100/20 rounded-full blur-[100px] -z-10" />
 
-        {/* Center Types Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{
-            once: true,
-            margin: "-100px", // Trigger animation earlier
-          }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12 lg:mb-16"
-        >
-          {centerTypes.map((center) => (
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+          <div className="max-w-3xl">
             <motion.div
-              key={center.title}
-              variants={itemVariants}
-              initial="rest"
-              whileHover="hover"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="group p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-3xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-purple-200 transition-all duration-300 hover:shadow-xl"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-200 mb-6"
             >
-              <motion.div
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl lg:rounded-2xl bg-purple-100 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300"
-                whileHover={{ rotate: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <center.icon className="text-purple-600 w-6 h-6 sm:w-7 sm:h-7" />
-              </motion.div>
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+              <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">
+                Adaptive Infrastructure
+              </span>
+            </motion.div>
+            <h2
+              className={`text-6xl md:text-9xl font-bold text-slate-900 leading-[0.8] tracking-tighter ${bebasNeue.className}`}
+            >
+              VERSATILITY <br />{" "}
+              <span className="text-emerald-600">BY DESIGN</span>
+            </h2>
+          </div>
+          <p className="text-slate-500 font-medium max-w-sm text-lg leading-snug border-l-2 border-emerald-500 pl-6">
+            Whether you're a boutique clinic or a national hospital chain, Doza
+            scales to your specific medical rhythm.
+          </p>
+        </div>
 
-              <h3
-                className={`text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 ${bebasNeue.className}`}
-              >
-                {center.title}
-              </h3>
-              <p
-                className={`text-slate-600 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base ${poppins.className}`}
-              >
-                {center.description}
-              </p>
+        {/* Improved Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {centerTypes.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              whileHover={{ y: -8 }}
+              className="group relative p-10 bg-white border border-slate-200 rounded-[3.5rem] shadow-sm hover:shadow-2xl hover:border-emerald-200 transition-all duration-500"
+            >
+              {/* Gradient Corner Bloom */}
+              <div
+                className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.color} to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-tr-[3.5rem]`}
+              />
 
-              <ul className="space-y-1.5 sm:space-y-2">
-                {center.features.map((feature, idx) => (
-                  <motion.li
-                    key={idx}
-                    className="flex items-center gap-2 sm:gap-3"
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 * idx }}
-                    viewport={{ once: true }}
-                  >
-                    <CheckCircle
-                      size={14}
-                      className="text-green-500 flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4"
-                    />
-                    <span
-                      className={`text-xs sm:text-sm text-slate-600 ${poppins.className}`}
-                    >
-                      {feature}
-                    </span>
-                  </motion.li>
-                ))}
-              </ul>
+              <div className="relative z-10">
+                <div className="flex justify-between items-start mb-10">
+                  <div className="w-16 h-16 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-900 group-hover:bg-emerald-600 group-hover:text-white group-hover:rotate-12 shadow-inner transition-all duration-500">
+                    <item.icon size={32} strokeWidth={1.5} />
+                  </div>
+                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
+                    {item.status}
+                  </span>
+                </div>
+
+                <h3
+                  className={`text-4xl font-bold text-slate-900 mb-4 tracking-tight ${bebasNeue.className}`}
+                >
+                  {item.title}
+                </h3>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium mb-8 min-h-[4rem]">
+                  {item.desc}
+                </p>
+
+                <div className="flex items-center gap-2 text-emerald-600 font-bold text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all cursor-pointer">
+                  Explore Module <ArrowRight size={14} />
+                </div>
+              </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Integration Section */}
+        {/* Integration Hub: The "Power Card" */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
-          }}
-          viewport={{
-            once: true,
-            margin: "-50px",
-          }}
-          className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl lg:rounded-3xl p-6 sm:p-8 lg:p-12 text-white"
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          className="mt-24 p-12 md:p-20 bg-slate-900 rounded-[4rem] relative overflow-hidden"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3
-                className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 ${bebasNeue.className}`}
-              >
-                Seamless Integration with Existing Systems
-              </h3>
-              <p
-                className={`text-purple-100 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base ${poppins.className}`}
-              >
-                Already have an EMR? No problem. Doza integrates with your
-                current systems to enhance functionality without disrupting your
-                workflow. Our AI-powered platform works alongside your existing
-                infrastructure.
-              </p>
-              <motion.div
-                className="flex items-center gap-3 sm:gap-4"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                {[Cloud, Brain, Network].map((Icon, index) => (
-                  <motion.div
-                    key={index}
-                    className="bg-white/20 p-2 sm:p-3 rounded-xl lg:rounded-2xl backdrop-blur-sm"
-                    whileHover={{
-                      scale: 1.1,
-                      rotate: 5,
-                      transition: { type: "spring", stiffness: 400 },
-                    }}
-                  >
-                    <Icon size={20} className="sm:w-6 sm:h-6" />
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
+          {/* Background Detail */}
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 2px 2px, #10b981 1px, transparent 0)",
+              backgroundSize: "40px 40px",
+            }}
+          />
 
-            <motion.div
-              className="grid grid-cols-2 gap-3 sm:gap-4"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              {[
-                { label: "Integration Success", value: "99.9%" },
-                { label: "Uptime Guarantee", value: "100%" },
-                { label: "Data Migration", value: "Secure" },
-                { label: "Setup Time", value: "<24h" },
-              ].map((item, index) => (
-                <motion.div
-                  key={item.label}
-                  className="bg-white/10 p-3 sm:p-4 rounded-xl lg:rounded-2xl backdrop-blur-sm text-center"
-                  whileHover={{
-                    scale: 1.05,
-                    backgroundColor: "rgba(255,255,255,0.15)",
-                    transition: { duration: 0.2 },
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                  viewport={{ once: true }}
-                >
+          <div className="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h3
+                className={`text-5xl md:text-8xl text-white mb-8 leading-[0.85] ${bebasNeue.className}`}
+              >
+                ONE HUB. <br />{" "}
+                <span className="text-emerald-500">ALL SYSTEMS.</span>
+              </h3>
+              <p className="text-slate-400 text-lg mb-10 leading-relaxed font-medium">
+                Bridge your legacy software with Doza's AI engine. We don't
+                replace your workflow—we supercharge it.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                {[
+                  "HL7 Compliant",
+                  "AES-256 Security",
+                  "Real-time Sync",
+                  "Multi-Tenant",
+                ].map((tag) => (
                   <div
-                    className={`text-xl sm:text-2xl font-bold ${bebasNeue.className}`}
+                    key={tag}
+                    className="px-5 py-2 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-bold text-emerald-400 uppercase tracking-widest backdrop-blur-md"
                   >
-                    {item.value}
+                    {tag}
                   </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white/5 p-8 rounded-[3rem] border border-white/10 backdrop-blur-xl">
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Sync Latency", value: "<10ms", icon: Network },
+                  { label: "Uptime", value: "99.99%", icon: Cloud },
+                  { label: "AI Insights", value: "Real-time", icon: Brain },
+                  { label: "Support", value: "24/7 Live", icon: Stethoscope },
+                ].map((stat, idx) => (
                   <div
-                    className={`text-xs sm:text-sm text-purple-100 ${poppins.className} mt-1`}
+                    key={idx}
+                    className="p-6 bg-slate-950/40 rounded-[2rem] border border-white/5"
                   >
-                    {item.label}
+                    <stat.icon className="text-emerald-500 mb-4" size={20} />
+                    <div
+                      className={`text-3xl text-white ${bebasNeue.className}`}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="text-[9px] text-slate-500 font-black uppercase tracking-widest mt-1">
+                      {stat.label}
+                    </div>
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

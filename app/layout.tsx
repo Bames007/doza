@@ -26,7 +26,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://doza.com"), // Update with your actual domain
+  metadataBase: new URL("https://doza.com"),
   title: "Doza | AI-Powered Healthcare Platform for Patients, Medics & Centers",
   description:
     "Transform your healthcare experience with Doza's comprehensive platform. Connect patients, medical professionals, and healthcare centers through AI-powered tools, free EMR systems, and seamless healthcare management.",
@@ -84,11 +84,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <Analytics />
+    /* Added suppressHydrationWarning to ignore attributes injected 
+       by browser extensions like 'data-qb-installed'.
+    */
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${bebasNeue.variable} ${poppins.variable} ${geistMono.variable} ${geistSans.variable} antialiased`}
       >
+        {/* Analytics should generally be inside the body for best practice */}
+        <Analytics />
+
         {/* Healthcare-themed background gradient */}
         <div className="fixed inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50/70 -z-10" />
 

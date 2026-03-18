@@ -1,200 +1,225 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Users, Stethoscope, Building, CheckCircle, Zap } from "lucide-react";
-import { Bebas_Neue, Poppins } from "next/font/google";
-
-const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
-const poppins = Poppins({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-});
-
-const colors = {
-  green: { primary: "#239C3E", light: "#4CAF50", dark: "#1B7930" },
-  blue: { primary: "#1D4ED8", light: "#3B82F6", dark: "#1E40AF" },
-  purple: { primary: "#8B5CF6", light: "#A78BFA", dark: "#7C3AED" },
-};
+import {
+  Users,
+  Stethoscope,
+  Building,
+  CheckCircle,
+  ArrowUpRight,
+} from "lucide-react";
+import { bebasNeue, poppins } from "../doza_center/constant";
+import {
+  SectionLabel,
+  PremiumCard,
+  TiltCard,
+  GrainOverlay,
+} from "@/app/ui/Premium";
 
 export default function PatientAbout() {
-  const ecosystemItems = [
+  const items = [
     {
+      id: "01",
       icon: Users,
-      title: "For Patients",
-      description:
-        "Take control of your health journey with smart tools, 24/7 access to care, and a supportive medical community.",
+      title: "The Patient Portal",
+      desc: "Personalized health journeys powered by AI. Navigate your wellness with precision tools and instant clinical access.",
       features: [
-        "Personal Health Dashboard",
-        "Medication Management",
-        "Virtual Consultations",
-        "Emergency Services",
+        "Biometric Syncing",
+        "Smart Med-Reminders",
+        "Instant Telehealth",
+        "Emergency SOS",
       ],
-      color: "green",
+      color: "from-[#2BB14B] to-[#1e7a34]", // Brand Green
+      lightBg: "bg-emerald-50/50",
+      iconColor: "text-[#2BB14B]",
     },
     {
+      id: "02",
       icon: Stethoscope,
-      title: "For Medics",
-      description:
-        "Join our network of verified healthcare professionals providing exceptional care through modern technology.",
+      title: "The Practitioner Suite",
+      desc: "An elite workspace for modern healers. Reduce administrative burden and focus on what matters: the patient.",
       features: [
-        "Telehealth Platform",
-        "Patient Management",
-        "Continuing Education",
-        "Professional Network",
+        "Cloud-Based EHR",
+        "Automated Billing",
+        "Global Med-Network",
+        "AI Diagnostics",
       ],
-      color: "blue",
+      color: "from-[#0086DB] to-[#005fa0]", // Brand Blue
+      lightBg: "bg-blue-50/50",
+      iconColor: "text-[#0086DB]",
     },
     {
+      id: "03",
       icon: Building,
-      title: "For Centers",
-      description:
-        "Modern healthcare facilities equipped with advanced technology and integrated with our digital ecosystem.",
+      title: "The Institutional Hub",
+      desc: "Enterprise-grade integration for hospitals and clinics. Synchronize your entire facility under one digital roof.",
       features: [
-        "Advanced Equipment",
-        "Digital Integration",
-        "Quality Standards",
-        "Expert Staff",
+        "Resource Analytics",
+        "Staff Optimization",
+        "Inventory Control",
+        "Patient Flow Tech",
       ],
-      color: "purple",
+      color: "from-[#0086DB] via-[#2BB14B] to-[#2BB14B]", // Mixed Gradient
+      lightBg: "bg-slate-50/50",
+      iconColor: "text-slate-900",
     },
-  ];
-
-  const stats = [
-    { number: "10,000+", label: "Verified Medics" },
-    { number: "200+", label: "Care Centers" },
-    { number: "24/7", label: "Support" },
-    { number: "98%", label: "Satisfaction" },
   ];
 
   return (
-    <section className="py-20 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Header />
+    <section className="relative py-32 px-6 overflow-hidden bg-[#FCFDFF]">
+      <GrainOverlay />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          {ecosystemItems.map((item, index) => (
-            <EcosystemCard key={item.title} item={item} index={index} />
+      {/* Subtle Background Elements */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#0086DB]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#2BB14B]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* --- Header Section --- */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl"
+          >
+            <SectionLabel text="Our Ecosystem" />
+            <h2
+              className={`text-6xl md:text-8xl font-bold text-slate-900 leading-[0.9] mt-6 ${bebasNeue.className}`}
+            >
+              A NEW ERA OF <br />
+              <span className="text-[#0086DB]">CONNECTED</span>{" "}
+              <span className="text-[#2BB14B]">VITALITY</span>
+            </h2>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className={`text-slate-500 max-w-sm text-lg font-light leading-relaxed pb-2 ${poppins.className}`}
+          >
+            Doza isn’t just an app; it’s a symbiotic network where technology
+            serves humanity, making elite care a universal standard.
+          </motion.p>
+        </div>
+
+        {/* --- Cards Grid --- */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {items.map((item, idx) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <TiltCard className="h-full">
+                <PremiumCard className="h-full group hover:border-[#0086DB]/30 transition-colors duration-500 overflow-hidden">
+                  {/* Decorative Background ID */}
+                  <span
+                    className={`absolute -right-4 -top-8 text-9xl font-bold opacity-[0.03] select-none ${bebasNeue.className}`}
+                  >
+                    {item.id}
+                  </span>
+
+                  <div
+                    className={`w-16 h-16 rounded-2xl ${item.lightBg} flex items-center justify-center ${item.iconColor} mb-8 group-hover:scale-110 transition-transform duration-500`}
+                  >
+                    <item.icon size={32} strokeWidth={1.5} />
+                  </div>
+
+                  <h3
+                    className={`text-4xl font-bold text-slate-900 mb-4 tracking-tight ${bebasNeue.className}`}
+                  >
+                    {item.title}
+                  </h3>
+
+                  <p
+                    className={`text-slate-500 mb-8 leading-relaxed text-sm ${poppins.className}`}
+                  >
+                    {item.desc}
+                  </p>
+
+                  <ul className="space-y-4 mb-8">
+                    {item.features.map((feat) => (
+                      <li
+                        key={feat}
+                        className="flex items-center gap-3 group/item"
+                      >
+                        <div
+                          className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${item.color}`}
+                        />
+                        <span
+                          className={`text-xs font-bold uppercase tracking-widest text-slate-700 ${poppins.className}`}
+                        >
+                          {feat}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#0086DB] group-hover:gap-4 transition-all">
+                    Explore Platform <ArrowUpRight size={14} />
+                  </button>
+                </PremiumCard>
+              </TiltCard>
+            </motion.div>
           ))}
         </div>
 
-        <UnifiedValueProposition stats={stats} />
+        {/* --- Luxury Stats Bar --- */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="mt-24 relative"
+        >
+          {/* Floating Glass Container */}
+          <div className="absolute inset-0 bg-white/40 backdrop-blur-2xl rounded-[3rem] border border-white/50 shadow-[0_20px_50px_rgba(0,0,0,0.05)]" />
+
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-12 p-12 md:p-16">
+            {[
+              {
+                number: "10k+",
+                label: "Verified Specialists",
+                sub: "Global Network",
+              },
+              {
+                number: "250+",
+                label: "Elite Centers",
+                sub: "Integrated Facilities",
+              },
+              {
+                number: "24/7",
+                label: "Concierge Care",
+                sub: "Instant Access",
+              },
+              {
+                number: "99.9%",
+                label: "Uptime Health",
+                sub: "Platform Reliability",
+              },
+            ].map((stat, i) => (
+              <div key={stat.label} className="text-center md:text-left">
+                <div
+                  className={`text-5xl md:text-6xl font-bold text-slate-900 mb-1 tracking-tighter ${bebasNeue.className}`}
+                >
+                  {stat.number}
+                </div>
+                <div
+                  className={`text-[10px] font-black uppercase tracking-[0.2em] text-[#0086DB] mb-1 ${poppins.className}`}
+                >
+                  {stat.label}
+                </div>
+                <div
+                  className={`text-[10px] text-slate-400 font-medium ${poppins.className}`}
+                >
+                  {stat.sub}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
-  );
-}
-
-function Header() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="text-center mb-16"
-    >
-      <h2
-        className={`text-4xl sm:text-5xl font-bold text-slate-900 mb-6 ${bebasNeue.className}`}
-      >
-        What is <span style={{ color: colors.green.primary }}>Doza</span>?
-      </h2>
-      <p
-        className={`text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed ${poppins.className}`}
-      >
-        Doza is your complete healthcare ecosystem—connecting patients, medical
-        professionals, and modern facilities through intelligent technology that
-        makes quality healthcare accessible, personal, and proactive.
-      </p>
-    </motion.div>
-  );
-}
-
-function EcosystemCard({ item, index }: { item: any; index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.2 }}
-      viewport={{ once: true }}
-      className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200"
-    >
-      <div
-        className="w-16 h-16 rounded-2xl mb-6 flex items-center justify-center mx-auto"
-        style={{
-          backgroundColor: `${
-            colors[item.color as keyof typeof colors].primary
-          }15`,
-        }}
-      >
-        <item.icon
-          size={32}
-          style={{ color: colors[item.color as keyof typeof colors].primary }}
-        />
-      </div>
-
-      <h3
-        className={`text-2xl font-bold text-center text-slate-800 mb-4 ${bebasNeue.className}`}
-      >
-        {item.title}
-      </h3>
-
-      <p
-        className={`text-slate-600 text-center mb-6 leading-relaxed ${poppins.className}`}
-      >
-        {item.description}
-      </p>
-
-      <div className="space-y-3">
-        {item.features.map((feature: string, idx: number) => (
-          <div key={idx} className="flex items-center gap-3">
-            <CheckCircle
-              size={16}
-              style={{
-                color: colors[item.color as keyof typeof colors].primary,
-              }}
-            />
-            <span className={`text-slate-700 ${poppins.className}`}>
-              {feature}
-            </span>
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-function UnifiedValueProposition({
-  stats,
-}: {
-  stats: Array<{ number: string; label: string }>;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="bg-gradient-to-r from-green-600 to-blue-600 rounded-3xl p-8 text-white text-center"
-    >
-      <h3 className={`text-3xl font-bold mb-4 ${bebasNeue.className}`}>
-        One Platform, Complete Healthcare
-      </h3>
-      <p
-        className={`text-lg mb-6 max-w-2xl mx-auto leading-relaxed ${poppins.className}`}
-      >
-        Whether you're managing chronic conditions, seeking specialist care, or
-        maintaining wellness, Doza provides the tools, professionals, and
-        facilities you need—all working together seamlessly.
-      </p>
-      <div className="flex flex-wrap justify-center gap-6">
-        {stats.map((stat, index) => (
-          <div key={stat.label} className="text-center">
-            <div className={`text-2xl font-bold ${bebasNeue.className}`}>
-              {stat.number}
-            </div>
-            <div className="text-green-100 text-sm">{stat.label}</div>
-          </div>
-        ))}
-      </div>
-    </motion.div>
   );
 }

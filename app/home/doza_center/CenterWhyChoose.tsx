@@ -1,13 +1,16 @@
+"use client";
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  CheckCircle,
   Users,
   Zap,
   Award,
   Shield,
   Clock,
   Globe,
+  ArrowUpRight,
+  Activity,
+  ChevronRight,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./constant";
 
@@ -17,148 +20,195 @@ const CenterWhyChoose: React.FC = () => {
       icon: Users,
       title: "Expanded Patient Base",
       description:
-        "Access thousands of patients actively seeking healthcare services through our platform",
-      features: [
-        "Location-based matching",
-        "Automated referrals",
-        "Patient reviews & ratings",
-        "Marketing support",
-      ],
+        "Tap into a high-intent patient stream through our geo-intelligent routing.",
+      features: ["Geo-Targeting", "Smart Referrals"],
+      gridClass: "md:col-span-2 md:row-span-2 bg-slate-900 text-white", // Dark Card
+      iconBg: "bg-emerald-500",
+      accent: "text-emerald-400",
+      isMain: true,
+      textColor: "text-white",
+      descColor: "text-slate-300",
     },
     {
       icon: Zap,
-      title: "Operational Efficiency",
-      description:
-        "Streamline your operations with automated systems and real-time management tools",
-      features: [
-        "Automated scheduling",
-        "Inventory optimization",
-        "Staff management",
-        "AI-powered analytics",
-      ],
-    },
-    {
-      icon: Award,
-      title: "Premium Positioning",
-      description:
-        "Stand out as a premium healthcare provider in our verified network of centers",
-      features: [
-        "Verified status",
-        "Featured listings",
-        "Professional branding",
-        "Quality certification",
-      ],
+      title: "Operations",
+      description: "Real-time clinic management.",
+      features: ["AI Triage"],
+      gridClass: "md:col-span-1 md:row-span-1 bg-white border-slate-200", // Light Card
+      iconBg: "bg-slate-50",
+      accent: "text-emerald-600",
+      textColor: "text-slate-900",
+      descColor: "text-slate-600",
     },
     {
       icon: Shield,
-      title: "Risk Management",
-      description:
-        "Comprehensive security and compliance features to protect your practice",
-      features: [
-        "HIPAA compliance",
-        "Data encryption",
-        "Audit trails",
-        "Backup systems",
-      ],
+      title: "Secure Vault",
+      description: "HIPAA & NDPR data protection.",
+      features: ["Encrypted Records"],
+      gridClass: "md:col-span-1 md:row-span-2 bg-emerald-50 border-emerald-100", // Tinted Card
+      iconBg: "bg-white",
+      accent: "text-emerald-700",
+      textColor: "text-emerald-900",
+      descColor: "text-emerald-800/70",
     },
     {
-      icon: Clock,
-      title: "24/7 Support",
-      description:
-        "Round-the-clock technical and operational support for your center",
-      features: [
-        "Dedicated account manager",
-        "Technical support",
-        "Training resources",
-        "Priority assistance",
-      ],
+      icon: Award,
+      title: "Trust Badge",
+      description: "Verified elite status.",
+      features: ["Quality Certs"],
+      gridClass: "md:col-span-1 md:row-span-1 bg-white border-slate-200",
+      iconBg: "bg-slate-50",
+      accent: "text-emerald-600",
+      textColor: "text-slate-900",
+      descColor: "text-slate-600",
     },
     {
       icon: Globe,
-      title: "Network Effects",
-      description:
-        "Benefit from being part of a growing ecosystem of healthcare providers",
-      features: [
-        "Cross-referrals",
-        "Shared resources",
-        "Community knowledge",
-        "Collaborative care",
-      ],
+      title: "The Ecosystem",
+      description: "Nationwide specialist collaboration and knowledge sharing.",
+      features: ["Provider Portal", "Resource Sharing"],
+      gridClass: "md:col-span-2 md:row-span-1 bg-white border-slate-200",
+      iconBg: "bg-slate-50",
+      accent: "text-emerald-600",
+      textColor: "text-slate-900",
+      descColor: "text-slate-600",
     },
   ];
 
   return (
-    <section id="benefits" className="py-20 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2
-            className={`text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 ${bebasNeue.className}`}
-          >
-            Why Healthcare Centers
-            <span className="block bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Choose Doza
-            </span>
-          </h2>
-          <p
-            className={`text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed ${poppins.className}`}
-          >
-            Join thousands of healthcare providers who have transformed their
-            operations, increased patient satisfaction, and grown their practice
-            with Doza.
-          </p>
-        </motion.div>
+    <section
+      id="benefits"
+      className={`py-24 bg-[#F8FAFC] relative overflow-hidden ${poppins.className}`}
+    >
+      {/* Dynamic Background Blur */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-100/40 rounded-full blur-[120px] -z-10" />
 
-        {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-3 mb-4"
+            >
+              <span className="h-px w-10 bg-emerald-500" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-600">
+                The 2026 Edge
+              </span>
+            </motion.div>
+
+            <h2
+              className={`text-6xl md:text-8xl font-bold text-slate-900 leading-[0.85] ${bebasNeue.className}`}
+            >
+              BUILT FOR THE{" "}
+              <span className="text-emerald-600 italic">MODERN</span> <br />{" "}
+              MEDICAL CENTER
+            </h2>
+          </div>
+          <p className="text-slate-600 font-medium max-w-xs text-sm leading-relaxed">
+            Eliminate administrative friction and scale your clinical impact
+            with Nigeria's most advanced health infrastructure.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 auto-rows-[220px]">
           {benefits.map((benefit, index) => (
             <motion.div
               key={benefit.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              whileHover={{ y: -5 }}
-              className="bg-white rounded-3xl p-8 border border-slate-200 hover:border-purple-200 transition-all duration-300 hover:shadow-xl"
+              className={`group relative p-8 rounded-[3rem] border flex flex-col justify-between overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${benefit.gridClass}`}
             >
-              <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center mb-6">
-                <benefit.icon className="text-purple-600" size={24} />
+              {/* Hover Interaction Overlay */}
+              <div className="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-[92%] transition-transform duration-500 opacity-20 pointer-events-none" />
+
+              <div className="relative z-10 flex justify-between items-start">
+                <div
+                  className={`w-14 h-14 rounded-2xl ${benefit.iconBg} flex items-center justify-center shadow-sm group-hover:rotate-6 transition-transform`}
+                >
+                  <benefit.icon className={benefit.accent} size={28} />
+                </div>
+                <div
+                  className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity ${benefit.textColor}`}
+                >
+                  Learn More <ChevronRight size={14} />
+                </div>
               </div>
 
-              <h3
-                className={`text-2xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
-              >
-                {benefit.title}
-              </h3>
-              <p
-                className={`text-slate-600 mb-6 leading-relaxed ${poppins.className}`}
-              >
-                {benefit.description}
-              </p>
+              <div className="relative z-10">
+                {benefit.isMain && (
+                  <div className="mb-6 p-4 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-md">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                      <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">
+                        Network Pulse
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-end">
+                      <p
+                        className={`text-4xl font-bold text-white ${bebasNeue.className}`}
+                      >
+                        2.4M+
+                      </p>
+                      <p className="text-[9px] font-medium text-slate-300 text-right uppercase tracking-tighter">
+                        Patients reaching <br /> out monthly
+                      </p>
+                    </div>
+                  </div>
+                )}
 
-              <ul className="space-y-3">
-                {benefit.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center gap-3">
-                    <CheckCircle
-                      size={16}
-                      className="text-green-500 flex-shrink-0"
-                    />
+                <h3
+                  className={`text-3xl font-bold mb-2 tracking-tight ${benefit.textColor} ${bebasNeue.className}`}
+                >
+                  {benefit.title}
+                </h3>
+                <p
+                  className={`text-sm font-medium leading-snug mb-4 ${benefit.descColor}`}
+                >
+                  {benefit.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {benefit.features.map((f) => (
                     <span
-                      className={`text-sm text-slate-600 ${poppins.className}`}
+                      key={f}
+                      className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl border transition-colors
+                        ${
+                          benefit.isMain
+                            ? "bg-white/10 border-white/20 text-white"
+                            : "bg-slate-100 border-slate-200 text-slate-700"
+                        }`}
                     >
-                      {feature}
+                      {f}
                     </span>
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           ))}
+
+          {/* 24/7 Global Support Callout */}
+          <motion.div
+            whileHover={{ scale: 0.98 }}
+            className="md:col-span-1 md:row-span-1 bg-emerald-600 rounded-[3rem] p-8 text-white flex flex-col justify-between group cursor-pointer shadow-lg shadow-emerald-200"
+          >
+            <Activity
+              className="text-white group-hover:animate-pulse"
+              size={32}
+            />
+            <div>
+              <h4
+                className={`text-4xl font-bold leading-none text-white ${bebasNeue.className}`}
+              >
+                LIVE <br /> ASSIST
+              </h4>
+              <p className="text-[10px] font-black text-emerald-100 uppercase mt-2 tracking-widest">
+                24/7 Human Support
+              </p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

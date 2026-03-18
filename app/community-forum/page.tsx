@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import React from "react";
+import { motion, Variants } from "framer-motion";
 import {
   Users,
   MessageSquare,
@@ -9,38 +10,52 @@ import {
   Star,
   Search,
   Filter,
+  ArrowUpRight,
+  ShieldCheck,
+  Zap,
+  PlusCircle,
+  MessageCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { bebasNeue, poppins } from "../home/doza_center/constant";
 import Image from "next/image";
 
 const CommunityForumPage = () => {
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    },
+  };
+
   const categories = [
     {
       icon: Users,
-      title: "General Discussion",
-      description: "Connect with healthcare professionals worldwide",
+      title: "Clinical Network",
+      desc: "Peer discussions for medical practitioners.",
       threads: "1.2K",
       posts: "45.8K",
     },
     {
-      icon: MessageSquare,
-      title: "Technical Support",
-      description: "Get help with Doza platform features and issues",
+      icon: Zap,
+      title: "System Ops",
+      desc: "Optimizing clinic technical workflows.",
       threads: "856",
       posts: "23.4K",
     },
     {
       icon: TrendingUp,
-      title: "Best Practices",
-      description: "Share and learn healthcare management strategies",
+      title: "Growth & Revenue",
+      desc: "Scaling medical business revenue.",
       threads: "543",
       posts: "15.2K",
     },
     {
       icon: Calendar,
-      title: "Events & Webinars",
-      description: "Upcoming healthcare events and training sessions",
+      title: "Medical Summits",
+      desc: "Exclusive webinars and networking.",
       threads: "234",
       posts: "8.7K",
     },
@@ -48,391 +63,290 @@ const CommunityForumPage = () => {
 
   const recentThreads = [
     {
-      title: "How to optimize patient flow during peak hours?",
+      title: "Optimizing patient flow during peak hours?",
       author: "Dr. Sarah Chen",
       replies: 42,
       views: 1280,
-      lastActivity: "2 hours ago",
-      category: "Best Practices",
+      time: "2h ago",
+      cat: "Growth",
     },
     {
-      title: "EMR integration with existing systems",
+      title: "Best practices for AES-256 data encryption",
       author: "MedCenter Admin",
       replies: 31,
       views: 956,
-      lastActivity: "5 hours ago",
-      category: "Technical Support",
+      time: "5h ago",
+      cat: "System Ops",
     },
     {
-      title: "Upcoming webinar: AI in Healthcare Management",
+      title: "Upcoming: AI-Driven Diagnosis webinar series",
       author: "Doza Team",
       replies: 18,
       views: 742,
-      lastActivity: "1 day ago",
-      category: "Events & Webinars",
+      time: "1d ago",
+      cat: "Events",
     },
-    {
-      title: "Staff training strategies for new features",
-      author: "Nurse Manager",
-      replies: 27,
-      views: 683,
-      lastActivity: "1 day ago",
-      category: "General Discussion",
-    },
-  ];
-
-  const topContributors = [
-    { name: "Dr. Michael Rodriguez", role: "Cardiologist", posts: 1245 },
-    { name: "HealthCenter Pro", role: "Administrator", posts: 987 },
-    { name: "Nurse Jane", role: "Head Nurse", posts: 756 },
-    { name: "Tech Support", role: "Doza Team", posts: 642 },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-slate-100">
+    <div
+      className={`min-h-screen bg-[#F9FBFC] text-slate-900 ${poppins.className}`}
+    >
+      {/* Decorative Blur */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-5%] left-[-5%] w-[40%] h-[40%] bg-emerald-400/5 blur-[120px] rounded-full" />
+      </div>
+
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
+      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="relative w-9 h-9">
               <Image
                 src="/logo.png"
-                alt="Doza Logo"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                alt="Doza"
+                fill
+                className="object-contain"
               />
-              <span
-                className={`text-2xl font-bold text-slate-900 ${bebasNeue.className}`}
-              >
-                DOZA
-              </span>
-            </Link>
-
-            <Link
-              href="/registration/center"
-              className="px-6 py-2 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
-              style={{ backgroundColor: "#017840" }}
+            </div>
+            <span
+              className={`text-2xl font-black text-slate-900 tracking-tighter ${bebasNeue.className}`}
             >
-              Join Community
+              DOZA <span className="text-emerald-600">COMMUNITY</span>
+            </span>
+          </Link>
+
+          <div className="hidden md:flex items-center gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+            <Link href="/" className="hover:text-emerald-600 transition-colors">
+              Home
+            </Link>
+            <Link href="#" className="hover:text-emerald-600 transition-colors">
+              Discussions
+            </Link>
+            <Link href="#" className="hover:text-emerald-600 transition-colors">
+              Experts
             </Link>
           </div>
+
+          <Link href="/registration/center">
+            <button className="px-6 py-2.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 transition-all">
+              JOIN HUB
+            </button>
+          </Link>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative py-20 px-6">
+      {/* Hero */}
+      <section className="relative pt-20 pb-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial="hidden"
+            animate="visible"
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 mb-6">
-              <Users size={16} />
-              <span className={`text-sm font-medium ${poppins.className}`}>
-                Community Forum
-              </span>
-            </div>
-
-            <h1
-              className={`text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 leading-tight ${bebasNeue.className}`}
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 mb-8"
             >
-              Doza Healthcare
-              <span className="block bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                Community
+              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+              <span className="text-emerald-700 text-[10px] font-black tracking-[0.2em] uppercase">
+                Intelligence Hub
               </span>
-            </h1>
+            </motion.div>
 
-            <p
-              className={`text-xl text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed ${poppins.className}`}
+            <motion.h1
+              variants={itemVariants}
+              className={`text-6xl md:text-9xl font-bold text-slate-900 mb-8 leading-[0.85] tracking-tighter ${bebasNeue.className}`}
             >
-              Connect with thousands of healthcare professionals, share
-              experiences, and learn from industry experts in our vibrant
-              community.
-            </p>
+              CONNECT. SHARE. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-blue-600">
+                EVOLVE.
+              </span>
+            </motion.h1>
 
-            {/* Search Bar */}
-            <div className="max-w-2xl mx-auto">
-              <div className="relative">
-                <Search
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"
-                  size={20}
-                />
-                <input
-                  type="text"
-                  placeholder="Search discussions, topics, or members..."
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl text-gray-900 border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none text-lg"
-                />
-                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-green-700 transition-colors">
-                  Search
-                </button>
-              </div>
-            </div>
+            <motion.div
+              variants={itemVariants}
+              className="max-w-2xl mx-auto relative group mb-12"
+            >
+              <Search
+                className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-600 transition-colors"
+                size={20}
+              />
+              <input
+                type="text"
+                placeholder="Search medical insights or verified experts..."
+                className="w-full bg-white border border-slate-200 rounded-[2rem] py-7 pl-16 pr-36 outline-none focus:ring-4 focus:ring-emerald-500/5 transition-all text-slate-900 shadow-sm"
+              />
+              <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-900 hover:bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black text-xs transition-all tracking-widest">
+                SEARCH
+              </button>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Left Column - Categories */}
-            <div className="lg:col-span-2">
-              <div className="flex items-center justify-between mb-8">
-                <h2
-                  className={`text-3xl font-bold text-slate-900 ${bebasNeue.className}`}
+      {/* Main Grid */}
+      <main className="max-w-7xl mx-auto px-6 pb-32">
+        <div className="grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-8 space-y-12">
+            <div className="grid sm:grid-cols-2 gap-4">
+              {categories.map((cat, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ y: -5 }}
+                  className="p-8 rounded-[2.5rem] bg-white border border-slate-200 shadow-sm hover:shadow-md transition-all group cursor-pointer"
                 >
-                  Forum Categories
-                </h2>
-                <button className="flex items-center gap-2 px-4 py-2 border border-slate-300 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                  <Filter size={16} />
-                  <span className={poppins.className}>Filter</span>
-                </button>
-              </div>
-
-              <div className="grid gap-6 mb-12">
-                {categories.map((category, index) => (
-                  <motion.div
-                    key={category.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0">
-                        <category.icon size={24} className="text-green-600" />
-                      </div>
-
-                      <div className="flex-1">
-                        <h3
-                          className={`text-xl font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
-                        >
-                          {category.title}
-                        </h3>
-                        <p
-                          className={`text-slate-600 mb-4 ${poppins.className}`}
-                        >
-                          {category.description}
-                        </p>
-
-                        <div className="flex items-center gap-6 text-sm text-slate-500">
-                          <span className={poppins.className}>
-                            {category.threads} Threads
-                          </span>
-                          <span className={poppins.className}>
-                            {category.posts} Posts
-                          </span>
-                        </div>
-                      </div>
-
-                      <button className="bg-green-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-green-700 transition-colors">
-                        Join
-                      </button>
+                  <div className="flex items-start justify-between mb-8">
+                    <div className="p-4 rounded-2xl bg-slate-50 text-slate-900 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                      <cat.icon size={26} strokeWidth={1.5} />
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Recent Threads */}
-              <h2
-                className={`text-3xl font-bold text-slate-900 mb-6 ${bebasNeue.className}`}
-              >
-                Recent Discussions
-              </h2>
-
-              <div className="space-y-4">
-                {recentThreads.map((thread, index) => (
-                  <motion.div
-                    key={thread.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200"
+                    <ArrowUpRight
+                      className="text-slate-200 group-hover:text-emerald-500 transition-colors"
+                      size={20}
+                    />
+                  </div>
+                  <h3
+                    className={`text-3xl text-slate-900 mb-3 ${bebasNeue.className}`}
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h3
-                          className={`text-lg font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
-                        >
-                          {thread.title}
-                        </h3>
-
-                        <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
-                          <span className={poppins.className}>
-                            By {thread.author}
-                          </span>
-                          <span
-                            className={`px-2 py-1 bg-slate-100 rounded-full text-xs ${poppins.className}`}
-                          >
-                            {thread.category}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-6 text-sm text-slate-500">
-                          <span className={poppins.className}>
-                            {thread.replies} replies
-                          </span>
-                          <span className={poppins.className}>
-                            {thread.views} views
-                          </span>
-                          <span className={poppins.className}>
-                            {thread.lastActivity}
-                          </span>
-                        </div>
-                      </div>
-
-                      <button className="text-green-600 hover:text-green-700 transition-colors">
-                        <MessageSquare size={20} />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                    {cat.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed mb-8 font-medium">
+                    {cat.desc}
+                  </p>
+                  <div className="flex items-center gap-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    <span className="text-slate-900">
+                      {cat.threads} Threads
+                    </span>
+                    <div className="w-1 h-1 bg-slate-200 rounded-full" />
+                    <span>{cat.posts} Posts</span>
+                  </div>
+                </motion.div>
+              ))}
             </div>
 
-            {/* Right Column - Sidebar */}
-            <div className="space-y-6">
-              {/* Top Contributors */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-                className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200"
+            {/* Trending Feed */}
+            <div className="space-y-4">
+              <h2
+                className={`text-4xl text-slate-900 mb-8 ${bebasNeue.className}`}
               >
-                <h3
-                  className={`text-xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
+                Active Discussions
+              </h2>
+              {recentThreads.map((thread, i) => (
+                <div
+                  key={i}
+                  className="group p-7 rounded-3xl bg-white border border-slate-100 hover:border-emerald-200 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-6"
                 >
-                  Top Contributors
-                </h3>
-
-                <div className="space-y-4">
-                  {topContributors.map((contributor, index) => (
-                    <div
-                      key={contributor.name}
-                      className="flex items-center gap-3"
-                    >
-                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">
-                        {contributor.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </div>
-
-                      <div className="flex-1">
-                        <div
-                          className={`font-semibold text-slate-900 ${poppins.className}`}
-                        >
-                          {contributor.name}
-                        </div>
-                        <div
-                          className={`text-sm text-slate-500 ${poppins.className}`}
-                        >
-                          {contributor.role} • {contributor.posts} posts
-                        </div>
-                      </div>
-
-                      <Star
-                        size={16}
-                        className="text-yellow-500 fill-current"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Community Stats */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
-                className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200"
-              >
-                <h3
-                  className={`text-xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
-                >
-                  Community Stats
-                </h3>
-
-                <div className="space-y-3">
-                  {[
-                    { label: "Total Members", value: "15,842" },
-                    { label: "Online Now", value: "2,156" },
-                    { label: "Discussions", value: "45,823" },
-                    { label: "Solutions", value: "38,491" },
-                  ].map((stat, index) => (
-                    <div
-                      key={stat.label}
-                      className="flex justify-between items-center"
-                    >
-                      <span className={`text-slate-600 ${poppins.className}`}>
-                        {stat.label}
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-[9px] font-black text-emerald-600 uppercase tracking-[0.2em] px-2.5 py-1 bg-emerald-50 rounded-md">
+                        {thread.cat}
                       </span>
-                      <span
-                        className={`font-bold text-slate-900 ${bebasNeue.className}`}
-                      >
-                        {stat.value}
+                      <span className="text-[9px] text-slate-400 uppercase font-bold">
+                        {thread.time}
                       </span>
                     </div>
-                  ))}
+                    <h4 className="text-xl text-slate-900 font-bold mb-2 group-hover:text-emerald-600 transition-colors">
+                      {thread.title}
+                    </h4>
+                    <p className="text-xs text-slate-400 font-medium">
+                      By <span className="text-slate-900">{thread.author}</span>
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-10">
+                    <div className="text-center">
+                      <p className="text-slate-900 font-black text-lg">
+                        {thread.replies}
+                      </p>
+                      <p className="text-[9px] text-slate-400 uppercase font-black">
+                        Replies
+                      </p>
+                    </div>
+                    <button className="w-12 h-12 rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-emerald-600 group-hover:text-white transition-all flex items-center justify-center">
+                      <MessageCircle size={20} />
+                    </button>
+                  </div>
                 </div>
-              </motion.div>
-
-              {/* CTA Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.7 }}
-                className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-6 text-white text-center"
-              >
-                <h3 className={`text-xl font-bold mb-3 ${bebasNeue.className}`}>
-                  Join the Conversation
-                </h3>
-
-                <p
-                  className={`text-green-100 mb-4 text-sm ${poppins.className}`}
-                >
-                  Connect with healthcare professionals and share your expertise
-                </p>
-
-                <Link
-                  href="/registration/center"
-                  className="block w-full bg-white text-green-600 py-3 rounded-xl font-semibold hover:bg-slate-100 transition-colors"
-                >
-                  Create Account
-                </Link>
-              </motion.div>
+              ))}
             </div>
           </div>
+
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 space-y-8">
+            <div className="p-10 rounded-[3rem] bg-slate-900 text-white relative overflow-hidden">
+              <div className="relative w-10 h-10 mb-8">
+                <Image
+                  src="/logo.png"
+                  alt="Doza"
+                  fill
+                  className="object-contain brightness-0 invert"
+                />
+              </div>
+              <h3 className={`text-4xl text-white mb-8 ${bebasNeue.className}`}>
+                Global Network
+              </h3>
+              <div className="grid grid-cols-2 gap-4 mb-10">
+                {[
+                  { l: "Members", v: "15K+" },
+                  { l: "Verified", v: "98%" },
+                ].map((s, i) => (
+                  <div
+                    key={i}
+                    className="bg-white/5 p-5 rounded-3xl border border-white/10"
+                  >
+                    <p className="text-white text-2xl font-black mb-1">{s.v}</p>
+                    <p className="text-slate-400 text-[9px] uppercase font-black tracking-widest">
+                      {s.l}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <Link href="/registration/center">
+                <button className="w-full py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all">
+                  JOIN NETWORK
+                </button>
+              </Link>
+            </div>
+
+            <Link
+              href="/"
+              className="block p-8 rounded-[3rem] border-2 border-dashed border-slate-200 text-center hover:border-emerald-600 transition-colors group"
+            >
+              <p
+                className={`text-2xl text-slate-400 group-hover:text-emerald-600 ${bebasNeue.className}`}
+              >
+                Return To Home
+              </p>
+            </Link>
+          </aside>
         </div>
-      </section>
+      </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-12 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
+      <footer className="border-t border-slate-200 py-24 bg-white text-center">
+        <div className="max-w-7xl mx-auto px-6">
+          <Link href="/" className="inline-block relative w-10 h-10 mb-6">
             <Image
               src="/logo.png"
-              alt="Doza Logo"
-              width={32}
-              height={32}
-              className="w-8 h-8"
+              alt="Doza"
+              fill
+              className="object-contain opacity-50"
             />
-            <span className={`text-2xl font-bold ${bebasNeue.className}`}>
-              DOZA
-            </span>
-          </div>
-
-          <p
-            className={`text-slate-400 max-w-2xl mx-auto mb-8 ${poppins.className}`}
+          </Link>
+          <h2
+            className={`text-4xl text-slate-900 mb-12 ${bebasNeue.className}`}
           >
-            Connecting healthcare professionals through knowledge sharing and
-            community support.
-          </p>
-
-          <div className={`text-slate-500 text-sm ${poppins.className}`}>
-            &copy; 2024 Doza Healthcare. All rights reserved.
+            DOZA COMMUNITY
+          </h2>
+          <div className="flex justify-center gap-10 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+            <Link href="/" className="hover:text-emerald-600">
+              Home
+            </Link>
+            <Link href="#" className="hover:text-emerald-600">
+              Safety
+            </Link>
+            <Link href="#" className="hover:text-emerald-600">
+              Support
+            </Link>
           </div>
         </div>
       </footer>

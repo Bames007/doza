@@ -1,397 +1,260 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Star,
-  Quote,
   Award,
-  TrendingUp,
   Users,
-  Calendar,
-  DollarSign,
+  ArrowUpRight,
+  ChevronRight,
+  X,
+  CheckCircle2,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
 import { useRouter } from "next/navigation";
 
 export default function MedicStories() {
   const router = useRouter();
+  const [selectedStory, setSelectedStory] = useState<any>(null);
 
   const successStories = [
     {
+      id: 1,
       name: "Dr. Adebayo Ogunlesi",
       specialty: "Cardiologist",
-      location: "Lagos, Nigeria",
+      location: "Lagos",
       image:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face",
-      story:
-        "Doza helped me expand my cardiology practice across Lagos. I now serve patients in 5 different locations and reduced my administrative costs by 40% while increasing patient volume.",
-      results: [
-        { icon: TrendingUp, value: "75%", label: "Patient Growth" },
-        { icon: Users, value: "25hrs", label: "Time Saved/Week" },
-        { icon: DollarSign, value: "90%", label: "Revenue Increase" },
+        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
+      story: "Doza helped me expand my cardiology practice across Lagos.",
+      detailedStory:
+        "Before Doza, managing patient records across multiple clinics was a nightmare. Doza's unified dashboard allowed me to synchronize consultations across 5 locations, increasing my daily patient capacity by 40%.",
+      impact: [
+        "Unified Patient Records",
+        "Multi-location Sync",
+        "40% Revenue Growth",
       ],
-      highlight: "Featured in Nigeria Medical Journal",
+      highlight: "Featured in NMJ",
+      gridClass: "md:col-span-2 md:row-span-2",
     },
     {
-      name: "Nurse Chidinma Okoro",
-      specialty: "Registered Nurse & Health Educator",
-      location: "Abuja, Nigeria",
+      id: 2,
+      name: "Nurse Chidinma",
+      specialty: "RN & Educator",
+      location: "Abuja",
       image:
-        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80",
       story:
-        "As a nurse in Abuja, Doza enabled me to start my own health education practice. The platform helped me reach communities across Northern Nigeria through telehealth.",
-      results: [
-        { icon: Users, value: "500+", label: "Patients Served" },
-        { icon: Calendar, value: "98%", label: "Booking Rate" },
-        { icon: DollarSign, value: "4x", label: "Income Growth" },
-      ],
-      highlight: "Healthcare Innovator Award 2023",
+        "Enabled me to start my own telehealth practice reaching Northern Nigeria.",
+      detailedStory:
+        "I wanted to provide education to rural mothers. Doza provided the encrypted video tools and automated billing that made my 'Mobile Nurse' initiative possible without needing a physical office.",
+      impact: ["Zero-overhead Launch", "Automated Billing", "Rural Outreach"],
+      highlight: "Innovator Award",
+      gridClass: "md:col-span-1 md:row-span-1",
     },
     {
+      id: 3,
       name: "Dr. Femi Alabi",
-      specialty: "Orthopedic Surgeon",
-      location: "Port Harcourt, Nigeria",
+      specialty: "Surgeon",
+      location: "PH City",
       image:
-        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face",
-      story:
-        "The practice management tools helped me streamline my surgical practice. I've reduced patient wait times by 60% and expanded my services to include virtual consultations.",
-      results: [
-        { icon: TrendingUp, value: "3", label: "New Locations" },
-        { icon: Users, value: "8", label: "Team Members" },
-        { icon: DollarSign, value: "3x", label: "Practice Value" },
+        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&q=80",
+      story: "Reduced patient wait times by 60% with digital workflow.",
+      detailedStory:
+        "We replaced our paper-based intake with Doza's digital forms. Patients now check in before they arrive, allowing my surgical team to prep more efficiently and handle more complex cases.",
+      impact: [
+        "60% Less Wait Time",
+        "Paperless Workflow",
+        "Increased Efficiency",
       ],
-      highlight: "Expanded to 3 locations in 12 months",
+      highlight: "3 New Locations",
+      gridClass: "md:col-span-1 md:row-span-1",
     },
     {
+      id: 4,
       name: "Dr. Ngozi Eze",
       specialty: "Dermatologist",
-      location: "Enugu, Nigeria",
+      location: "Enugu",
       image:
-        "https://images.unsplash.com/photo-1594824947933-d0501ba2fe65?w=400&h=400&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
       story:
-        "Doza's telehealth platform transformed my dermatology practice in Eastern Nigeria. I can now serve patients across the region, and the mobile app lets me manage my practice anywhere.",
-      results: [
-        { icon: Users, value: "400%", label: "Patient Reach" },
-        { icon: Calendar, value: "55%", label: "Admin Time" },
-        { icon: DollarSign, value: "150%", label: "Revenue Growth" },
+        "Transforming skincare in Eastern Nigeria through mobile-first management.",
+      detailedStory:
+        "Dermatology is visual. Doza's high-res image vault allows me to track patient progress over months, ensuring my treatments are working perfectly even when the patient is miles away.",
+      impact: [
+        "Visual Progress Tracking",
+        "Remote Consultations",
+        "High Patient Retention",
       ],
-      highlight: "Telehealth Pioneer Award Nigeria",
+      highlight: "Telehealth Pioneer",
+      gridClass: "md:col-span-2 md:row-span-1",
     },
-  ];
-
-  const overallStats = [
-    { number: "5,000+", label: "Nigerian Healthcare Pros" },
-    { number: "50%", label: "Average Revenue Growth" },
-    { number: "99%", label: "Satisfaction Rate" },
-    { number: "4.8/5", label: "Platform Rating" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white overflow-x-hidden">
-      {/* Header Section */}
-      <section className="pt-16 md:pt-20 pb-12 md:pb-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 md:mb-6 ${bebasNeue.className}`}
-          >
-            Nigerian <span className="text-green-600">Success Stories</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className={`text-base sm:text-lg md:text-xl text-slate-600 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed ${poppins.className}`}
-          >
-            Discover how healthcare professionals across Nigeria are
-            transforming their practices and achieving remarkable growth with
-            Doza Medics.
-          </motion.p>
-        </div>
+    <div
+      className={`min-h-screen bg-[#FDFDFD] pb-20 ${poppins.className} selection:bg-emerald-100 selection:text-emerald-900`}
+    >
+      {/* Header */}
+      <section className="pt-28 pb-12 px-6 text-center">
+        <motion.h1
+          className={`text-6xl md:text-[10rem] font-bold text-slate-900 leading-[0.85] tracking-tighter pb-4 ${bebasNeue.className}`}
+        >
+          NIGERIAN <br />
+          <span className="text-emerald-600">SUCCESS</span>
+        </motion.h1>
+        <p className="text-slate-500 text-lg max-w-2xl mx-auto mt-6 italic">
+          Tap on a medic to see how Doza changed their practice.
+        </p>
       </section>
 
-      {/* Overall Stats */}
-      <section className="py-8 sm:py-12 px-4 sm:px-6 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {overallStats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="text-center"
+      {/* Bento Grid */}
+      <section className="px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[320px]">
+          {/* Avatar Stats Card */}
+          <div className="md:col-span-1 md:row-span-1 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <Users className="text-emerald-600 mb-4" size={24} />
+              <h4
+                className={`text-5xl text-slate-900 leading-none ${bebasNeue.className}`}
               >
-                <div
-                  className={`text-2xl sm:text-3xl md:text-4xl font-bold text-green-600 mb-1 sm:mb-2 ${bebasNeue.className}`}
-                >
-                  {stat.number}
-                </div>
-                <div
-                  className={`text-slate-600 text-xs sm:text-sm ${poppins.className}`}
-                >
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
+                5,000+
+              </h4>
+              <p className="text-slate-500 text-xs font-semibold uppercase tracking-widest mt-1 text-balance">
+                Medics growing with Doza
+              </p>
+            </div>
+            <div className="flex -space-x-3">
+              {successStories.map((s) => (
+                <img
+                  key={s.id}
+                  src={s.image}
+                  className="w-10 h-10 rounded-full border-4 border-white object-cover"
+                  alt="avatar"
+                />
+              ))}
+            </div>
           </div>
+
+          {/* Story Tiles */}
+          {successStories.map((story) => (
+            <motion.div
+              key={story.id}
+              layoutId={`card-${story.id}`}
+              onClick={() => setSelectedStory(story)}
+              whileHover={{ scale: 0.98 }}
+              className={`relative rounded-[2.5rem] overflow-hidden group cursor-pointer shadow-lg ${story.gridClass}`}
+            >
+              <img
+                src={story.image}
+                className="absolute inset-0 w-full h-full object-cover"
+                alt=""
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
+              <div className="absolute bottom-10 left-10 right-10">
+                <span className="px-3 py-1 bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-400 text-[9px] font-bold rounded-full uppercase tracking-widest mb-3 inline-block">
+                  {story.highlight}
+                </span>
+                <h3
+                  className={`text-4xl text-white leading-none ${bebasNeue.className}`}
+                >
+                  {story.name}
+                </h3>
+                <div className="flex items-center gap-2 mt-2 text-white/60 text-xs">
+                  <span>Read Story</span>
+                  <ArrowUpRight size={14} />
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* Success Stories Grid */}
-      <section className="py-12 md:py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
-            {successStories.map((story, index) => (
-              <motion.div
-                key={story.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="bg-white rounded-2xl sm:rounded-3xl shadow-lg border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300"
-              >
-                {/* Story Header */}
-                <div className="p-4 sm:p-6 md:p-8 border-b border-slate-200">
-                  <div className="flex items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <img
-                      src={story.image}
-                      alt={story.name}
-                      className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h3
-                        className={`text-lg sm:text-xl md:text-2xl font-bold text-slate-900 ${bebasNeue.className}`}
-                      >
-                        {story.name}
-                      </h3>
-                      <p
-                        className={`text-slate-600 text-sm sm:text-base ${poppins.className}`}
-                      >
-                        {story.specialty} • {story.location}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          size={14}
-                          className="sm:w-4 sm:h-4 md:w-5 md:h-5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
-                    </div>
-                  </div>
+      {/* --- Detailed Story Modal --- */}
+      <AnimatePresence>
+        {selectedStory && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedStory(null)}
+              className="absolute inset-0 bg-slate-950/80 backdrop-blur-xl"
+            />
 
-                  <div className="bg-green-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-green-200">
-                    <div className="flex items-center gap-2">
-                      <Award
-                        size={16}
-                        className="sm:w-5 sm:h-5 text-green-600"
-                      />
-                      <span
-                        className={`text-green-700 font-semibold text-xs sm:text-sm ${poppins.className}`}
-                      >
-                        {story.highlight}
-                      </span>
-                    </div>
-                  </div>
+            <motion.div
+              layoutId={`card-${selectedStory.id}`}
+              className="relative w-full max-w-4xl bg-white rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row min-h-[500px]"
+            >
+              <button
+                onClick={() => setSelectedStory(null)}
+                className="absolute top-6 right-6 z-10 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors"
+              >
+                <X size={20} />
+              </button>
+
+              {/* Image Side */}
+              <div className="w-full md:w-2/5 relative">
+                <img
+                  src={selectedStory.image}
+                  className="h-full w-full object-cover"
+                  alt=""
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/60 to-transparent md:hidden" />
+              </div>
+
+              {/* Content Side */}
+              <div className="w-full md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
+                <div className="mb-8">
+                  <span className="text-emerald-600 font-bold uppercase tracking-widest text-[10px]">
+                    {selectedStory.specialty} • {selectedStory.location}
+                  </span>
+                  <h2
+                    className={`text-5xl md:text-6xl text-slate-900 mt-2 leading-none ${bebasNeue.className}`}
+                  >
+                    {selectedStory.name}
+                  </h2>
                 </div>
 
-                {/* Story Content */}
-                <div className="p-4 sm:p-6 md:p-8">
-                  <div className="flex gap-3 sm:gap-4 mb-4 sm:mb-6">
-                    <Quote
-                      size={20}
-                      className="sm:w-6 sm:h-6 text-green-600 flex-shrink-0 mt-0.5"
-                    />
-                    <p
-                      className={`text-slate-700 leading-relaxed italic text-sm sm:text-base ${poppins.className}`}
-                    >
-                      "{story.story}"
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-slate-400 uppercase text-[10px] font-bold tracking-widest mb-2">
+                      The Doza Impact
+                    </p>
+                    <p className="text-slate-600 text-lg leading-relaxed">
+                      {selectedStory.detailedStory}
                     </p>
                   </div>
 
-                  {/* Results */}
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 pt-4 sm:pt-6 border-t border-slate-200">
-                    {story.results.map((result, idx) => (
-                      <div key={idx} className="text-center">
-                        <result.icon
-                          size={16}
-                          className="sm:w-5 sm:h-5 text-green-600 mx-auto mb-1 sm:mb-2"
-                        />
-                        <div
-                          className={`text-base sm:text-lg font-bold text-slate-900 ${bebasNeue.className}`}
-                        >
-                          {result.value}
-                        </div>
-                        <div
-                          className={`text-slate-600 text-xs ${poppins.className}`}
-                        >
-                          {result.label}
-                        </div>
+                  <div className="grid grid-cols-1 gap-3">
+                    {selectedStory.impact.map((item: string, i: number) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 px-4 py-3 bg-emerald-50 rounded-2xl border border-emerald-100"
+                      >
+                        <CheckCircle2 className="text-emerald-600" size={18} />
+                        <span className="text-slate-700 text-sm font-medium">
+                          {item}
+                        </span>
                       </div>
                     ))}
                   </div>
                 </div>
-              </motion.div>
-            ))}
+
+                <button
+                  onClick={() => router.push("/registration/medic")}
+                  className="mt-10 w-full md:w-max px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-emerald-600 transition-all flex items-center justify-center gap-2 group"
+                >
+                  Join Like {selectedStory.name.split(" ")[1]}
+                  <ChevronRight
+                    size={18}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Community Impact */}
-      <section className="py-12 md:py-16 lg:py-20 px-4 sm:px-6 bg-slate-900">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            <h2
-              className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 ${bebasNeue.className}`}
-            >
-              Join Our{" "}
-              <span className="text-green-400">Nigerian Success Community</span>
-            </h2>
-            <p
-              className={`text-base sm:text-lg md:text-xl text-slate-300 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed ${poppins.className}`}
-            >
-              Become part of the 5,000+ Nigerian healthcare professionals who
-              are transforming their practices and achieving their professional
-              goals with Doza.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
-              <button
-                onClick={() => router.push("/registration/medic")}
-                className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-lg bg-green-600 text-white hover:bg-green-700 transition-all duration-300 hover:scale-105"
-              >
-                Start Your Success Story
-              </button>
-              <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-lg border-2 border-white text-white hover:bg-white hover:text-slate-900 transition-all duration-300 hover:scale-105">
-                Read More Stories
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Professional Types Impact */}
-      <section className="py-12 md:py-16 lg:py-20 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true, margin: "-50px" }}
-            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 text-center mb-8 sm:mb-12 md:mb-16 ${bebasNeue.className}`}
-          >
-            Impact Across{" "}
-            <span className="text-green-600">Nigerian Healthcare</span>
-          </motion.h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {[
-              {
-                specialty: "Doctors",
-                impact: "50% revenue growth average",
-                count: "3,000+",
-              },
-              {
-                specialty: "Nurses",
-                impact: "4x client capacity increase",
-                count: "1,200+",
-              },
-              {
-                specialty: "Nutritionists",
-                impact: "90% patient retention rate",
-                count: "400+",
-              },
-              {
-                specialty: "Therapists",
-                impact: "65% time saved on admin",
-                count: "400+",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={item.specialty}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="text-center p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-200 hover:shadow-lg transition-all duration-300"
-              >
-                <div
-                  className={`text-lg sm:text-xl md:text-2xl font-bold text-slate-900 mb-1 sm:mb-2 ${bebasNeue.className}`}
-                >
-                  {item.specialty}
-                </div>
-                <div
-                  className={`text-2xl sm:text-3xl font-bold text-green-600 mb-2 sm:mb-3 ${bebasNeue.className}`}
-                >
-                  {item.count}
-                </div>
-                <div
-                  className={`text-slate-600 text-xs sm:text-sm ${poppins.className}`}
-                >
-                  {item.impact}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Nigerian Healthcare Impact */}
-      <section className="py-12 md:py-16 px-4 sm:px-6 bg-green-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            <h2
-              className={`text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4 sm:mb-6 ${bebasNeue.className}`}
-            >
-              Transforming{" "}
-              <span className="text-green-600">Healthcare in Nigeria</span>
-            </h2>
-            <p
-              className={`text-base sm:text-lg text-slate-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed ${poppins.className}`}
-            >
-              Join the movement to improve healthcare access and quality across
-              Nigeria through technology and innovation.
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">
-              {[
-                { value: "36", label: "States Reached" },
-                { value: "500K+", label: "Patients Served" },
-                { value: "85%", label: "Rural Reach" },
-                { value: "₦0", label: "Upfront Cost" },
-              ].map((stat, index) => (
-                <div
-                  key={stat.label}
-                  className="bg-white rounded-lg p-3 sm:p-4 shadow-sm"
-                >
-                  <div
-                    className={`text-green-600 font-bold text-lg sm:text-xl ${bebasNeue.className}`}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="text-slate-600 text-xs sm:text-sm">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -28,7 +28,7 @@ const MedicHomePage: React.FC<MedicHomePageProps> = ({ onChangeRole }) => {
   return (
     <>
       <CenterHeader onBack={handleBack} currentExperience="Medic" />
-      <MedicHero onBack={LoadingScreenPage} />
+      <MedicHero />
       <MedicAbout />
       <MedicWhyChoose />
       <MedicFeatures />

@@ -1,303 +1,147 @@
+"use client";
 import React from "react";
 import { motion, Variants } from "framer-motion";
+import Link from "next/link";
 import {
-  Rocket,
-  ArrowRight,
+  Building2,
   MessageCircle,
   Shield,
   Clock,
   Zap,
-  Star,
-  CheckCircle,
+  ChevronRight,
 } from "lucide-react";
-import { bebasNeue, poppins, colors } from "./constant";
+import { bebasNeue, poppins } from "./constant";
 
 const FinalCTA: React.FC = () => {
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        duration: 0.8,
-      },
-    },
-  };
-
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const buttonHoverVariants: Variants = {
-    rest: {
-      scale: 1,
-      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-    },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.25)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 25,
-      },
-    },
-    tap: {
-      scale: 0.98,
-    },
-  };
-
-  const iconHoverVariants: Variants = {
-    rest: { x: 0 },
-    hover: {
-      x: 5,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 25,
-      },
-    },
-  };
-
-  const guaranteeItemVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-    hover: {
-      scale: 1.05,
-      y: -2,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 25,
-      },
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
   return (
-    <section className="relative py-16 lg:py-24 bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-green-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-emerald-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-teal-500/10 rounded-full blur-3xl"></div>
+    <section
+      className={`relative py-32 lg:py-48 bg-[#011413] overflow-hidden ${poppins.className}`}
+    >
+      {/* Advanced Mesh & Radial Gradients */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 blur-[160px] rounded-full opacity-50" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
       </div>
 
-      {/* Floating Stars */}
-      <div className="absolute inset-0">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-white/30"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${10 + ((i * 20) % 80)}%`,
-            }}
-            animate={{
-              y: [0, -10, 0],
-              rotate: [0, 180, 360],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 3 + i,
-              repeat: Infinity,
-              delay: i * 0.5,
-            }}
-          >
-            <Star size={16} fill="currentColor" />
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center"
+          variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
+          className="flex flex-col items-center"
         >
-          {/* Badge */}
+          {/* Label with Live Pulse */}
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6 sm:mb-8"
+            className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mb-10 group cursor-default"
           >
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-2 h-2 bg-green-300 rounded-full"
-            ></motion.div>
-            <span
-              className={`text-green-100 text-sm font-medium ${poppins.className}`}
-            >
-              LIMITED TIME OFFER
+            <div className="relative">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping absolute inset-0" />
+              <div className="w-2 h-2 bg-emerald-500 rounded-full relative" />
+            </div>
+            <span className="text-emerald-400 text-[10px] tracking-[0.3em] font-black uppercase">
+              Limited Institutional Onboarding
             </span>
           </motion.div>
 
-          {/* Main Heading */}
+          {/* Epic Headline */}
           <motion.h2
             variants={itemVariants}
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight ${bebasNeue.className}`}
+            className={`text-6xl md:text-9xl font-bold text-white leading-[0.8] mb-10 tracking-tighter ${bebasNeue.className}`}
           >
-            Ready to Transform Your
-            <motion.span
-              className="block text-green-200"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              Healthcare Center?
-            </motion.span>
+            THE FUTURE OF <br />
+            <span className="text-emerald-500 italic">YOUR CLINIC</span> STARTS
+            NOW
           </motion.h2>
 
-          {/* Subtitle */}
+          {/* High-Authority Subtext */}
           <motion.p
             variants={itemVariants}
-            className={`text-base sm:text-lg md:text-xl text-green-100 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed ${poppins.className} px-2`}
+            className="text-emerald-100/50 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-14 font-medium"
           >
-            Join hundreds of successful healthcare centers already using Doza.
-            Start your free trial today and experience the future of healthcare
-            management.
+            Don&apos;t let legacy paperwork slow your healing potential. Join
+            2,000+ facilities automating their growth with Doza&apos;s AI-driven
+            EMR ecosystem.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* Action Hub */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-10 sm:mb-12"
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center w-full"
           >
-            {/* Primary Button */}
-            <motion.button
-              variants={buttonHoverVariants}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg bg-white text-green-600 flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto group"
-              style={{
-                backgroundColor: "white",
-                color: colors.green?.primary || "#059669",
-              }}
-            >
-              <motion.div
-                variants={iconHoverVariants}
-                className="flex items-center gap-2 sm:gap-3"
-              >
-                <Rocket size={20} className="sm:w-6 sm:h-6" />
-                <span>Start Free Trial</span>
-                <ArrowRight
-                  size={18}
-                  className="sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300"
+            <Link href="/registration/center" className="w-full sm:w-auto">
+              <button className="group relative w-full sm:w-80 px-10 py-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-3xl font-black text-lg tracking-wide transition-all shadow-[0_20px_50px_rgba(16,185,129,0.2)] flex items-center justify-center gap-4 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <Building2 size={22} />
+                <span>START FREE TRIAL</span>
+                <ChevronRight
+                  size={20}
+                  className="group-hover:translate-x-2 transition-transform"
                 />
-              </motion.div>
-            </motion.button>
+              </button>
+            </Link>
 
-            {/* Secondary Button */}
-            <motion.button
-              variants={buttonHoverVariants}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg border-2 border-white text-white backdrop-blur-sm flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto group hover:bg-white/10 transition-colors duration-300"
-            >
-              <MessageCircle size={20} className="sm:w-6 sm:h-6" />
-              <span>Talk to Our Team</span>
-            </motion.button>
+            <button className="w-full sm:w-auto px-10 py-6 bg-white/5 border border-white/10 text-white rounded-3xl font-black text-sm tracking-[0.1em] hover:bg-white/10 transition-all flex items-center justify-center gap-3 backdrop-blur-xl uppercase">
+              <MessageCircle size={20} />
+              <span>Speak with an Expert</span>
+            </button>
           </motion.div>
 
-          {/* Guarantees */}
+          {/* System Status / Indicators */}
           <motion.div
-            variants={containerVariants}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-green-100 max-w-2xl mx-auto"
+            variants={itemVariants}
+            className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-16 mt-24 pt-16 border-t border-white/10 w-full"
           >
             {[
               {
                 icon: Shield,
-                text: "No credit card required",
-                subtext: "Start completely free",
+                title: "HIPAA Compliant",
+                status: "Encrypted",
               },
               {
                 icon: Clock,
-                text: "Setup in 24 hours",
-                subtext: "Quick implementation",
+                title: "15 Min Migration",
+                status: "Cloud Native",
               },
               {
                 icon: Zap,
-                text: "Free forever plan",
-                subtext: "Always have a free option",
+                title: "Zero Setup Fee",
+                status: "Instant Access",
               },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={guaranteeItemVariants}
-                initial="hidden"
-                whileInView="visible"
-                whileHover="hover"
-                viewport={{ once: true }}
-                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 sm:p-5 text-center group cursor-pointer"
+            ].map((item, i) => (
+              <div
+                key={i}
+                className={`flex flex-col items-center group ${i === 2 ? "col-span-2 md:col-span-1" : ""}`}
               >
-                <motion.div
-                  className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center mx-auto mb-3 group-hover:bg-white/30 transition-colors duration-300"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
-                  <item.icon size={24} className="text-green-200" />
-                </motion.div>
-                <h4
-                  className={`font-semibold text-green-50 mb-1 ${poppins.className}`}
-                >
-                  {item.text}
+                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-4 group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-all border border-white/5 group-hover:border-emerald-500/20">
+                  <item.icon
+                    size={22}
+                    strokeWidth={1.5}
+                    className="text-slate-400 group-hover:text-emerald-400 transition-colors"
+                  />
+                </div>
+                <h4 className="text-white text-[11px] font-black uppercase tracking-widest mb-1">
+                  {item.title}
                 </h4>
-                <p
-                  className={`text-green-200 text-xs sm:text-sm ${poppins.className}`}
-                >
-                  {item.subtext}
-                </p>
-              </motion.div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1 h-1 bg-emerald-500 rounded-full" />
+                  <p className="text-emerald-500/40 text-[9px] uppercase font-black tracking-widest">
+                    {item.status}
+                  </p>
+                </div>
+              </div>
             ))}
-          </motion.div>
-
-          {/* Additional Trust Signals */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            viewport={{ once: true }}
-            className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-green-500/30"
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-green-200">
-              <div className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-green-300" />
-                <span className={`text-sm ${poppins.className}`}>
-                  No setup fees
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-green-300" />
-                <span className={`text-sm ${poppins.className}`}>
-                  Cancel anytime
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle size={16} className="text-green-300" />
-                <span className={`text-sm ${poppins.className}`}>
-                  24/7 Support
-                </span>
-              </div>
-            </div>
           </motion.div>
         </motion.div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import React from "react";
+import { motion, Variants } from "framer-motion";
 import {
   Play,
   Shield,
@@ -9,18 +10,38 @@ import {
   Calendar,
   FileText,
   Smartphone,
+  ChevronRight,
+  CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { bebasNeue, poppins } from "../home/doza_center/constant";
 import Image from "next/image";
 
 const FeaturesTourPage = () => {
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    },
+  };
+
   const features = [
     {
       icon: BarChart3,
       title: "AI-Powered Analytics",
       description:
-        "Get real-time insights into patient flow, revenue trends, and operational efficiency with our advanced AI algorithms.",
+        "Get real-time insights into patient flow and revenue trends with advanced algorithms.",
       benefits: [
         "Predictive patient volume",
         "Revenue forecasting",
@@ -31,7 +52,7 @@ const FeaturesTourPage = () => {
       icon: Users,
       title: "Patient Management",
       description:
-        "Streamline patient registration, appointments, and medical records in one seamless platform.",
+        "Streamline registration and medical records in one seamless, high-speed platform.",
       benefits: [
         "Digital patient intake",
         "Automated reminders",
@@ -42,7 +63,7 @@ const FeaturesTourPage = () => {
       icon: Calendar,
       title: "Smart Scheduling",
       description:
-        "Optimize your staff and resource allocation with intelligent appointment scheduling.",
+        "Optimize staff and resource allocation with intelligent, conflict-free scheduling.",
       benefits: [
         "Automated slot management",
         "Staff optimization",
@@ -65,224 +86,230 @@ const FeaturesTourPage = () => {
     },
     {
       icon: Shield,
-      title: "Security & Compliance",
+      title: "Compliance Node",
       description:
-        "Enterprise-grade security with built-in compliance for healthcare regulations.",
+        "Enterprise-grade security with built-in compliance for global regulations.",
       benefits: ["Data encryption", "Audit trails", "Compliance reporting"],
     },
   ];
 
-  const stats = [
-    { number: "65%", label: "Faster Patient Processing" },
-    { number: "40%", label: "Reduced Administrative Work" },
-    { number: "85%", label: "Improved Patient Satisfaction" },
-    { number: "50%", label: "Cost Reduction" },
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-slate-100">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
+    <div
+      className={`min-h-screen bg-[#FDFDFF] text-slate-900 ${poppins.className}`}
+    >
+      {/* Dynamic Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-blue-400/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[10%] left-[-5%] w-[30%] h-[30%] bg-purple-400/5 blur-[100px] rounded-full" />
+      </div>
+
+      {/* Modern Header */}
+      <header className="bg-white/70 backdrop-blur-xl border-b border-slate-100 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="relative w-8 h-8">
               <Image
                 src="/logo.png"
-                alt="Doza Logo"
-                width={32}
-                height={32}
-                className="w-8 h-8"
+                alt="Doza"
+                fill
+                className="object-contain transition-transform group-hover:scale-110"
               />
-              <span
-                className={`text-2xl font-bold text-slate-900 ${bebasNeue.className}`}
-              >
-                DOZA
-              </span>
-            </Link>
-
-            <Link
-              href="/registration/center"
-              className="px-6 py-2 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
-              style={{ backgroundColor: "#017840" }}
+            </div>
+            <span
+              className={`text-2xl font-black tracking-tighter text-slate-900 ${bebasNeue.className}`}
             >
-              Get Started
+              DOZA
+            </span>
+          </Link>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/"
+              className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600"
+            >
+              Home
+            </Link>
+            <Link href="/registration/center">
+              <button className="px-6 py-2.5 rounded-full bg-slate-900 text-white text-[10px] font-black tracking-widest hover:bg-blue-600 transition-all shadow-lg shadow-slate-200">
+                GET STARTED
+              </button>
             </Link>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="relative pt-24 pb-16 px-6">
+        <div className="max-w-5xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6">
-              <Play size={16} />
-              <span className={`text-sm font-medium ${poppins.className}`}>
-                Features Tour
-              </span>
-            </div>
-
-            <h1
-              className={`text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 leading-tight ${bebasNeue.className}`}
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8"
             >
-              Discover Doza's
-              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Powerful Features
+              <Play size={14} className="text-blue-600 fill-blue-600" />
+              <span className="text-blue-700 text-[10px] font-black uppercase tracking-[0.2em]">
+                Product Walkthrough
               </span>
-            </h1>
+            </motion.div>
 
-            <p
-              className={`text-xl text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed ${poppins.className}`}
+            <motion.h1
+              variants={itemVariants}
+              className={`text-6xl md:text-8xl font-bold text-slate-900 mb-8 leading-[0.9] tracking-tighter ${bebasNeue.className}`}
             >
-              Explore how Doza transforms healthcare management with
-              cutting-edge technology, AI-powered insights, and seamless
-              integration for your medical facility.
-            </p>
+              PRECISION TOOLS FOR <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                MODERN MEDICINE
+              </span>
+            </motion.h1>
+
+            <motion.p
+              variants={itemVariants}
+              className="text-slate-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-12 font-medium"
+            >
+              Transforming raw clinical data into actionable patient care.
+              Explore the ecosystem designed for high-performance medical
+              centers.
+            </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 px-6 bg-white/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
+      {/* Floating Stats Bar */}
+      <section className="max-w-7xl mx-auto px-6 mb-24">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-8 bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-slate-100"
+        >
+          {[
+            { n: "65%", l: "Patient Velocity" },
+            { n: "40%", l: "Admin Reduction" },
+            { n: "85%", l: "Patient Retention" },
+            { n: "50%", l: "OpEx Savings" },
+          ].map((stat, i) => (
+            <div key={i} className="text-center group">
+              <div
+                className={`text-4xl md:text-6xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors ${bebasNeue.className}`}
               >
-                <div
-                  className={`text-4xl md:text-5xl font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
-                >
-                  {stat.number}
-                </div>
-                <div className={`text-slate-600 ${poppins.className}`}>
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+                {stat.n}
+              </div>
+              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                {stat.l}
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200"
+      {/* Features Showcase */}
+      <section className="max-w-7xl mx-auto px-6 pb-32">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -8 }}
+              className="group p-10 bg-white rounded-[3rem] border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] transition-all flex flex-col items-start"
+            >
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-slate-50 text-slate-900 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                <feature.icon size={28} strokeWidth={1.5} />
+              </div>
+              <h3
+                className={`text-3xl text-slate-900 mb-4 tracking-tight ${bebasNeue.className}`}
               >
-                <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mb-6">
-                  <feature.icon size={28} className="text-blue-600" />
-                </div>
+                {feature.title}
+              </h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-8 font-medium">
+                {feature.description}
+              </p>
 
-                <h3
-                  className={`text-2xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
-                >
-                  {feature.title}
-                </h3>
-
-                <p
-                  className={`text-slate-600 mb-6 leading-relaxed ${poppins.className}`}
-                >
-                  {feature.description}
-                </p>
-
-                <ul className="space-y-2">
-                  {feature.benefits.map((benefit, idx) => (
-                    <li
-                      key={idx}
-                      className={`flex items-center gap-2 text-slate-700 ${poppins.className}`}
-                    >
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="mt-auto w-full space-y-3">
+                {feature.benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <CheckCircle2 size={16} className="text-blue-500" />
+                    <span className="text-[10px] font-black text-slate-700 uppercase tracking-tight">
                       {benefit}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2
-              className={`text-4xl md:text-5xl font-bold text-white mb-6 ${bebasNeue.className}`}
-            >
-              Ready to Transform Your Healthcare Facility?
-            </h2>
+      {/* Dynamic CTA */}
+      <section className="px-6 pb-24">
+        <div className="max-w-7xl mx-auto rounded-[4rem] bg-slate-900 p-12 md:p-24 relative overflow-hidden text-center md:text-left">
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-600/20 to-transparent pointer-events-none" />
 
-            <p
-              className={`text-xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed ${poppins.className}`}
-            >
-              Join thousands of healthcare providers who have revolutionized
-              their practice with Doza.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/registration/center"
-                className="px-8 py-4 bg-white text-blue-600 rounded-2xl font-semibold text-lg hover:scale-105 transition-all duration-300"
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="max-w-xl">
+              <div className="relative w-12 h-12 mb-8 mx-auto md:mx-0">
+                <Image
+                  src="/logo.png"
+                  alt="Doza"
+                  fill
+                  className="object-contain brightness-0 invert"
+                />
+              </div>
+              <h2
+                className={`text-5xl md:text-7xl font-bold text-white mb-6 leading-tight ${bebasNeue.className}`}
               >
-                Start Free Trial
+                READY TO RECODE YOUR <br />
+                <span className="text-blue-500">FACILITY?</span>
+              </h2>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+              <Link href="/registration/center">
+                <button className="group w-full md:w-auto px-10 py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3">
+                  Start Trial
+                  <ChevronRight
+                    size={18}
+                    className="group-hover:translate-x-2 transition-transform"
+                  />
+                </button>
               </Link>
-
-              <Link
-                href="/tutorials-library"
-                className="px-8 py-4 border-2 border-white text-white rounded-2xl font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300"
-              >
-                Watch Tutorials
+              <Link href="/">
+                <button className="w-full md:w-auto px-10 py-5 bg-white/5 border border-white/10 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-all">
+                  Back Home
+                </button>
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-12 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Image
-              src="/logo.png"
-              alt="Doza Logo"
-              width={32}
-              height={32}
-              className="w-8 h-8"
-            />
-            <span className={`text-2xl font-bold ${bebasNeue.className}`}>
-              DOZA
-            </span>
+      <footer className="border-t border-slate-100 py-16 bg-white text-center">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex justify-center gap-8 mb-8">
+            <Link
+              href="/"
+              className="text-[10px] font-black uppercase text-slate-400 hover:text-blue-600 tracking-widest"
+            >
+              Home
+            </Link>
+            <Link
+              href="#"
+              className="text-[10px] font-black uppercase text-slate-400 hover:text-blue-600 tracking-widest"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="#"
+              className="text-[10px] font-black uppercase text-slate-400 hover:text-blue-600 tracking-widest"
+            >
+              Compliance
+            </Link>
           </div>
-
-          <p
-            className={`text-slate-400 max-w-2xl mx-auto mb-8 ${poppins.className}`}
-          >
-            Transforming healthcare through innovative technology and seamless
-            integration for medical professionals and facilities.
+          <p className="text-[10px] text-slate-300 font-bold uppercase tracking-[0.3em]">
+            © 2026 DOZA HEALTHCARE. THE NEW STANDARD.
           </p>
-
-          <div className={`text-slate-500 text-sm ${poppins.className}`}>
-            &copy; 2024 Doza Healthcare. All rights reserved.
-          </div>
         </div>
       </footer>
     </div>

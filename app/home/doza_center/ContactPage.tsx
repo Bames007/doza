@@ -11,6 +11,8 @@ import {
   MessageCircle,
   User,
   Building,
+  ShieldCheck,
+  Zap,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./constant";
 
@@ -18,413 +20,251 @@ const ContactPage: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const contactInfo = [
     {
       icon: Phone,
       text: "+234 812 772 8084",
-      subtitle: "Mon-Fri 9AM-6PM EST",
+      subtitle: "Direct Deployment Line",
+      color: "text-blue-500",
     },
     {
       icon: Mail,
       text: "partnerships@doza.com",
-      subtitle: "Typically replies within 2 hours",
+      subtitle: "Priority Institution Support",
+      color: "text-emerald-500",
     },
     {
       icon: MapPin,
-      text: "Healthcare specialists available nationwide",
-      subtitle: "Serving all 50 states",
+      text: "Abuja HQ, Nigeria",
+      subtitle: "Nationwide Onboarding",
+      color: "text-purple-500",
     },
   ];
-
-  const guarantees = [
-    "30-minute personalized demo",
-    "Free system assessment",
-    "Custom implementation plan",
-    "No obligation commitment",
-  ];
-
-  // Animation variants
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
-
-  const formItemVariants: Variants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 2000));
-
     setIsSubmitting(false);
-    // Handle form submission here
+    setSubmitted(true);
   };
 
   return (
     <section
       ref={sectionRef}
-      className="py-12 md:py-20 bg-white overflow-hidden"
+      className={`py-32 bg-[#FDFDFD] relative overflow-hidden ${poppins.className}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
-        >
-          {/* Left Content */}
-          <motion.div
-            variants={itemVariants}
-            className="space-y-6 md:space-y-8"
-          >
-            {/* Header */}
+      {/* Dynamic Background Auras */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-50/50 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-50/30 rounded-full blur-[100px] -z-10" />
+
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          {/* Left Side: Editorial Content */}
+          <div className="lg:col-span-5 space-y-12">
             <div>
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
-                animate={
-                  isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
-                }
-                transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 mb-4"
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm mb-8"
               >
-                <MessageCircle size={16} className="text-green-500" />
-                <span
-                  className={`text-green-600 text-sm font-medium ${poppins.className}`}
-                >
-                  Get Started Today
+                <Zap size={14} className="text-emerald-500 fill-emerald-500" />
+                <span className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">
+                  Institutional Access
                 </span>
               </motion.div>
 
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
-                animate={
-                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-                }
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className={`text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 leading-tight ${bebasNeue.className}`}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                className={`text-6xl md:text-8xl font-bold text-slate-900 leading-[0.85] tracking-tighter ${bebasNeue.className}`}
               >
-                Ready to Transform
-                <motion.span
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={
-                    isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
-                  }
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="block bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent"
-                >
-                  Your Center?
-                </motion.span>
+                UPGRADE YOUR <br />
+                <span className="text-emerald-600 italic">OPERATIONS</span>
               </motion.h2>
 
               <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={
-                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-                }
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className={`text-base md:text-lg text-slate-600 leading-relaxed ${poppins.className}`}
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ delay: 0.2 }}
+                className="mt-8 text-slate-500 text-lg leading-relaxed font-medium"
               >
-                Schedule a personalized demo with our healthcare specialists.
-                See how Doza can streamline your operations, increase patient
-                satisfaction, and grow your practice.
+                Our deployment team specializes in transitioning legacy centers
+                to AI-first facilities in under 14 days.
               </motion.p>
             </div>
 
-            {/* Contact Info */}
-            <motion.div variants={containerVariants} className="space-y-4">
-              {contactInfo.map((item, index) => (
+            {/* Premium Contact Cards */}
+            <div className="grid grid-cols-1 gap-4">
+              {contactInfo.map((item, idx) => (
                 <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02 }}
-                  className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 transition-all duration-300"
+                  key={idx}
+                  whileHover={{ x: 10 }}
+                  className="group flex items-center gap-5 p-2 pr-6 bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:shadow-md transition-all"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <item.icon size={20} className="text-white" />
+                  <div
+                    className={`w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center ${item.color} group-hover:scale-110 transition-transform`}
+                  >
+                    <item.icon size={24} strokeWidth={1.5} />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p
-                      className={`text-slate-800 font-semibold ${poppins.className}`}
-                    >
+                  <div>
+                    <h4 className="text-sm font-black text-slate-900 tracking-tight">
                       {item.text}
-                    </p>
-                    <p
-                      className={`text-slate-500 text-sm mt-1 ${poppins.className}`}
-                    >
+                    </h4>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
                       {item.subtitle}
                     </p>
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
 
-            {/* Guarantees */}
-            <motion.div
-              variants={itemVariants}
-              className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100"
-            >
-              <motion.h3
+            {/* Trust Badge */}
+            <div className="p-8 rounded-[2.5rem] bg-slate-900 text-white relative overflow-hidden group">
+              <div className="relative z-10 flex items-center gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/30">
+                  <ShieldCheck size={32} />
+                </div>
+                <div>
+                  <h5 className={`text-2xl font-bold ${bebasNeue.className}`}>
+                    DOZA ENTERPRISE SHIELD
+                  </h5>
+                  <p className="text-xs text-slate-400 font-medium">
+                    Data encryption & HL7 compliance guaranteed by default.
+                  </p>
+                </div>
+              </div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl group-hover:bg-emerald-500/20 transition-colors" />
+            </div>
+          </div>
+
+          {/* Right Side: The Glass Form */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            className="lg:col-span-7 bg-white p-8 md:p-14 rounded-[4rem] border border-slate-200/60 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] relative"
+          >
+            {submitted ? (
+              <motion.div
                 initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className={`text-xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
+                animate={{ opacity: 1 }}
+                className="text-center py-20"
               >
-                What to Expect
-              </motion.h3>
-              <motion.div variants={containerVariants} className="space-y-3">
-                {guarantees.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    className="flex items-center gap-3"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.2 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 10,
-                      }}
-                    >
-                      <CheckCircle
-                        size={18}
-                        className="text-green-500 flex-shrink-0"
-                      />
-                    </motion.div>
-                    <span className={`text-slate-600 ${poppins.className}`}>
-                      {item}
-                    </span>
-                  </motion.div>
-                ))}
+                <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8">
+                  <CheckCircle size={40} />
+                </div>
+                <h3
+                  className={`text-5xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
+                >
+                  REQUEST RECEIVED
+                </h3>
+                <p className="text-slate-500 font-medium">
+                  A deployment specialist will call you shortly.
+                </p>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="mt-8 text-emerald-600 font-bold text-sm underline"
+                >
+                  Send another request
+                </button>
               </motion.div>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Content - Form */}
-          <motion.div variants={itemVariants} className="relative">
-            {/* Background Effects */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={
-                isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
-              }
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="absolute -top-4 -right-4 w-24 h-24 bg-green-500 rounded-full blur-2xl opacity-10"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={
-                isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
-              }
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="absolute -bottom-4 -left-4 w-32 h-32 bg-emerald-500 rounded-full blur-2xl opacity-10"
-            />
-
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-200/50 backdrop-blur-sm relative z-10"
-            >
-              <motion.h3
-                variants={formItemVariants}
-                className={`text-2xl md:text-3xl font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
-              >
-                Schedule Your Demo
-              </motion.h3>
-              <motion.p
-                variants={formItemVariants}
-                className={`text-slate-600 mb-6 md:mb-8 ${poppins.className}`}
-              >
-                Fill out the form and we'll contact you within 24 hours
-              </motion.p>
-
-              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-                {/* Center Name */}
-                <motion.div variants={formItemVariants}>
-                  <label
-                    className={`block text-slate-700 mb-2 font-medium ${poppins.className}`}
-                  >
-                    <Building size={16} className="inline mr-2" />
-                    Center Name
-                  </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    type="text"
-                    required
-                    className="w-full px-4 py-3 rounded-xl text-gray-900 border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white"
-                    placeholder="Enter your center name"
-                  />
-                </motion.div>
-
-                {/* Name and Phone */}
-                <motion.div
-                  variants={formItemVariants}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-                >
-                  <div>
-                    <label
-                      className={`block text-slate-700 mb-2 font-medium ${poppins.className}`}
-                    >
-                      <User size={16} className="inline mr-2" />
-                      Your Name
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                      <Building size={12} className="text-emerald-500" /> Center
+                      Name
                     </label>
-                    <motion.input
-                      whileFocus={{ scale: 1.02 }}
+                    <input
                       type="text"
+                      placeholder="e.g. St. Davids Clinic"
+                      className="w-full px-7 py-5 rounded-[2rem] bg-slate-50 border border-slate-100 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-300"
                       required
-                      className="w-full px-4 py-3 text-gray-900 rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white"
-                      placeholder="Full name"
                     />
                   </div>
-                  <div>
-                    <label
-                      className={`block text-slate-700 mb-2 font-medium ${poppins.className}`}
-                    >
-                      <Phone size={16} className="inline mr-2" />
-                      Phone Number
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                      <User size={12} className="text-emerald-500" /> Admin/MD
+                      Name
                     </label>
-                    <motion.input
-                      whileFocus={{ scale: 1.02 }}
-                      type="tel"
+                    <input
+                      type="text"
+                      placeholder="Dr. Surname"
+                      className="w-full px-7 py-5 rounded-[2rem] bg-slate-50 border border-slate-100 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-300"
                       required
-                      className="w-full px-4 py-3 text-gray-900 rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white"
-                      placeholder="+1 (555) 000-0000"
                     />
                   </div>
-                </motion.div>
+                </div>
 
-                {/* Email */}
-                <motion.div variants={formItemVariants}>
-                  <label
-                    className={`block text-slate-700 mb-2 font-medium ${poppins.className}`}
-                  >
-                    <Mail size={16} className="inline mr-2" />
-                    Email Address
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                      <Mail size={12} className="text-emerald-500" /> Business
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="admin@center.com"
+                      className="w-full px-7 py-5 rounded-[2rem] bg-slate-50 border border-slate-100 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-300"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                      <Phone size={12} className="text-emerald-500" /> Phone
+                      Number
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="+234..."
+                      className="w-full px-7 py-5 rounded-[2rem] bg-slate-50 border border-slate-100 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-300"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
+                    <MessageCircle size={12} className="text-emerald-500" /> How
+                    can we help?
                   </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    type="email"
-                    required
-                    className="w-full px-4 py-3 text-gray-900 rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white"
-                    placeholder="your@email.com"
-                  />
-                </motion.div>
+                  <select className="w-full px-7 py-5 rounded-[2rem] bg-slate-50 border border-slate-100 focus:bg-white focus:border-emerald-500 outline-none transition-all font-medium text-slate-500 appearance-none">
+                    <option>Institutional Demo Request</option>
+                    <option>EMR Data Migration</option>
+                    <option>Partnership Inquiry</option>
+                    <option>Technical Support</option>
+                  </select>
+                </div>
 
-                {/* Center Type */}
-                <motion.div variants={formItemVariants}>
-                  <label
-                    className={`block text-slate-700 mb-2 font-medium ${poppins.className}`}
-                  >
-                    Center Type
-                  </label>
-                  <motion.select
-                    whileFocus={{ scale: 1.02 }}
-                    className="w-full px-4 py-3 text-gray-900 rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white"
-                  >
-                    <option>Hospital</option>
-                    <option>Clinic</option>
-                    <option>Pharmacy</option>
-                    <option>Eye Center</option>
-                    <option>Laboratory</option>
-                    <option>Emergency Service</option>
-                    <option>Other</option>
-                  </motion.select>
-                </motion.div>
-
-                {/* Current System */}
-                <motion.div variants={formItemVariants}>
-                  <label
-                    className={`block text-slate-700 mb-2 font-medium ${poppins.className}`}
-                  >
-                    Current System (if any)
-                  </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    type="text"
-                    className="w-full px-4 py-3 text-gray-900 rounded-xl border border-slate-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 bg-white"
-                    placeholder="e.g., Epic, Cerner, Custom EMR"
-                  />
-                </motion.div>
-
-                {/* Submit Button */}
-                <motion.button
-                  variants={formItemVariants}
-                  type="submit"
+                <button
                   disabled={isSubmitting}
-                  whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
-                  whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
-                  className="w-full px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
-                  style={{
-                    background: isSubmitting
-                      ? "#9CA3AF"
-                      : "linear-gradient(135deg, #28B64C 0%, #10B981 100%)",
-                  }}
+                  className="group relative w-full py-6 rounded-[2.5rem] bg-emerald-600 overflow-hidden transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-emerald-900/20 disabled:opacity-70"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                      />
-                      Scheduling...
-                    </>
-                  ) : (
-                    <>
-                      <Calendar size={20} />
-                      Schedule Free Demo
-                      <ArrowRight size={20} />
-                    </>
-                  )}
-                </motion.button>
-              </form>
+                  <div className="relative z-10 flex items-center justify-center gap-4 text-white font-black text-lg tracking-wider">
+                    {isSubmitting ? (
+                      "PROCESSING..."
+                    ) : (
+                      <>
+                        <Calendar size={22} />
+                        BOOK CONSULTATION
+                        <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                      </>
+                    )}
+                  </div>
+                  {/* Button gloss effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                </button>
 
-              <motion.p
-                variants={formItemVariants}
-                className={`text-center text-slate-500 text-sm mt-4 ${poppins.className}`}
-              >
-                No credit card required • 100% free consultation
-              </motion.p>
-            </motion.div>
+                <p className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  No commitment required. 100% Secure.
+                </p>
+              </form>
+            )}
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

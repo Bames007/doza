@@ -6,7 +6,6 @@ import {
   Video,
   FileText,
   BarChart3,
-  MessageSquare,
   Shield,
   Users,
   Zap,
@@ -15,406 +14,222 @@ import {
   Globe,
   Smartphone,
   Cloud,
+  Plus,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
+import { useRouter } from "next/navigation";
+import {
+  PremiumCard,
+  TiltCard,
+  SectionLabel,
+  MagneticButton,
+  GrainOverlay,
+} from "../../ui/Premium";
 
 export default function MedicFeatures() {
+  const router = useRouter();
+  const navToRegister = () => router.push("/registration/medic");
+
   const mainFeatures = [
     {
       icon: Calendar,
       title: "Smart Scheduling",
-      description:
-        "AI-powered appointment booking that optimizes your calendar and reduces no-shows by 40%",
-      features: [
-        "Automated reminders",
-        "Waitlist management",
-        "Recurring appointments",
-        "Calendar sync",
-      ],
+      color: "#2BB14B",
+      desc: "AI-optimized calendar that slashes no-shows by 40%.",
     },
     {
       icon: Video,
-      title: "Telehealth Platform",
-      description:
-        "Full-featured virtual care platform with secure video, chat, and file sharing capabilities",
-      features: [
-        "HD video calls",
-        "Screen sharing",
-        "Secure messaging",
-        "Virtual waiting room",
-      ],
+      title: "Telehealth Hub",
+      color: "#0086DB",
+      desc: "Military-grade secure video for the borderless clinician.",
     },
     {
       icon: FileText,
-      title: "Electronic Health Records",
-      description:
-        "Comprehensive EHR system with templates, prescriptions, and lab integration",
-      features: [
-        "Custom templates",
-        "e-Prescriptions",
-        "Lab integration",
-        "Progress notes",
-      ],
+      title: "Next-Gen EHR",
+      color: "#2BB14B",
+      desc: "Custom templates & lab sync designed for speed.",
     },
     {
       icon: BarChart3,
-      title: "Practice Analytics",
-      description:
-        "Real-time insights into your practice performance with actionable recommendations",
-      features: [
-        "Revenue tracking",
-        "Patient analytics",
-        "Performance metrics",
-        "Growth insights",
-      ],
-    },
-  ];
-
-  const advancedFeatures = [
-    {
-      icon: DollarSign,
-      title: "Billing & Payments",
-      description:
-        "Streamlined billing process with insurance claims and secure payment processing",
-      highlights: [
-        "Insurance claims",
-        "Secure payments",
-        "Automated invoicing",
-        "Revenue reports",
-      ],
-    },
-    {
-      icon: Users,
-      title: "Patient Management",
-      description:
-        "Complete patient relationship management with communication tools and follow-up systems",
-      highlights: [
-        "Patient portal",
-        "Automated follow-ups",
-        "Health records access",
-        "Feedback system",
-      ],
-    },
-    {
-      icon: Shield,
-      title: "Security & Compliance",
-      description:
-        "Enterprise-grade security with HIPAA compliance and data protection measures",
-      highlights: [
-        "HIPAA compliant",
-        "Data encryption",
-        "Access controls",
-        "Audit trails",
-      ],
-    },
-    {
-      icon: Globe,
-      title: "Multi-Location Support",
-      description:
-        "Manage multiple practice locations with centralized control and individual settings",
-      highlights: [
-        "Centralized management",
-        "Location settings",
-        "Staff permissions",
-        "Unified records",
-      ],
-    },
-  ];
-
-  const mobileFeatures = [
-    {
-      icon: Smartphone,
-      title: "Mobile App",
-      description:
-        "Full-featured mobile application for managing your practice on the go",
-      capabilities: [
-        "Appointment management",
-        "Patient communication",
-        "Chart access",
-        "Prescriptions",
-      ],
-    },
-    {
-      icon: Cloud,
-      title: "Cloud Platform",
-      description:
-        "Secure cloud-based platform accessible from any device with real-time sync",
-      capabilities: [
-        "Anywhere access",
-        "Real-time sync",
-        "Automatic backups",
-        "Scalable storage",
-      ],
-    },
-    {
-      icon: Zap,
-      title: "Automation Tools",
-      description:
-        "AI-powered automation for repetitive tasks and intelligent workflows",
-      capabilities: [
-        "Smart reminders",
-        "Document automation",
-        "Follow-up sequences",
-        "Task management",
-      ],
-    },
-    {
-      icon: Award,
-      title: "Professional Tools",
-      description:
-        "Specialized tools for different healthcare professionals and specialties",
-      capabilities: [
-        "Specialty templates",
-        "Treatment plans",
-        "Progress tracking",
-        "Outcome measures",
-      ],
+      title: "Practice Insights",
+      color: "#0086DB",
+      desc: "Real-time revenue and growth analytics at a glance.",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">
-      {/* Header Section */}
-      <section className="pt-16 md:pt-20 pb-12 md:pb-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto text-center">
+    <div className="relative min-h-screen bg-white selection:bg-[#2BB14B] selection:text-white">
+      <GrainOverlay />
+
+      {/* --- HERO SECTION --- */}
+      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <SectionLabel text="The Doza Ecosystem" />
+
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`text-3xl sm:text-4xl md:text-6xl font-bold text-slate-900 mb-4 md:mb-6 ${bebasNeue.className}`}
+            className={`text-7xl md:text-9xl font-bold text-slate-900 mb-8 leading-[0.85] tracking-tighter ${bebasNeue.className}`}
           >
-            Powerful <span className="text-blue-600">Features</span>
+            PRECISION TOOLS. <br />
+            <span className="text-[#2BB14B]">UNMATCHED POWER.</span>
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className={`text-base sm:text-lg md:text-xl text-slate-600 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed ${poppins.className}`}
+
+          <p
+            className={`text-slate-500 text-xl max-w-2xl mx-auto mb-12 ${poppins.className}`}
           >
-            Discover the comprehensive suite of tools designed to streamline
-            your practice, enhance patient care, and grow your professional
-            impact.
-          </motion.p>
+            A comprehensive suite of clinical intelligence designed to eliminate
+            friction and amplify your impact.
+          </p>
+
+          <MagneticButton
+            onClick={navToRegister}
+            className="px-12 py-6 bg-slate-900 text-white rounded-[2rem] font-bold flex items-center gap-4 mx-auto hover:bg-[#0086DB] transition-all duration-500 shadow-2xl"
+          >
+            GET FULL ACCESS <Plus size={20} />
+          </MagneticButton>
         </div>
+
+        {/* Decorative background blur */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#0086DB]/5 blur-[120px] -z-10" />
       </section>
 
-      {/* Main Features */}
-      <section className="py-12 md:py-16 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className={`text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 text-center mb-12 md:mb-16 ${bebasNeue.className}`}
-          >
-            Core <span className="text-green-600">Practice Tools</span>
-          </motion.h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
-            {mainFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-slate-50 rounded-2xl md:rounded-3xl p-6 md:p-8 border border-slate-200 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
-                    <feature.icon
-                      size={20}
-                      className="md:w-6 md:h-6 text-blue-600"
-                    />
+      {/* --- CORE TOOLS (3D TILT EXPERIENCE) --- */}
+      <section className="py-24 px-6 bg-slate-50/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {mainFeatures.map((f, i) => (
+              <TiltCard key={i} className="h-full">
+                <PremiumCard className="h-full border-none shadow-xl">
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 text-white shadow-lg"
+                    style={{ backgroundColor: f.color }}
+                  >
+                    <f.icon size={28} />
                   </div>
                   <h3
-                    className={`text-xl md:text-2xl font-bold text-slate-900 ${bebasNeue.className}`}
+                    className={`text-4xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
                   >
-                    {feature.title}
+                    {f.title}
                   </h3>
-                </div>
-                <p
-                  className={`text-slate-600 mb-4 md:mb-6 leading-relaxed text-sm md:text-base ${poppins.className}`}
-                >
-                  {feature.description}
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
-                  {feature.features.map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 bg-green-500 rounded-full flex-shrink-0"></div>
-                      <span
-                        className={`text-slate-700 text-xs md:text-sm ${poppins.className}`}
-                      >
-                        {item}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+                  <p className="text-slate-500 text-sm font-medium leading-relaxed">
+                    {f.desc}
+                  </p>
+                </PremiumCard>
+              </TiltCard>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Advanced Features */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 bg-slate-900">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className={`text-2xl sm:text-3xl md:text-5xl font-bold text-white text-center mb-12 md:mb-16 ${bebasNeue.className}`}
-          >
-            Advanced <span className="text-blue-400">Capabilities</span>
-          </motion.h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
-            {advancedFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-slate-800 rounded-2xl md:rounded-3xl p-6 md:p-8 border border-slate-700 hover:border-slate-600 transition-all duration-300"
-              >
-                <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                    <feature.icon
-                      size={20}
-                      className="md:w-6 md:h-6 text-blue-400"
-                    />
-                  </div>
-                  <h3
-                    className={`text-xl md:text-2xl font-bold text-white ${bebasNeue.className}`}
-                  >
-                    {feature.title}
-                  </h3>
-                </div>
-                <p
-                  className={`text-slate-300 mb-4 md:mb-6 leading-relaxed text-sm md:text-base ${poppins.className}`}
-                >
-                  {feature.description}
-                </p>
-                <div className="space-y-2 md:space-y-3">
-                  {feature.highlights.map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2 md:gap-3">
-                      <div className="w-1.5 h-1.5 bg-green-400 rounded-full flex-shrink-0"></div>
-                      <span
-                        className={`text-slate-300 text-xs md:text-sm ${poppins.className}`}
-                      >
-                        {item}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Mobile & Technology Features */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className={`text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 text-center mb-12 md:mb-16 ${bebasNeue.className}`}
-          >
-            Technology <span className="text-purple-600">Platform</span>
-          </motion.h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
-            {mobileFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center p-4 sm:p-6 rounded-xl md:rounded-2xl bg-white shadow-lg border border-slate-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-xl md:rounded-2xl flex items-center justify-center bg-purple-100">
-                  <feature.icon
-                    size={20}
-                    className="md:w-8 md:h-8 text-purple-600"
-                  />
-                </div>
-                <h3
-                  className={`text-lg md:text-xl font-bold text-slate-900 mb-3 md:mb-4 ${bebasNeue.className}`}
-                >
-                  {feature.title}
-                </h3>
-                <p
-                  className={`text-slate-600 mb-4 md:mb-6 leading-relaxed text-xs md:text-sm ${poppins.className}`}
-                >
-                  {feature.description}
-                </p>
-                <div className="space-y-1 md:space-y-2">
-                  {feature.capabilities.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="text-slate-600 text-xs md:text-sm"
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Integration Section */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 bg-gradient-to-br from-blue-50 to-green-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2
-              className={`text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mb-4 md:mb-6 ${bebasNeue.className}`}
-            >
-              Seamless <span className="text-blue-600">Integration</span>
+      {/* --- ADVANCED CAPABILITIES (THE DARK MODE EXPERIENCE) --- */}
+      <section className="py-32 px-6 bg-slate-900 mx-4 md:mx-8 rounded-[4rem] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20">
+          <div className="lg:w-1/3">
+            <SectionLabel text="Enterprise Grade" />
+            <h2 className={`text-6xl text-white mb-8 ${bebasNeue.className}`}>
+              ADVANCED <br />
+              <span className="text-[#0086DB]">INFRASTRUCTURE</span>
             </h2>
-            <p
-              className={`text-sm sm:text-base md:text-lg text-slate-600 mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed ${poppins.className}`}
-            >
-              Doza integrates with your existing workflow and tools, making
-              adoption smooth and efficient
+            <p className="text-slate-400 mb-10">
+              Scalable technology that grows with your practice, from
+              solo-provider to multi-state clinics.
             </p>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 lg:gap-6 max-w-2xl mx-auto">
-              {[
-                "EHR Systems",
-                "Lab Services",
-                "Pharmacy Networks",
-                "Insurance Providers",
-                "Medical Devices",
-                "Payment Processors",
-                "Scheduling Tools",
-                "Communication Apps",
-              ].map((integration, index) => (
-                <div
-                  key={integration}
-                  className="bg-white rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-slate-200"
+            <button
+              onClick={navToRegister}
+              className="text-[#2BB14B] font-bold flex items-center gap-2 group tracking-widest text-xs"
+            >
+              EXPLORE DOCS{" "}
+              <Plus
+                size={16}
+                className="group-hover:rotate-90 transition-transform"
+              />
+            </button>
+          </div>
+
+          <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                icon: Shield,
+                t: "HIPAA ELITE",
+                d: "End-to-end encryption & total data sovereignty.",
+              },
+              {
+                icon: Globe,
+                t: "MULTI-CLINIC",
+                d: "Manage 50+ locations from one unified dashboard.",
+              },
+              {
+                icon: DollarSign,
+                t: "SMART REVENUE",
+                d: "Auto-insurance verification & instant payouts.",
+              },
+              {
+                icon: Users,
+                t: "PATIENT PORTAL",
+                d: "Custom branded patient apps for your practice.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ x: 10 }}
+                className="p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+              >
+                <item.icon className="text-[#0086DB] mb-4" size={32} />
+                <h4
+                  className={`text-2xl text-white mb-2 ${bebasNeue.className}`}
                 >
-                  <span
-                    className={`text-slate-700 text-xs md:text-sm ${poppins.className}`}
-                  >
-                    {integration}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+                  {item.t}
+                </h4>
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  {item.d}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- TECH STACK STRIP --- */}
+      <section className="py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-4">
+            {[
+              "EHR Systems",
+              "Lab Services",
+              "Pharmacy Networks",
+              "Insurance Providers",
+              "Medical Devices",
+              "Payment Processors",
+              "Scheduling Tools",
+            ].map((tag, i) => (
+              <motion.span
+                key={i}
+                whileHover={{ scale: 1.1, color: "#2BB14B" }}
+                className={`px-8 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-900 font-bold text-sm cursor-default transition-colors ${poppins.className}`}
+              >
+                {tag}
+              </motion.span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FINAL CTA --- */}
+      <section className="pb-32 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2
+            className={`text-6xl md:text-8xl font-bold text-slate-900 mb-10 ${bebasNeue.className}`}
+          >
+            READY TO <span className="text-[#0086DB]">INTEGRATE?</span>
+          </h2>
+          <MagneticButton
+            onClick={navToRegister}
+            className="px-16 py-8 bg-[#2BB14B] text-white rounded-3xl font-bold text-xl shadow-2xl hover:shadow-green-500/20 transition-all"
+          >
+            START YOUR PRACTICE
+          </MagneticButton>
         </div>
       </section>
     </div>

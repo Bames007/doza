@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import {
@@ -8,8 +9,7 @@ import {
   Globe,
   Cpu,
   Zap,
-  Network,
-  Shield,
+  ArrowRight,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./constant";
 import { Feature } from "./type";
@@ -19,316 +19,210 @@ const CenterFeatures: React.FC = () => {
   const isInView = useInView(containerRef, { once: true, margin: "-50px" });
 
   const features: Feature[] = [
-    // ... (your features array remains the same)
     {
       icon: Brain,
       title: "AI-Powered Analytics",
       description:
-        "Advanced machine learning algorithms provide insights into patient flow, resource allocation, and operational efficiency",
+        "Advanced machine learning algorithms providing deep insights into patient flow and operational bottlenecks.",
       benefits: [
-        "Predictive patient volume",
-        "Resource optimization",
-        "Revenue forecasting",
-        "Performance analytics",
+        "Predictive Volume",
+        "Resource Optimization",
+        "Revenue Forecasting",
+        "Efficiency Scoring",
       ],
     },
     {
       icon: Cloud,
       title: "Free EMR Systems",
       description:
-        "Complete Electronic Medical Records system at no cost with seamless integration capabilities",
+        "A comprehensive Electronic Medical Records cloud suite at zero cost, built for speed and security.",
       benefits: [
-        "Zero upfront cost",
-        "Easy data migration",
-        "Interoperability",
-        "Customizable templates",
+        "Zero Upfront Cost",
+        "Cloud Backup",
+        "Instant Migration",
+        "Custom Templates",
       ],
     },
     {
       icon: BarChart3,
-      title: "Inventory Management",
+      title: "Inventory Intelligence",
       description:
-        "Real-time inventory tracking with automated ordering and stock optimization for pharmacies and labs",
+        "Real-time stock tracking with predictive ordering to ensure your pharmacy or lab never runs dry.",
       benefits: [
-        "Automated reordering",
-        "Waste reduction",
-        "Cost optimization",
-        "Supplier integration",
+        "Auto-Reordering",
+        "Waste Tracking",
+        "Supplier Sync",
+        "Profit Tracking",
       ],
     },
     {
       icon: Globe,
-      title: "Location-Based Services",
+      title: "Geo-Intelligence",
       description:
-        "Connect with local patients and emergency services through intelligent geolocation features",
+        "Connect with patients in your immediate vicinity through our high-intent routing network.",
       benefits: [
-        "Local patient matching",
-        "Emergency coordination",
-        "Market analytics",
-        "Service area optimization",
+        "Local Matching",
+        "Emergency Routing",
+        "Market Analysis",
+        "Density Mapping",
       ],
     },
     {
       icon: Cpu,
-      title: "Advanced Monitoring",
+      title: "Vitals Monitoring",
       description:
-        "Remote patient monitoring and specialized care management for clinics and diagnostic centers",
+        "Remote patient monitoring tools that alert your staff the moment a patient's vitals cross a threshold.",
       benefits: [
-        "Remote vitals tracking",
-        "Alert systems",
-        "Progress monitoring",
-        "Specialized workflows",
+        "Remote Tracking",
+        "Smart Alerts",
+        "Live Progress",
+        "Care Workflows",
       ],
     },
     {
       icon: Zap,
-      title: "Emergency Response",
+      title: "Rapid Response",
       description:
-        "Integrated emergency response system connecting hospitals, pharmacies, and ambulances in real-time",
+        "An integrated emergency trigger system that connects you to ambulances and blood banks instantly.",
       benefits: [
-        "Real-time coordination",
-        "Patient tracking",
-        "Resource dispatch",
-        "Status updates",
-      ],
-    },
-    {
-      icon: Network,
-      title: "Unified Network",
-      description:
-        "Seamless connection between patients, medics, and centers for coordinated care delivery",
-      benefits: [
-        "Cross-platform communication",
-        "Shared records",
-        "Referral management",
-        "Collaborative care",
-      ],
-    },
-    {
-      icon: Shield,
-      title: "Enterprise Security",
-      description:
-        "Military-grade security with HIPAA compliance and 99.9% uptime guarantee",
-      benefits: [
-        "Data encryption",
-        "Access controls",
-        "Audit trails",
-        "Disaster recovery",
+        "1-Tap Dispatch",
+        "Real-time Tracking",
+        "Trauma Records",
+        "Priority Comms",
       ],
     },
   ];
 
-  // Stagger animation for features with proper typing
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.12, delayChildren: 0.2 },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.95,
-    },
+    hidden: { opacity: 0, scale: 0.95, y: 30 },
     visible: {
       opacity: 1,
+      scale: 1,
       y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
-
-  const iconVariants: Variants = {
-    hidden: { scale: 0, rotate: -180 },
-    visible: {
-      scale: 1,
-      rotate: 0,
-      transition: {
-        type: "spring",
-        stiffness: 150,
-        damping: 15,
-      },
+      transition: { type: "spring", stiffness: 80, damping: 12 },
     },
   };
 
   return (
     <section
       id="features"
-      className="py-12 md:py-20 bg-white overflow-hidden"
+      className={`py-32 bg-white relative overflow-hidden ${poppins.className}`}
       ref={containerRef}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      {/* Decorative background element */}
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-emerald-50/50 rounded-full blur-[120px] -z-10" />
+
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-12 md:mb-16"
-        >
-          <motion.div
-            initial={{ scale: 0.8 }}
-            animate={isInView ? { scale: 1 } : { scale: 0.8 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-block mb-4"
-          >
-            <div className="w-3 h-3 bg-purple-600 rounded-full mx-1 inline-block"></div>
-            <div className="w-3 h-3 bg-blue-600 rounded-full mx-1 inline-block"></div>
-            <div className="w-3 h-3 bg-green-500 rounded-full mx-1 inline-block"></div>
-          </motion.div>
-
-          <h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 md:mb-6 leading-tight ${bebasNeue.className}`}
-          >
-            Powerful Features for
-            <motion.span
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-8">
+          <div className="max-w-3xl">
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="block bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mt-2"
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              className="flex items-center gap-3 mb-6"
             >
-              Modern Healthcare
-            </motion.span>
-          </h2>
+              <span className="h-[2px] w-12 bg-[#2BB14B]" />
+              <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#2BB14B]">
+                Technological Superiority
+              </span>
+            </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className={`text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed ${poppins.className} px-2`}
-          >
-            Designed specifically for healthcare providers, our features
-            streamline operations, enhance patient care, and drive growth
-            through intelligent technology.
-          </motion.p>
-        </motion.div>
+            <h2
+              className={`text-6xl md:text-9xl font-bold text-slate-900 leading-[0.8] ${bebasNeue.className}`}
+            >
+              ENGINEERED FOR <br />
+              <span className="text-[#2BB14B] italic">PRECISION</span> CARE
+            </h2>
+          </div>
+          <p className="text-slate-500 max-w-sm text-lg font-medium leading-relaxed pb-2">
+            Eliminate operational manual labor with our suite of clinical
+            intelligence tools designed for the 2026 healthcare landscape.
+          </p>
+        </div>
 
         {/* Features Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {features.map((feature, index) => (
+          {features.map((feature, idx) => (
             <motion.div
               key={feature.title}
               variants={itemVariants}
-              whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: "easeOut" },
-              }}
-              className="group p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-purple-300 transition-all duration-300 hover:shadow-2xl shadow-lg shadow-slate-200/50"
+              className="group relative p-10 rounded-[3.5rem] bg-slate-50/50 border border-slate-200/60 hover:border-[#2BB14B]/40 hover:bg-white transition-all duration-500 hover:shadow-[0_20px_50px_rgba(43,177,75,0.1)]"
             >
-              <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
-                {/* Icon Container */}
-                <motion.div
-                  variants={iconVariants}
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 flex-shrink-0 shadow-lg"
+              {/* Subtle hover glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[3.5rem]" />
+
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-[#2BB14B] group-hover:bg-[#2BB14B] group-hover:text-white group-hover:rotate-6 transition-all duration-500 shadow-sm mb-8">
+                  <feature.icon size={32} strokeWidth={1.5} />
+                </div>
+
+                <h3
+                  className={`text-4xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
                 >
-                  <feature.icon className="text-purple-600 w-6 h-6 sm:w-7 sm:h-7" />
-                </motion.div>
+                  {feature.title}
+                </h3>
 
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <motion.h3
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                    className={`text-xl sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-4 leading-tight ${bebasNeue.className}`}
-                  >
-                    {feature.title}
-                  </motion.h3>
+                <p className="text-slate-600 text-sm mb-8 leading-relaxed font-medium">
+                  {feature.description}
+                </p>
 
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                    className={`text-sm sm:text-base text-slate-600 leading-relaxed mb-4 sm:mb-6 ${poppins.className}`}
-                  >
-                    {feature.description}
-                  </motion.p>
-
-                  <motion.ul
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
-                    className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3"
-                  >
-                    {feature.benefits.map((benefit, idx) => (
-                      <motion.li
-                        key={idx}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{
-                          duration: 0.4,
-                          delay: 0.8 + index * 0.1 + idx * 0.1,
-                        }}
-                        className="flex items-center gap-2 sm:gap-3"
-                      >
-                        <motion.div
-                          whileHover={{ scale: 1.2 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 400,
-                            damping: 10,
-                          }}
-                        >
-                          <CheckCircle
-                            size={14}
-                            className="text-green-500 flex-shrink-0"
-                          />
-                        </motion.div>
-                        <span
-                          className={`text-xs sm:text-sm text-slate-600 ${poppins.className} leading-tight`}
-                        >
-                          {benefit}
-                        </span>
-                      </motion.li>
-                    ))}
-                  </motion.ul>
+                <div className="space-y-3">
+                  {feature.benefits.map((benefit, bIdx) => (
+                    <div key={bIdx} className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                        <CheckCircle size={10} className="text-[#2BB14B]" />
+                      </div>
+                      <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                        {benefit}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Bottom CTA */}
+        {/* Bottom CTA Card */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
-          className="text-center mt-12 md:mt-16"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-24 p-12 md:p-24 rounded-[4rem] bg-slate-950 text-center relative overflow-hidden shadow-2xl"
         >
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 md:p-8 border border-purple-100">
+          <div className="relative z-10 flex flex-col items-center">
             <h3
-              className={`text-2xl sm:text-3xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
+              className={`text-5xl md:text-8xl text-white mb-8 leading-none ${bebasNeue.className}`}
             >
-              Ready to Transform Your Healthcare Center?
+              TRANSCEND THE <br />{" "}
+              <span className="text-[#2BB14B]">ORDINARY CLINIC</span>
             </h3>
-            <p
-              className={`text-slate-600 mb-6 max-w-2xl mx-auto ${poppins.className}`}
-            >
-              Join thousands of healthcare providers already using our platform
-              to deliver better patient care.
+            <p className="text-slate-400 max-w-xl mb-12 text-lg font-medium">
+              Join 2,000+ facilities already using our 2026 infrastructure to
+              automate their future.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Get Started Today
-            </motion.button>
+            <button className="group relative flex items-center gap-4 px-12 py-6 bg-[#2BB14B] text-white rounded-2xl font-black text-xl hover:scale-105 transition-all shadow-xl shadow-emerald-900/20">
+              GET STARTED NOW
+              <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+            </button>
           </div>
+
+          {/* Advanced background decorative patterns */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2BB14B]/20 blur-[120px] rounded-full" />
+          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-500/10 blur-[100px] rounded-full" />
         </motion.div>
       </div>
     </section>
