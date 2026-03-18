@@ -256,24 +256,32 @@ const DetailsStep: React.FC<DetailsStepProps> = ({
             <div className="grid grid-cols-2 gap-3">
               {centerRequirements[
                 selectedCenterType as keyof typeof centerRequirements
-              ]?.map((req) => (
-                <div key={req.field} className="p-3 bg-slate-100/80 rounded-xl">
-                  <label className="text-[8px] font-black text-slate-500 uppercase block mb-1">
-                    {req.label}
-                  </label>
-                  <input
-                    type="number"
-                    value={formData.specificDetails?.[req.field] || ""}
-                    onChange={(e) =>
-                      onInputChange("specificDetails", {
-                        ...formData.specificDetails,
-                        [req.field]: parseInt(e.target.value) || 0,
-                      })
-                    }
-                    className="w-full bg-transparent text-sm font-bold outline-none text-slate-900"
-                  />
-                </div>
-              ))}
+              ]?.map((req) => {
+                const rawValue = formData.specificDetails?.[req.field];
+                // Ensure value is either a number or an empty string (for undefined/null/boolean)
+                const safeValue = typeof rawValue === "number" ? rawValue : "";
+                return (
+                  <div
+                    key={req.field}
+                    className="p-3 bg-slate-100/80 rounded-xl"
+                  >
+                    <label className="text-[8px] font-black text-slate-500 uppercase block mb-1">
+                      {req.label}
+                    </label>
+                    <input
+                      type="number"
+                      value={safeValue}
+                      onChange={(e) =>
+                        onInputChange("specificDetails", {
+                          ...formData.specificDetails,
+                          [req.field]: parseInt(e.target.value) || 0,
+                        })
+                      }
+                      className="w-full bg-transparent text-sm font-bold outline-none text-slate-900"
+                    />
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}
