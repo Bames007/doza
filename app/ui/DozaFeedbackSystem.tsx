@@ -303,7 +303,7 @@ export default function FeedbackModal({
                                 name: e.target.value,
                               })
                             }
-                            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white outline-none focus:border-emerald-500"
+                            className="w-full pl-11 pr-4 py-3 bg-slate-50 text-slate-500 border border-slate-200 rounded-xl text-sm focus:bg-white outline-none focus:border-emerald-500"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-2">
@@ -322,7 +322,7 @@ export default function FeedbackModal({
                                   email: e.target.value,
                                 })
                               }
-                              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white outline-none"
+                              className="w-full pl-11 pr-4 py-3 text-slate-500 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white outline-none"
                             />
                           </div>
                           <div className="relative">
@@ -340,7 +340,7 @@ export default function FeedbackModal({
                                   phone: e.target.value,
                                 })
                               }
-                              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white outline-none"
+                              className="w-full pl-11 pr-4 py-3 text-slate-500 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white outline-none"
                             />
                           </div>
                         </div>
