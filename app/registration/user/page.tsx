@@ -9,6 +9,8 @@ import {
   AlertCircle,
   Calendar,
   ChevronRight,
+  ArrowRight,
+  Check,
 } from "lucide-react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
@@ -16,6 +18,8 @@ import { db, auth } from "@/app/utils/firebaseConfig";
 import { UserRegistrationData, Plan } from "./type";
 import { plans } from "./constants";
 import { avatars } from "./type";
+import { motion } from "framer-motion";
+import { bebasNeue, poppins } from "@/app/home/doza_center/constant";
 
 const UserRegistration: React.FC = () => {
   const [formData, setFormData] = useState<UserRegistrationData>({
@@ -169,26 +173,70 @@ const UserRegistration: React.FC = () => {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 py-8 px-4 flex items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl text-center border border-green-100">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
-            <CheckCircle size={40} className="text-green-600" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">
-            Welcome to Doza!
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Your account has been created successfully. Please verify your email
-            to get started.
-          </p>
-          <a
-            href="/login"
-            className="inline-flex items-center gap-2 bg-green-600 text-white px-8 py-3 rounded-xl hover:bg-green-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-200"
-          >
-            Go to Login
-            <ChevronRight size={18} />
-          </a>
+      <div className="min-h-[100svh] bg-[#FDFDFD] flex items-center justify-center px-6 overflow-hidden relative">
+        {/* --- AMBIENT BACKGROUND (Matching the Hero) --- */}
+        <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-md w-full relative z-10 text-center"
+        >
+          {/* --- REFINED SUCCESS INDICATOR --- */}
+          <div className="relative w-24 h-24 mx-auto mb-12">
+            <motion.div
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-emerald-500/10 rounded-full blur-2xl"
+            />
+            <div className="relative w-full h-full bg-white border border-slate-100 rounded-full shadow-sm flex items-center justify-center">
+              <Check size={32} className="text-emerald-500" strokeWidth={1.5} />
+            </div>
+          </div>
+
+          {/* --- TEXT CONTENT --- */}
+          <h2
+            className={`text-5xl font-bold text-slate-950 mb-6 tracking-tight ${bebasNeue.className}`}
+          >
+            WELCOME TO <span className="text-emerald-600">DOZA.</span>
+          </h2>
+
+          <p
+            className={`text-slate-500 text-lg font-light leading-relaxed mb-12 ${poppins.className}`}
+          >
+            Your node in the medical grid is now active. Please verify your
+            email to synchronize your health data.
+          </p>
+
+          {/* --- ACTION --- */}
+          <div className="flex flex-col gap-4">
+            <a
+              href="https://doza-user.vercel.app/"
+              className="group relative flex items-center justify-center gap-3 bg-black text-white px-10 py-5 rounded-2xl transition-all hover:bg-emerald-600 active:scale-95 shadow-2xl shadow-black/5"
+            >
+              <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+                Enter Dashboard
+              </span>
+              <ArrowRight
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </a>
+
+            <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest pt-4">
+              Protocol: Secure_Auth_v4
+            </p>
+          </div>
+        </motion.div>
       </div>
     );
   }

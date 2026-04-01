@@ -24,16 +24,14 @@ const LoadingScreenPage = () => {
       "📁 Retrieved from localStorage:",
       savedRole,
       "type:",
-      typeof savedRole
+      typeof savedRole,
     );
 
     // Fix: Handle the case where savedRole might be the string "null"
     if (
       savedRole &&
       savedRole !== "null" &&
-      (savedRole === "patient" ||
-        savedRole === "medic" ||
-        savedRole === "center")
+      (savedRole === "user" || savedRole === "medic" || savedRole === "center")
     ) {
       console.log("✅ Found valid saved role:", savedRole);
       setSelectedRole(savedRole as UserRole);
@@ -68,7 +66,7 @@ const LoadingScreenPage = () => {
       "🎪 Rendering Role Selection - showRoleSelection:",
       showRoleSelection,
       "selectedRole:",
-      selectedRole
+      selectedRole,
     );
     return (
       <DozaRoleBasedExperience
@@ -87,7 +85,7 @@ const LoadingScreenPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <AnimatePresence mode="wait">
-        {selectedRole === "patient" && (
+        {selectedRole === "user" && (
           <PatientHomePageWrapper onChangeRole={handleChangeRole} />
         )}
         {selectedRole === "medic" && (

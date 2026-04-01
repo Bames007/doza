@@ -22,7 +22,7 @@ export default function ContactPage() {
     email: "",
     subject: "",
     message: "",
-    userType: "patient",
+    userType: "user",
   });
 
   return (
@@ -117,7 +117,7 @@ export default function ContactPage() {
 
               <form className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
-                  {["patient", "medic"].map((type) => (
+                  {["user", "medic"].map((type) => (
                     <button
                       key={type}
                       type="button"
@@ -130,7 +130,7 @@ export default function ContactPage() {
                           : "border-slate-100 text-slate-400"
                       }`}
                     >
-                      {type === "patient" ? (
+                      {type === "user" ? (
                         <User size={18} />
                       ) : (
                         <Building size={18} />

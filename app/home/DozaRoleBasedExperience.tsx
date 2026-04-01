@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Disclosure, Transition } from "@headlessui/react";
 import {
   Heart,
   Stethoscope,
@@ -42,6 +43,8 @@ import {
   Award,
   ShieldCheck,
   Microscope,
+  HelpCircle,
+  ChevronRight,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./doza_center/constant";
 import Image from "next/image";
@@ -52,7 +55,7 @@ if (typeof window !== "undefined") {
 }
 
 // --- Types ---
-export type UserRole = "patient" | "medic" | "center" | null;
+export type UserRole = "user" | "medic" | "center" | null;
 
 interface Props {
   onRoleSelect: (role: UserRole) => void;
@@ -202,8 +205,8 @@ const MagneticButton = ({ children, onClick, className }: any) => {
 
 const ECOSYSTEM_PILLARS = [
   {
-    id: "patient",
-    title: "Doza Patient",
+    id: "user",
+    title: "Doza User",
     tagline: "Your Health, Always With You",
     description:
       "A personal health companion that captures your complete medical journey. From symptom logging to instant doctor booking, digital prescriptions, and daily medication reminders—all in one place. Your history follows you, so every doctor you see already knows your story.",
@@ -352,7 +355,7 @@ const STRATEGIC_ADVANTAGES = [
 
 const ROLE_CARDS = [
   {
-    role: "patient",
+    role: "user",
     title: "For Patients",
     subtitle: "Take control of your health",
     perks: [
@@ -830,546 +833,709 @@ export default function DozaExplainer({
         </section>
 
         {/* --- DOZA MEDIC DEEP DIVE --- */}
-        <section id="medic" className="py-24 px-6 bg-slate-50/80">
+        <section id="medic" className="py-32 px-6 bg-[#fcfcfc]">
           <div className="container mx-auto max-w-7xl">
+            {/* --- HEADER: Professional & Sharp --- */}
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="mb-20 text-center md:text-left"
+              className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8"
             >
-              <SectionLabel text="Doza Medic" />
-              <h2
-                className={`text-6xl md:text-8xl font-bold tracking-tight ${bebasNeue.className}`}
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 border border-emerald-200 mb-6">
+                  <Activity size={14} className="text-emerald-600" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">
+                    Provider Suite v2.0
+                  </span>
+                </div>
+                <h2
+                  className={`text-7xl md:text-9xl font-bold tracking-tighter leading-[0.8] text-slate-950 ${bebasNeue.className}`}
+                >
+                  YOUR PRACTICE, <br />
+                  <span className="text-emerald-500 italic">SIMPLIFIED.</span>
+                </h2>
+              </div>
+              <p
+                className={`text-xl text-slate-500 max-w-sm font-light leading-relaxed mb-2 ${poppins.className}`}
               >
-                YOUR PRACTICE,{" "}
-                <span className="text-emerald-600 italic">SIMPLIFIED</span>
-              </h2>
+                The first clinical OS designed to reduce cognitive load and
+                prioritize patient outcomes.
+              </p>
             </motion.div>
 
-            {/* Bento grid for features */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-              {/* Big Feature */}
-              <PremiumCard className="md:col-span-8 flex flex-col md:flex-row gap-10 items-center min-h-[400px]">
-                <div className="flex-1">
-                  <FileText
-                    className="mb-6 text-emerald-600"
-                    size={48}
-                    strokeWidth={1.5}
-                  />
-                  <h3
-                    className={`text-4xl font-bold mb-4 ${bebasNeue.className}`}
-                  >
-                    Complete Patient Timeline
-                  </h3>
-                  <p
-                    className={`text-slate-500 font-light leading-relaxed ${poppins.className}`}
-                  >
-                    No more flipping through papers. See every past visit,
-                    prescription, and lab result—all in one chronological view.
-                  </p>
-                </div>
-                <div className="w-full md:w-80 h-64 relative rounded-3xl overflow-hidden shadow-inner bg-slate-100">
-                  <Image
-                    src="https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=800"
-                    alt="Patient timeline"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </PremiumCard>
-
-              {/* Dark Accent Card */}
-              <PremiumCard className="md:col-span-4 bg-slate-950 text-white border-none flex flex-col justify-between">
-                <div>
-                  <Pill className="mb-6 text-emerald-400" size={40} />
-                  <h3
-                    className={`text-4xl font-bold mb-4 ${bebasNeue.className}`}
-                  >
-                    Dosage Tracking
-                  </h3>
-                </div>
-                <p
-                  className={`text-slate-400 text-sm font-light leading-relaxed ${poppins.className}`}
-                >
-                  Create structured plans. Patients get reminders. You get
-                  alerts if doses are missed—so you can follow up.
-                </p>
-              </PremiumCard>
-
-              {/* Small Detailed Card */}
-              <PremiumCard className="md:col-span-4">
-                <Video className="mb-6 text-emerald-600" size={40} />
-                <h3
-                  className={`text-4xl font-bold mb-4 ${bebasNeue.className}`}
-                >
-                  Telemedicine
-                </h3>
-                <p
-                  className={`text-slate-500 text-sm font-light ${poppins.className}`}
-                >
-                  Secure video, chat, and file sharing. Consult patients
-                  anywhere, without leaving Doza.
-                </p>
-              </PremiumCard>
-
-              {/* Image-Heavy Bento */}
-              <PremiumCard className="md:col-span-8 !p-0 overflow-hidden">
-                <div className="grid md:grid-cols-2 h-full">
-                  <div className="p-8 flex flex-col justify-center">
-                    <Users className="mb-6 text-emerald-600" size={40} />
+            {/* --- BENTO GRID: The Clinical OS --- */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[900px]">
+              {/* 1. The Timeline (Primary Feature) */}
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="md:col-span-8 md:row-span-1 relative rounded-[3rem] bg-white border border-slate-200 p-10 overflow-hidden group shadow-sm hover:shadow-2xl transition-all duration-500"
+              >
+                <div className="grid md:grid-cols-2 gap-10 h-full items-center">
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-8 shadow-sm">
+                      <FileText size={28} />
+                    </div>
                     <h3
-                      className={`text-4xl font-bold mb-4 ${bebasNeue.className}`}
+                      className={`text-5xl font-bold text-slate-950 mb-6 leading-none ${bebasNeue.className}`}
                     >
-                      Specialist Network
+                      COMPLETE PATIENT <br /> TIMELINE
                     </h3>
                     <p
-                      className={`text-slate-500 text-sm font-light ${poppins.className}`}
+                      className={`text-slate-500 text-lg leading-relaxed ${poppins.className}`}
                     >
-                      Consult colleagues instantly. Share cases, get second
-                      opinions—all within the platform.
+                      Every visit, prescription, and lab result in a single,
+                      high-fidelity chronological view. No more fragmented
+                      records.
                     </p>
                   </div>
-                  <div className="relative min-h-[250px] bg-emerald-50">
-                    <Image
-                      src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800"
-                      alt="Doctors collaborating"
-                      fill
-                      className="object-cover mix-blend-multiply opacity-60"
-                    />
+
+                  {/* Mockup: Timeline UI */}
+                  <div className="relative bg-slate-50 rounded-[2rem] border border-slate-200 h-full min-h-[300px] p-6 overflow-hidden">
+                    <div className="space-y-4">
+                      {[1, 2, 3].map((i) => (
+                        <div
+                          key={i}
+                          className="flex gap-4 p-4 bg-white rounded-xl border border-slate-100 shadow-sm opacity-60 hover:opacity-100 transition-opacity"
+                        >
+                          <div className="w-1 h-10 bg-emerald-500 rounded-full" />
+                          <div>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase">
+                              Oct 1{i}, 2026
+                            </p>
+                            <p className="text-sm font-bold text-slate-900 leading-none">
+                              Diagnostic Imaging - Report
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent" />
                   </div>
                 </div>
-              </PremiumCard>
+              </motion.div>
+
+              {/* 2. Dosage Tracking (The Dark Accent) */}
+              <motion.div
+                whileHover={{ scale: 0.98 }}
+                className="md:col-span-4 md:row-span-1 bg-slate-950 rounded-[3rem] p-10 flex flex-col justify-between relative overflow-hidden text-white"
+              >
+                <div className="relative z-10">
+                  <Pill className="text-emerald-400 mb-8" size={48} />
+                  <h3
+                    className={`text-5xl font-bold mb-6 tracking-tight ${bebasNeue.className}`}
+                  >
+                    ADHERENCE <br /> ENGINE
+                  </h3>
+                  <p className="text-slate-400 font-light leading-relaxed">
+                    Automated reminders and real-time alerts if doses are
+                    missed. Bridge the gap between consultation and recovery.
+                  </p>
+                </div>
+                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-500/20 rounded-full blur-3xl" />
+              </motion.div>
+
+              {/* 3. Specialist Network (Image Heavy) */}
+              <motion.div className="md:col-span-6 md:row-span-1 relative rounded-[3rem] overflow-hidden group border border-slate-200 shadow-sm">
+                <Image
+                  src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=1200"
+                  alt="Collaboration"
+                  fill
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent" />
+                <div className="absolute bottom-10 left-10 right-10">
+                  <Users size={32} className="text-emerald-400 mb-4" />
+                  <h3
+                    className={`text-5xl text-white font-bold mb-2 ${bebasNeue.className}`}
+                  >
+                    PEER CONSULTATION
+                  </h3>
+                  <p className="text-white/60 text-sm max-w-xs uppercase tracking-widest font-bold">
+                    Secure Second Opinions • Instant Messaging
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* 4. Telemedicine (Minimalist) */}
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="md:col-span-6 md:row-span-1 rounded-[3rem] bg-emerald-50 border border-emerald-100 p-10 flex flex-col justify-center items-center text-center group"
+              >
+                <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-emerald-600 mb-8 shadow-xl shadow-emerald-600/10 group-hover:scale-110 transition-transform duration-500">
+                  <Video size={40} />
+                </div>
+                <h3
+                  className={`text-5xl font-bold text-slate-950 mb-4 ${bebasNeue.className}`}
+                >
+                  TELEMEDICINE REDEFINED
+                </h3>
+                <p className={`text-slate-600 max-w-md ${poppins.className}`}>
+                  Seamless encrypted video, chat, and file sharing within one
+                  window. No external plugins, no friction.
+                </p>
+              </motion.div>
             </div>
 
-            {/* Workflow illustration */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mt-20 bg-gradient-to-br from-emerald-600 to-emerald-800 rounded-[2rem] p-10 text-white relative overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
+            {/* --- WORKFLOW: The "Pulse" Interface --- */}
+            <div className="mt-32 relative bg-emerald-600 rounded-[4rem] p-10 md:p-24 overflow-hidden shadow-[0_50px_100px_-20px_rgba(16,185,129,0.3)]">
+              {/* Decorative SVG Pattern */}
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{
+                  backgroundImage: `radial-gradient(circle, #fff 1px, transparent 1px)`,
+                  backgroundSize: "30px 30px",
+                }}
+              />
+
+              <div className="relative z-10 grid lg:grid-cols-2 gap-20 items-center">
                 <div>
                   <h3
-                    className={`text-4xl md:text-5xl font-bold mb-6 ${bebasNeue.className}`}
+                    className={`text-7xl md:text-8xl font-bold text-white mb-10 leading-[0.85] tracking-tighter ${bebasNeue.className}`}
                   >
-                    A Day with Doza Medic
+                    A DAY WITH <br />
+                    <span className="text-slate-900 italic opacity-40">
+                      DOZA MEDIC
+                    </span>
                   </h3>
-                  <ul className="space-y-4">
+
+                  <div className="space-y-4">
                     {[
-                      "Patient books appointment via Doza",
-                      "You receive notification with full history",
-                      "Consult, take notes, diagnose",
-                      "Issue prescription + structured dosage plan",
-                      "Patient gets reminders; you track adherence",
+                      "Smart-Scheduler Booking",
+                      "Verified Medical History Access",
+                      "Digital Diagnosis Bridge",
+                      "Structured Dosage Protocol",
                     ].map((step, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                      <motion.div
+                        key={i}
+                        whileHover={{ x: 10 }}
+                        className="flex items-center gap-6 p-4 rounded-2xl bg-white/10 border border-white/10 hover:bg-white hover:text-emerald-900 transition-all duration-300 group"
+                      >
+                        <span className="text-3xl font-bold opacity-30 group-hover:opacity-100 leading-none">
                           {i + 1}
                         </span>
-                        <span className={`text-white/90 ${poppins.className}`}>
+                        <p
+                          className={`text-xl font-bold tracking-tight ${poppins.className}`}
+                        >
                           {step}
-                        </span>
-                      </li>
+                        </p>
+                        <ChevronRight className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </motion.div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
-                <div className="relative h-64 md:h-auto">
-                  <div className="absolute inset-0 bg-white/10 rounded-[2rem] backdrop-blur-sm border border-white/20 p-8 flex items-center justify-center">
-                    <div className="relative w-24 h-24">
-                      <Image
-                        src="/logo.png"
-                        alt="Doza"
-                        fill
-                        className="object-contain brightness-0 invert"
-                      />
+
+                {/* The "Brain" Visual */}
+                <div className="relative h-[500px] flex items-center justify-center">
+                  <div className="absolute w-[400px] h-[400px] bg-emerald-400 rounded-full blur-[100px] opacity-50 animate-pulse" />
+
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    className="relative w-80 h-80 rounded-full border-2 border-white/20 flex items-center justify-center"
+                  >
+                    <div className="w-64 h-64 rounded-full border border-white/40 border-dashed" />
+                    <div className="absolute top-0 w-4 h-4 bg-white rounded-full shadow-[0_0_15px_#fff]" />
+                  </motion.div>
+
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <Image
+                      src="/logo.png"
+                      alt="Logo"
+                      width={80}
+                      height={80}
+                      className="brightness-0 invert mb-4"
+                    />
+                    <div className="px-4 py-1 bg-white text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-full">
+                      Ecosystem Live
                     </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* --- STRATEGIC ADVANTAGES --- */}
-        <section id="advantages" className="py-24 px-6">
-          <div className="container mx-auto max-w-7xl">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2
-                className={`text-6xl md:text-8xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
-              >
-                BEYOND AN APP
-              </h2>
-              <p
-                className={`text-lg text-slate-500 max-w-2xl mx-auto ${poppins.className}`}
-              >
-                Doza is designed to become essential healthcare infrastructure.
-              </p>
-            </motion.div>
+        <section
+          id="infrastructure"
+          className="relative py-24 md:py-48 px-6 bg-white overflow-hidden selection:bg-emerald-500 selection:text-white"
+        >
+          {/* --- CLEAN ARCHITECTURAL BACKGROUND --- */}
+          <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+                backgroundSize: "30px 30px",
+              }}
+            />
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {STRATEGIC_ADVANTAGES.map((adv, idx) => (
-                <TiltCard key={idx}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden"
-                  >
-                    <div className="relative h-48">
-                      <Image
-                        src={adv.image}
-                        alt={adv.title}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                      <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                        <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white">
-                          <adv.medicalIcon size={20} strokeWidth={1.5} />
-                        </div>
-                        <h3
-                          className={`text-2xl font-bold text-white ${bebasNeue.className}`}
-                        >
-                          {adv.title}
-                        </h3>
-                      </div>
-                    </div>
-                    <div className="p-8">
-                      <p
-                        className={`text-slate-600 leading-relaxed ${poppins.className}`}
-                      >
-                        {adv.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                </TiltCard>
-              ))}
+          <div className="container mx-auto max-w-7xl relative z-10">
+            {/* --- HEADER: THE MISSION --- */}
+            <div className="flex flex-col items-center text-center mb-32 max-w-3xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-8"
+              >
+                Integrated Healthcare Ecosystem
+              </motion.div>
+
+              <h2
+                className={`text-[clamp(3rem,8vw,8rem)] font-light text-slate-950 leading-[0.9] tracking-tight mb-8 ${bebasNeue.className}`}
+              >
+                HEALTH DATA, <br />
+                <span className="font-black text-emerald-600">IN MOTION.</span>
+              </h2>
+
+              <p
+                className={`text-xl md:text-2xl text-slate-500 font-light leading-relaxed ${poppins.className}`}
+              >
+                Doza is the link between your personal vitals and the
+                professionals who save lives. We turn static data into{" "}
+                <span className="text-black font-semibold">active care</span>.
+              </p>
             </div>
 
-            {/* Data Moat */}
+            {/* --- THE THREE PILLARS: USER | CENTER | MEDIC --- */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              {/* 01. FOR THE USER: Peace of Mind */}
+              <motion.div
+                whileHover={{ y: -8 }}
+                className="relative h-[580px] bg-[#fafafa] border border-slate-100 rounded-[3rem] p-12 flex flex-col group overflow-hidden"
+              >
+                <div className="mb-12">
+                  <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 mb-8">
+                    <ShieldCheck size={28} />
+                  </div>
+                  <h3
+                    className={`text-5xl text-black leading-none mb-6 ${bebasNeue.className}`}
+                  >
+                    YOUR DATA <br /> SAVES YOU
+                  </h3>
+                  <p className="text-slate-500 text-base leading-relaxed">
+                    Your medical history and real-time vitals stay with you. In
+                    an emergency, Doza speaks for you when you can't.
+                  </p>
+                </div>
+
+                <ul className="space-y-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-emerald-600 transition-colors">
+                  <li>• Instant Allergy Alerts</li>
+                  <li>• Secure Vital Tracking</li>
+                  <li>• Direct Family Notify</li>
+                </ul>
+              </motion.div>
+
+              {/* 02. FOR MEDICAL CENTERS: Efficiency */}
+              <motion.div
+                whileHover={{ y: -8 }}
+                className="relative h-[580px] bg-slate-950 rounded-[3rem] p-12 flex flex-col text-white group overflow-hidden shadow-2xl"
+              >
+                <div className="mb-12 relative z-10">
+                  <div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center text-white mb-8 shadow-lg shadow-emerald-500/20">
+                    <Activity size={28} />
+                  </div>
+                  <h3
+                    className={`text-5xl leading-none mb-6 ${bebasNeue.className}`}
+                  >
+                    SYSTEM <br /> READINESS
+                  </h3>
+                  <p className="text-slate-400 text-base leading-relaxed">
+                    Equip your facility with a live feed of incoming patient
+                    data. Reduce intake time and improve triage accuracy.
+                  </p>
+                </div>
+
+                <ul className="relative z-10 space-y-4 text-[11px] font-bold uppercase tracking-widest text-emerald-500/60 group-hover:text-emerald-400 transition-colors">
+                  <li>• Real-time Triage Hub</li>
+                  <li>• Resource Optimization</li>
+                  <li>• Inter-Facility Sync</li>
+                </ul>
+
+                {/* Subtle Background Pattern */}
+                <div className="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none" />
+              </motion.div>
+
+              {/* 03. FOR THE MEDIC: Speed */}
+              <motion.div
+                whileHover={{ y: -8 }}
+                className="relative h-[580px] bg-[#fafafa] border border-slate-100 rounded-[3rem] p-12 flex flex-col group overflow-hidden"
+              >
+                <div className="mb-12">
+                  <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 mb-8">
+                    <Microscope size={28} />
+                  </div>
+                  <h3
+                    className={`text-5xl text-black leading-none mb-6 ${bebasNeue.className}`}
+                  >
+                    PRE-ARRIVAL <br /> INSIGHT
+                  </h3>
+                  <p className="text-slate-500 text-base leading-relaxed">
+                    Know the patient's condition before you even reach the
+                    scene. Access critical records with one biometric scan.
+                  </p>
+                </div>
+
+                <ul className="space-y-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-emerald-600 transition-colors">
+                  <li>• No-Touch Data Intake</li>
+                  <li>• Verified Medical IDs</li>
+                  <li>• Vital Trend Analysis</li>
+                </ul>
+              </motion.div>
+            </div>
+
+            {/* --- THE DOZA BRIDGE: RELIABILITY --- */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mt-20 bg-white rounded-[2rem] border border-slate-200 shadow-2xl p-10 overflow-hidden relative"
+              className="bg-[#fcfcfc] border border-slate-200 rounded-[4rem] p-10 md:p-24 overflow-hidden relative"
             >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/30 blur-[100px] rounded-full" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
-                <div>
-                  <h3
-                    className={`text-4xl md:text-5xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
+              <div className="flex flex-col lg:flex-row gap-20 items-center">
+                <div className="w-full lg:w-1/2">
+                  <h4
+                    className={`text-6xl text-black mb-8 leading-[0.85] ${bebasNeue.className}`}
                   >
-                    The Data Advantage
-                  </h3>
-                  <p
-                    className={`text-slate-600 text-lg leading-relaxed mb-6 ${poppins.className}`}
-                  >
-                    Every interaction generates anonymized insights. Over time,
-                    Doza can identify treatment trends and provide regional
-                    health intelligence – becoming indispensable.
+                    THE DOZA <br />{" "}
+                    <span className="text-emerald-600 italic underline decoration-slate-200 underline-offset-8">
+                      ASSURANCE
+                    </span>
+                  </h4>
+                  <p className="text-slate-500 text-lg font-light leading-relaxed mb-10">
+                    We don't just store data; we facilitate{" "}
+                    <span className="text-black font-semibold">
+                      intervention
+                    </span>
+                    . By linking users directly to the medical grid, we
+                    eliminate the minutes of uncertainty that stand between a
+                    crisis and care.
                   </p>
-                  <div className="flex flex-wrap gap-3">
-                    <span className="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium flex items-center gap-1">
-                      <HeartPulse size={14} /> Treatment insights
-                    </span>
-                    <span className="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium flex items-center gap-1">
-                      <Activity size={14} /> Regional health
-                    </span>
-                    <span className="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-medium flex items-center gap-1">
-                      <Globe size={14} /> Anonymized analytics
-                    </span>
+
+                  <div className="grid grid-cols-2 gap-8">
+                    <div>
+                      <p
+                        className={`text-4xl text-black ${bebasNeue.className}`}
+                      >
+                        0.4s
+                      </p>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
+                        Average Sync Time
+                      </p>
+                    </div>
+                    <div>
+                      <p
+                        className={`text-4xl text-black ${bebasNeue.className}`}
+                      >
+                        100%
+                      </p>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">
+                        HIPAA Compliant
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
-                  {DATA_ICONS.map((item, i) => (
-                    <div
-                      key={i}
-                      className="aspect-square rounded-xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center text-slate-500 hover:bg-emerald-50 hover:text-emerald-600 transition-colors group"
-                    >
-                      <item.icon size={24} className="mb-1" />
-                      <span className="text-[10px] font-medium">
-                        {item.label}
+
+                {/* --- VISUAL INTERFACE: THE LIVE HUB --- */}
+                <div className="w-full lg:w-1/2 bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 p-8 md:p-12 relative">
+                  <div className="flex justify-between items-center mb-10 pb-6 border-b border-slate-50">
+                    <div>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                        Patient Profile #8821
+                      </p>
+                      <p
+                        className={`text-4xl text-black ${bebasNeue.className}`}
+                      >
+                        CRITICAL ALERT
+                      </p>
+                    </div>
+                    <div className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-full uppercase">
+                      Transmitting
+                    </div>
+                  </div>
+
+                  {/* Minimal Bio-Feed */}
+                  <div className="space-y-6 mb-10">
+                    <div className="flex justify-between items-end">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">
+                        Blood Oxygen (SpO2)
+                      </span>
+                      <span
+                        className={`text-3xl text-black ${bebasNeue.className}`}
+                      >
+                        98%
                       </span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "98%" }}
+                        className="h-full bg-emerald-500"
+                      />
+                    </div>
 
-            {/* Dark Luxury Investor Section - Enhanced */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative mx-auto mt-24 overflow-hidden rounded-[4rem] bg-slate-950 py-24 px-6 text-white"
-            >
-              <div className="absolute top-0 right-0 h-full w-full opacity-20">
-                <div className="absolute top-[-20%] right-[-10%] h-[80%] w-[80%] rounded-full bg-emerald-600 blur-[150px]" />
-              </div>
-
-              <div className="container relative z-10 mx-auto max-w-7xl">
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
-                  <div>
-                    <SectionLabel text="Investment Thesis" />
-                    <h2
-                      className={`text-7xl md:text-9xl font-bold leading-none mb-6 ${bebasNeue.className}`}
-                    >
-                      OWN THE <br />{" "}
-                      <span className="text-emerald-400 italic">STACK</span>
-                    </h2>
-                    <p
-                      className={`text-xl text-slate-400 font-light leading-relaxed mb-8 ${poppins.className}`}
-                    >
-                      Doza is digital infrastructure for the $9T healthcare
-                      market. We capture value from symptom check to final
-                      recovery by owning the entire patient journey.
-                    </p>
-                    <p
-                      className={`text-lg text-slate-500 font-light mb-10 ${poppins.className}`}
-                    >
-                      Unlike point solutions (telemedicine apps, EMRs,
-                      prescription tools), Doza integrates all layers into one
-                      ecosystem. This creates a powerful moat:
-                    </p>
-                    <ul className="space-y-4 mb-12">
-                      <li className="flex items-start gap-3">
-                        <CheckCircle
-                          className="text-emerald-500 flex-shrink-0 mt-1"
-                          size={20}
-                        />
-                        <span className={`text-slate-300 ${poppins.className}`}>
-                          <strong className="text-white">
-                            Network effects
-                          </strong>{" "}
-                          – Each new patient, doctor, or center increases value
-                          for all.
+                    <div className="flex justify-between items-end pt-4">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">
+                        Heart Rate
+                      </span>
+                      <span
+                        className={`text-3xl text-emerald-600 ${bebasNeue.className}`}
+                      >
+                        104{" "}
+                        <span className="text-xs italic text-slate-300">
+                          BPM
                         </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle
-                          className="text-emerald-500 flex-shrink-0 mt-1"
-                          size={20}
-                        />
-                        <span className={`text-slate-300 ${poppins.className}`}>
-                          <strong className="text-white">Data flywheel</strong>{" "}
-                          – More usage generates richer insights, improving care
-                          and stickiness.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle
-                          className="text-emerald-500 flex-shrink-0 mt-1"
-                          size={20}
-                        />
-                        <span className={`text-slate-300 ${poppins.className}`}>
-                          <strong className="text-white">
-                            Switching costs
-                          </strong>{" "}
-                          – Once a hospital runs on Doza, replacing it would
-                          disrupt every department.
-                        </span>
-                      </li>
-                    </ul>
-
-                    <div className="flex gap-12">
-                      <div>
-                        <p
-                          className={`text-6xl font-bold ${bebasNeue.className}`}
-                        >
-                          $2.4B
-                        </p>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                          TAM (Phase 1)
-                        </p>
-                      </div>
-                      <div>
-                        <p
-                          className={`text-6xl font-bold ${bebasNeue.className}`}
-                        >
-                          320%
-                        </p>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                          YoY Growth
-                        </p>
-                      </div>
+                      </span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4">
-                    {[
-                      {
-                        icon: Zap,
-                        title: "Platform Velocity",
-                        desc: "Exponential growth through network effects. Every new user accelerates adoption.",
-                      },
-                      {
-                        icon: ShieldCheck,
-                        title: "Defensive Moat",
-                        desc: "Deep EMR integration and daily workflow dependency make switching impossible.",
-                      },
-                    ].map((item, i) => (
-                      <div
-                        key={i}
-                        className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
-                      >
-                        <item.icon
-                          className="text-emerald-400 mb-4"
-                          size={32}
-                        />
-                        <h4
-                          className={`text-2xl font-bold mb-2 ${bebasNeue.className}`}
-                        >
-                          {item.title}
-                        </h4>
-                        <p className="text-sm text-slate-400 font-light">
-                          {item.desc}
-                        </p>
-                      </div>
-                    ))}
+                  <div className="flex gap-4">
+                    <button className="flex-1 py-4 bg-black text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 transition-all">
+                      Access Medical ID
+                    </button>
+                    <button className="flex-1 py-4 border border-slate-200 text-black rounded-2xl text-[10px] font-black uppercase tracking-widest hover:border-black transition-all">
+                      Dispatch Status
+                    </button>
                   </div>
                 </div>
               </div>
             </motion.div>
           </div>
         </section>
-
         {/* --- FAQ SECTION --- */}
-        <section id="faq" className="py-20 px-6 bg-slate-50/80">
-          <div className="container mx-auto max-w-4xl">
+        <section id="faq" className="py-24 px-6 bg-white">
+          <div className="container mx-auto max-w-4xl relative">
+            {/* Decorative Soft Glow */}
+            <div className="absolute -top-24 -left-24 w-64 h-64 bg-emerald-50 rounded-full blur-[100px] -z-10" />
+
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 mb-6">
+                <HelpCircle size={14} className="text-emerald-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
+                  Support Center
+                </span>
+              </div>
+
               <h2
-                className={`text-6xl md:text-7xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
+                className={`text-6xl md:text-8xl font-bold text-slate-950 mb-6 tracking-tighter leading-none ${bebasNeue.className}`}
               >
-                FREQUENTLY ASKED
+                COMMON{" "}
+                <span className="text-emerald-500 italic">QUESTIONS</span>
               </h2>
-              <p className={`text-lg text-slate-500 ${poppins.className}`}>
-                Everything you need to know about Doza.
+              <p
+                className={`text-lg text-slate-500 max-w-xl mx-auto font-light leading-relaxed ${poppins.className}`}
+              >
+                Clarity on security, integration, and the future of your medical
+                identity.
               </p>
             </motion.div>
 
             <div className="space-y-4">
               {FAQS.map((faq, idx) => (
-                <details
+                <motion.div
                   key={idx}
-                  className="group bg-white border border-slate-200 rounded-2xl p-6 cursor-pointer transition-all hover:shadow-md"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05 }}
                 >
-                  <summary
-                    className={`flex items-center justify-between text-lg font-semibold text-slate-900 list-none ${poppins.className}`}
-                  >
-                    {faq.q}
-                    <Plus className="group-open:rotate-45 transition-transform text-emerald-500" />
-                  </summary>
-                  <p
-                    className={`mt-4 text-slate-600 leading-relaxed ${poppins.className}`}
-                  >
-                    {faq.a}
-                  </p>
-                </details>
+                  <Disclosure>
+                    {({ open }) => (
+                      <div
+                        className={`
+                group rounded-[2rem] border transition-all duration-500 overflow-hidden
+                ${
+                  open
+                    ? "bg-slate-50 border-emerald-200 shadow-[0_20px_40px_-15px_rgba(16,185,129,0.08)]"
+                    : "bg-white border-slate-200 hover:border-slate-300"
+                }
+              `}
+                      >
+                        <Disclosure.Button className="w-full px-8 py-7 flex items-center justify-between text-left focus:outline-none">
+                          <span
+                            className={`text-lg md:text-xl font-bold tracking-tight transition-colors duration-300 ${open ? "text-emerald-700" : "text-slate-900"} ${poppins.className}`}
+                          >
+                            {faq.q}
+                          </span>
+
+                          {/* Custom Animated Icon */}
+                          <div
+                            className={`
+                    flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500
+                    ${open ? "bg-emerald-500 text-white rotate-180" : "bg-slate-100 text-slate-400 rotate-0"}
+                  `}
+                          >
+                            <ChevronDown size={20} strokeWidth={2.5} />
+                          </div>
+                        </Disclosure.Button>
+
+                        <Transition
+                          enter="transition duration-300 ease-out"
+                          enterFrom="transform scale-95 opacity-0 max-h-0"
+                          enterTo="transform scale-100 opacity-100 max-h-[500px]"
+                          leave="transition duration-200 ease-in"
+                          leaveFrom="transform scale-100 opacity-100 max-h-[500px]"
+                          leaveTo="transform scale-95 opacity-0 max-h-0"
+                        >
+                          <Disclosure.Panel
+                            className={`px-8 pb-8 text-slate-600 leading-relaxed text-base md:text-lg max-w-3xl ${poppins.className}`}
+                          >
+                            <div className="pt-2 border-t border-slate-200/50">
+                              {faq.a}
+                            </div>
+                          </Disclosure.Panel>
+                        </Transition>
+                      </div>
+                    )}
+                  </Disclosure>
+                </motion.div>
               ))}
+            </div>
+
+            {/* Bottom Call to Action */}
+            <div className="mt-16 p-8 rounded-[2.5rem] bg-slate-950 text-white flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl" />
+              <div className={poppins.className}>
+                <h4 className="text-xl font-bold mb-1">
+                  Still have questions?
+                </h4>
+                <p className="text-slate-400 text-sm">
+                  Our medical advisory team is here to help.
+                </p>
+              </div>
+              <button className="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 whitespace-nowrap">
+                Contact Support
+              </button>
             </div>
           </div>
         </section>
 
         {/* --- CHOOSE YOUR PATH --- */}
-        <section id="choose" className="py-20 px-6">
+        <section
+          id="choose"
+          className="py-24 px-6 relative overflow-hidden bg-slate-50"
+        >
+          {/* Decorative Background Elements */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-100/50 rounded-full blur-[120px] -z-10" />
+
           <div className="container mx-auto max-w-7xl">
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-12"
+              className="text-center mb-20"
             >
-              <h2
-                className={`text-6xl md:text-7xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
-              >
-                READY TO EXPERIENCE
-                <br />
-                <span className="bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent">
-                  THE FUTURE?
+              <div className="inline-block px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-700">
+                  Onboarding
                 </span>
+              </div>
+              <h2
+                className={`text-6xl md:text-8xl font-bold text-slate-950 mb-6 tracking-tighter leading-[0.85] ${bebasNeue.className}`}
+              >
+                READY TO EXPERIENCE <br />
+                <span className="text-emerald-600 italic">THE FUTURE?</span>
               </h2>
               <p
-                className={`text-lg text-slate-500 max-w-2xl mx-auto ${poppins.className}`}
+                className={`text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-light ${poppins.className}`}
               >
-                Choose your path and step into a new era of connected
-                healthcare.
+                Select your ecosystem entry point. Every path is secured,
+                encrypted, and built for life.
               </p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {ROLE_CARDS.map((card, idx) => (
-                <TiltCard key={card.role}>
+                <TiltCard key={card.role} className="h-full">
                   <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden group"
+                    transition={{
+                      delay: idx * 0.1,
+                      duration: 0.6,
+                      ease: "easeOut",
+                    }}
+                    className="group relative h-full bg-white rounded-[2.5rem] border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_32px_64px_rgba(16,185,129,0.12)] transition-all duration-500 flex flex-col"
                   >
-                    <div className="relative h-48">
+                    {/* Top Visual Section */}
+                    <div className="relative h-64 m-3 overflow-hidden rounded-[2rem]">
                       <Image
                         src={card.image}
                         alt={card.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                      {/* Overlay Gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+
+                      {/* Dynamic Icon Badge */}
+                      <div className="absolute bottom-6 left-6 flex items-center gap-4">
                         <div
-                          className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.gradient} text-white flex items-center justify-center shadow-lg`}
+                          className={`w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-2xl transition-transform group-hover:-translate-y-2`}
                         >
-                          <card.icon size={24} strokeWidth={1.5} />
+                          <card.icon size={28} strokeWidth={1.5} />
                         </div>
-                        <h3
-                          className={`text-2xl font-bold text-white ${bebasNeue.className}`}
-                        >
-                          {card.title}
-                        </h3>
+                        <div>
+                          <h3
+                            className={`text-3xl font-bold text-white tracking-tight ${bebasNeue.className}`}
+                          >
+                            {card.title}
+                          </h3>
+                          <div className="h-1 w-0 group-hover:w-full bg-emerald-400 transition-all duration-500" />
+                        </div>
                       </div>
                     </div>
-                    <div className="p-6">
-                      <p
-                        className={`text-sm font-medium text-emerald-600 mb-3 ${poppins.className}`}
+
+                    {/* Content Section */}
+                    <div className="p-8 pt-4 flex flex-col flex-grow">
+                      <span
+                        className={`text-[11px] font-black uppercase tracking-[0.2em] text-emerald-600 mb-4 block ${poppins.className}`}
                       >
                         {card.subtitle}
-                      </p>
-                      <ul className="space-y-2 mb-6">
+                      </span>
+
+                      <ul className="space-y-4 mb-10 flex-grow">
                         {card.perks.map((perk, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <CheckCircle
-                              size={16}
-                              className="text-emerald-500 mt-0.5 flex-shrink-0"
-                            />
+                          <li
+                            key={i}
+                            className="flex items-start gap-3 group/li"
+                          >
+                            <div className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center group-hover/li:bg-emerald-500 transition-colors">
+                              <CheckCircle
+                                size={12}
+                                className="text-emerald-500 group-hover/li:text-white transition-colors"
+                              />
+                            </div>
                             <span
-                              className={`text-slate-600 text-sm ${poppins.className}`}
+                              className={`text-slate-600 text-sm leading-tight group-hover/li:text-slate-900 transition-colors ${poppins.className}`}
                             >
                               {perk}
                             </span>
                           </li>
                         ))}
                       </ul>
+
+                      {/* Action Button */}
                       <MagneticButton
                         onClick={() => onRoleSelect(card.role as UserRole)}
-                        className="w-full py-3 rounded-full bg-emerald-600 text-white font-semibold text-sm flex items-center justify-center gap-2 group/btn"
+                        className="relative overflow-hidden w-full py-4 rounded-2xl bg-slate-950 text-white font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-3 group/btn hover:bg-emerald-600 transition-colors duration-300"
                       >
-                        Select {card.title.split(" ")[1]}
+                        <span className="relative z-10">
+                          Choose {card.title.split(" ")[1]}
+                        </span>
                         <ArrowRight
-                          size={16}
-                          className="group-hover/btn:translate-x-1 transition-transform"
+                          size={18}
+                          className="relative z-10 group-hover/btn:translate-x-2 transition-transform duration-300"
                         />
                       </MagneticButton>
                     </div>

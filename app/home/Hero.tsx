@@ -55,7 +55,7 @@ const colors = {
   },
 };
 
-type UserRole = "patient" | "medic" | "center" | null;
+type UserRole = "user" | "medic" | "center" | null;
 
 export default function DozaRoleBasedExperience() {
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
@@ -97,7 +97,7 @@ export default function DozaRoleBasedExperience() {
           transition={{ duration: 0.6 }}
           className="min-h-screen"
         >
-          {selectedRole === "patient" && (
+          {selectedRole === "user" && (
             <PatientExperience onBack={handleBackToSelection} />
           )}
           {selectedRole === "medic" && (
@@ -124,7 +124,7 @@ function RoleSelectionScreen({
 
   const roles = [
     {
-      id: "patient",
+      id: "user",
       title: "Doza Patient",
       description:
         "Your personal health companion for finding care and managing wellness",
@@ -373,7 +373,7 @@ function PatientExperience({ onBack }: { onBack: () => void }) {
 
   return (
     <RoleExperience
-      role="patient"
+      role="user"
       onBack={onBack}
       colorSet={colors.green}
       heroTitle="Your Health,"
@@ -503,7 +503,7 @@ function RoleExperience({
         <div className="absolute inset-0">
           <img
             src={`https://images.unsplash.com/photo-${
-              role === "patient"
+              role === "user"
                 ? "1576091160399-112ba8d25d1f"
                 : role === "medic"
                   ? "1551601651-2a8555f1a136"

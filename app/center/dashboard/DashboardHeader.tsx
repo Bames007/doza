@@ -72,7 +72,7 @@ export default function DashboardHeader({
       message: "Patient check-in required for Room 204",
       time: "2 hours ago",
       unread: false,
-      type: "patient",
+      type: "user",
       icon: Users,
       color: "text-purple-600",
     },

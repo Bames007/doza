@@ -3,6 +3,9 @@ import { Geist, Geist_Mono, Poppins, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import FloatingFeedbackButton from "./ui/FloatingFeedbackButton";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -56,7 +59,7 @@ export const metadata: Metadata = {
     description:
       "Transform your healthcare experience with Doza's comprehensive platform for patients, medics, and centers.",
     images: ["/twitter-image.png"],
-    creator: "@dozahealth",
+    creator: "@dozamedic",
   },
   manifest: "/webmanifest",
   robots: {
@@ -93,6 +96,9 @@ export default function RootLayout({
       >
         {/* Analytics should generally be inside the body for best practice */}
         <Analytics />
+
+        <FloatingFeedbackButton />
+        <SpeedInsights />
 
         {/* Healthcare-themed background gradient */}
         <div className="fixed inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50/70 -z-10" />

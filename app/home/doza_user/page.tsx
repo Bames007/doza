@@ -25,7 +25,7 @@ const PatientHomePage: React.FC<PatientHomePageProps> = ({ onChangeRole }) => {
 
   return (
     <>
-      <CenterHeader onBack={handleBack} currentExperience="Patient" />
+      <CenterHeader onBack={handleBack} currentExperience="User" />
       <PatientHero />
       <PatientAbout />
       <PatientWhyChoose />

@@ -27,7 +27,7 @@ export const CenterHeader: React.FC<HeaderProps> = ({
   const getRegistrationPath = (): string => {
     if (!currentExperience) return "/registration";
     const role = currentExperience.toLowerCase();
-    if (role === "patient") return "/registration/user";
+    if (role === "user") return "/registration/user";
     if (role === "medic") return "/registration/medic";
     if (role === "center") return "/registration/center";
     return "/registration";
