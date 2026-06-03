@@ -2,133 +2,111 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import DozaRoleBasedExperience, { UserRole } from "./DozaRoleBasedExperience";
 import PatientHomePage from "./doza_user/page";
 import MedicHomePage from "./doza_medic/page";
 import CenterHomePage from "./doza_center/page";
+import DozaMainPage from "./new/DozaPage";
+import BubbleTransition from "../components/BubbleTransition";
+import { CenterHeader } from "./doza_center/CenterHeader"; // adjust path
 
-const LoadingScreenPage = () => {
+type UserRole = "user" | "medic" | "center" | null;
+
+export default function LoadingScreenPage() {
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
-  const [showRoleSelection, setShowRoleSelection] = useState(false);
+  const [transitionPhase, setTransitionPhase] = useState<
+    "closing" | "opening" | null
+  >(null);
+  const [pendingRole, setPendingRole] = useState<UserRole | "back" | null>(
+    null,
+  );
 
-  console.log("🔄 LoadingScreenPage State:", {
-    selectedRole,
-    showRoleSelection,
-  });
-
-  // Check for saved role on component mount
+  // Load saved role from localStorage on mount
   useEffect(() => {
-    console.log("🔍 useEffect running - checking localStorage");
     const savedRole = localStorage.getItem("doza-user-role");
-    console.log(
-      "📁 Retrieved from localStorage:",
-      savedRole,
-      "type:",
-      typeof savedRole,
-    );
-
-    // Fix: Handle the case where savedRole might be the string "null"
     if (
-      savedRole &&
-      savedRole !== "null" &&
-      (savedRole === "user" || savedRole === "medic" || savedRole === "center")
+      savedRole === "user" ||
+      savedRole === "medic" ||
+      savedRole === "center"
     ) {
-      console.log("✅ Found valid saved role:", savedRole);
-      setSelectedRole(savedRole as UserRole);
-    } else {
-      console.log("❌ No valid saved role found, using null");
-      setSelectedRole(null);
+      setSelectedRole(savedRole);
     }
   }, []);
 
+  const startTransition = (target: UserRole | "back") => {
+    setPendingRole(target);
+    setTransitionPhase("closing");
+  };
+
   const handleRoleSelect = (role: UserRole) => {
-    console.log("🎯 Role selected:", role);
-    setSelectedRole(role);
-    // Fix: Only store if role is not null
-    if (role) {
-      localStorage.setItem("doza-user-role", role);
-      console.log("💾 Saved role to localStorage:", role);
-    } else {
-      localStorage.removeItem("doza-user-role");
-      console.log("🗑️ Removed role from localStorage");
+    startTransition(role);
+  };
+
+  const handleChangeRoleWithTransition = () => {
+    startTransition("back");
+  };
+
+  const handleAnimationComplete = () => {
+    if (transitionPhase === "closing") {
+      if (pendingRole === "back") {
+        localStorage.removeItem("doza-user-role");
+        setSelectedRole(null);
+      } else if (
+        pendingRole === "user" ||
+        pendingRole === "medic" ||
+        pendingRole === "center"
+      ) {
+        setSelectedRole(pendingRole);
+        localStorage.setItem("doza-user-role", pendingRole);
+      }
+      setTransitionPhase("opening");
+    } else if (transitionPhase === "opening") {
+      setTransitionPhase(null);
+      setPendingRole(null);
     }
-    setShowRoleSelection(false);
   };
 
-  const handleChangeRole = () => {
-    console.log("🔄 Change role button clicked");
-    setShowRoleSelection(true);
+  const showTransition = transitionPhase !== null;
+
+  // Map role to display name for header
+  const getExperienceName = (role: UserRole): string => {
+    if (role === "user") return "User";
+    if (role === "medic") return "Medic";
+    if (role === "center") return "Center";
+    return "";
   };
 
-  // Show role selection if no role is saved or user wants to change
-  if (showRoleSelection || !selectedRole) {
-    console.log(
-      "🎪 Rendering Role Selection - showRoleSelection:",
-      showRoleSelection,
-      "selectedRole:",
-      selectedRole,
-    );
-    return (
-      <DozaRoleBasedExperience
-        onRoleSelect={handleRoleSelect}
-        showBackButton={!!selectedRole}
-        onBack={() => {
-          console.log("🔙 Back button clicked in role selection");
-          setShowRoleSelection(false);
-        }}
-      />
-    );
-  }
-
-  // Show role-specific homepage with proper header
-  console.log("🏠 Rendering Role-Specific Homepage for:", selectedRole);
   return (
-    <div className="min-h-screen bg-white">
-      <AnimatePresence mode="wait">
-        {selectedRole === "user" && (
-          <PatientHomePageWrapper onChangeRole={handleChangeRole} />
-        )}
-        {selectedRole === "medic" && (
-          <MedicHomePageWrapper onChangeRole={handleChangeRole} />
-        )}
-        {selectedRole === "center" && (
-          <CenterHomePageWrapper onChangeRole={handleChangeRole} />
+    <>
+      <AnimatePresence>
+        {showTransition && (
+          <BubbleTransition
+            role={pendingRole === "back" ? null : pendingRole}
+            phase={transitionPhase}
+            onAnimationComplete={handleAnimationComplete}
+          />
         )}
       </AnimatePresence>
-    </div>
-  );
-};
 
-// Wrapper components for each role with proper header - Optimized for mobile
-function PatientHomePageWrapper({
-  onChangeRole,
-}: {
-  onChangeRole: () => void;
-}) {
-  console.log("👤 PatientHomePageWrapper rendering");
-  return (
-    <div className="min-h-screen bg-white">
-      <PatientHomePage onChangeRole={onChangeRole} />
-    </div>
-  );
-}
-
-function MedicHomePageWrapper({ onChangeRole }: { onChangeRole: () => void }) {
-  console.log("👨‍⚕️ MedicHomePageWrapper rendering");
-  return (
-    <div className="min-h-screen bg-white">
-      <MedicHomePage onChangeRole={onChangeRole} />
-    </div>
+      <div className="min-h-screen bg-white">
+        {!selectedRole ? (
+          <DozaMainPage onRoleSelect={handleRoleSelect} />
+        ) : (
+          <>
+            <CenterHeader
+              onBack={handleChangeRoleWithTransition}
+              currentExperience={getExperienceName(selectedRole)}
+            />
+            <div className="pt-0 sm:pt-0">
+              {" "}
+              <AnimatePresence mode="wait">
+                {selectedRole === "user" && <PatientHomePage />}
+                {selectedRole === "medic" && <MedicHomePage />}
+                {selectedRole === "center" && <CenterHomePage />}
+              </AnimatePresence>
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
-
-function CenterHomePageWrapper({ onChangeRole }: { onChangeRole: () => void }) {
-  console.log("🏥 CenterHomePageWrapper rendering");
-  return (
-    <div className="min-h-screen bg-white">
-      <CenterHomePage onChangeRole={onChangeRole} />
-    </div>
-  );
-}
-
-export default LoadingScreenPage;

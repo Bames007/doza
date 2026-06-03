@@ -1,215 +1,174 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
+  Heart,
+  TrendingUp,
+  ShieldCheck,
   Users,
-  Zap,
-  Award,
-  Shield,
-  Clock,
   Globe,
-  ArrowUpRight,
-  Activity,
-  ChevronRight,
+  Clock,
+  Award,
+  Handshake,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./constant";
 
 const CenterWhyChoose: React.FC = () => {
   const benefits = [
     {
-      icon: Users,
-      title: "Expanded Patient Base",
-      description:
-        "Tap into a high-intent patient stream through our geo-intelligent routing.",
-      features: ["Geo-Targeting", "Smart Referrals"],
-      gridClass: "md:col-span-2 md:row-span-2 bg-slate-900 text-white", // Dark Card
-      iconBg: "bg-emerald-500",
-      accent: "text-emerald-400",
-      isMain: true,
-      textColor: "text-white",
-      descColor: "text-slate-300",
+      title: "98% Client Retention",
+      desc: "From small clinics to large hospital networks Doza is the infrastructure behind modern care.",
+      icon: Heart,
+      stat: "98%",
+      statLabel: "retention",
     },
     {
-      icon: Zap,
-      title: "Operations",
-      description: "Real-time clinic management.",
-      features: ["AI Triage"],
-      gridClass: "md:col-span-1 md:row-span-1 bg-white border-slate-200", // Light Card
-      iconBg: "bg-slate-50",
-      accent: "text-emerald-600",
-      textColor: "text-slate-900",
-      descColor: "text-slate-600",
+      title: "35% Higher Efficiency",
+      desc: "Reduce admin overhead and reallocate resources to patient care. Measurable ROI within months.",
+      icon: TrendingUp,
+      stat: "35%",
+      statLabel: "cost reduction",
     },
     {
-      icon: Shield,
-      title: "Secure Vault",
-      description: "HIPAA & NDPR data protection.",
-      features: ["Encrypted Records"],
-      gridClass: "md:col-span-1 md:row-span-2 bg-emerald-50 border-emerald-100", // Tinted Card
-      iconBg: "bg-white",
-      accent: "text-emerald-700",
-      textColor: "text-emerald-900",
-      descColor: "text-emerald-800/70",
+      title: "99.9% Uptime SLA",
+      desc: "Mission critical reliability with 24/7 monitoring and dedicated support.",
+      icon: Clock,
+      stat: "99.9%",
+      statLabel: "uptime",
     },
     {
-      icon: Award,
-      title: "Trust Badge",
-      description: "Verified elite status.",
-      features: ["Quality Certs"],
-      gridClass: "md:col-span-1 md:row-span-1 bg-white border-slate-200",
-      iconBg: "bg-slate-50",
-      accent: "text-emerald-600",
-      textColor: "text-slate-900",
-      descColor: "text-slate-600",
+      title: "Global Compliance",
+      desc: "Fully compliant with NDPR, GDPR, HIPAA, and local healthcare regulations.",
+      icon: ShieldCheck,
+      stat: "100%",
+      statLabel: "compliant",
     },
     {
+      title: "48h Average Setup",
+      desc: "Connect your existing EMR, lab systems, and billing software in days, not months.",
       icon: Globe,
-      title: "The Ecosystem",
-      description: "Nationwide specialist collaboration and knowledge sharing.",
-      features: ["Provider Portal", "Resource Sharing"],
-      gridClass: "md:col-span-2 md:row-span-1 bg-white border-slate-200",
-      iconBg: "bg-slate-50",
-      accent: "text-emerald-600",
-      textColor: "text-slate-900",
-      descColor: "text-slate-600",
+      stat: "48h",
+      statLabel: "integration",
+    },
+    {
+      title: "24/7 Human Support",
+      desc: "Real people, real answers dedicated team ready anytime.",
+      icon: Users,
+      stat: "always",
+      statLabel: "available",
+    },
+    {
+      title: "Award Winning Platform",
+      desc: "Recognised for innovation in healthcare technology. Trusted by industry leaders.",
+      icon: Award,
+      stat: "2026",
+      statLabel: "Best HealthTech",
+    },
+    {
+      title: "Future Ready Roadmap",
+      desc: "We evolve with you predictive analytics, smarter workflows, and more coming soon.",
+      icon: Handshake,
+      stat: "always",
+      statLabel: "updating",
     },
   ];
 
   return (
-    <section
-      id="benefits"
-      className={`py-24 bg-[#F8FAFC] relative overflow-hidden ${poppins.className}`}
-    >
-      {/* Dynamic Background Blur */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-100/40 rounded-full blur-[120px] -z-10" />
+    <section className="py-28 bg-white relative overflow-hidden">
+      {/* Subtle radial background accents – no gradients on cards */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[100px] -z-10" />
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[90px] -z-10" />
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-3 mb-4"
-            >
-              <span className="h-px w-10 bg-emerald-500" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-600">
-                The 2026 Edge
-              </span>
-            </motion.div>
-
+        {/* Header – clean editorial */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+          <div className="max-w-3xl">
             <h2
-              className={`text-6xl md:text-8xl font-bold text-slate-900 leading-[0.85] ${bebasNeue.className}`}
+              className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[0.9] tracking-tighter ${bebasNeue.className}`}
             >
-              BUILT FOR THE{" "}
-              <span className="text-emerald-600 italic">MODERN</span> <br />{" "}
-              MEDICAL CENTER
+              BUILT FOR YOUR <br />
+              <span className="text-emerald-600">FACILITY'S GROWTH</span>
             </h2>
           </div>
-          <p className="text-slate-600 font-medium max-w-xs text-sm leading-relaxed">
-            Eliminate administrative friction and scale your clinical impact
-            with Nigeria's most advanced health infrastructure.
+          <p className="text-slate-500 font-medium max-w-sm text-lg leading-snug border-l-2 border-emerald-500 pl-6">
+            Doza empowers your team to focus on patients, not paperwork. Real
+            results, measurable outcomes, and a partner you can trust.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 auto-rows-[220px]">
-          {benefits.map((benefit, index) => (
+        {/* Bento Grid – 4 columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+          {benefits.map((item, i) => (
             <motion.div
-              key={benefit.title}
+              key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className={`group relative p-8 rounded-[3rem] border flex flex-col justify-between overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${benefit.gridClass}`}
+              transition={{ delay: i * 0.05, duration: 0.5 }}
+              whileHover={{ y: -4 }}
+              className="group relative p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300"
             >
-              {/* Hover Interaction Overlay */}
-              <div className="absolute inset-0 bg-emerald-600 translate-y-full group-hover:translate-y-[92%] transition-transform duration-500 opacity-20 pointer-events-none" />
+              {/* Radial hover effect (pure CSS) */}
+              <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-              <div className="relative z-10 flex justify-between items-start">
-                <div
-                  className={`w-14 h-14 rounded-2xl ${benefit.iconBg} flex items-center justify-center shadow-sm group-hover:rotate-6 transition-transform`}
-                >
-                  <benefit.icon className={benefit.accent} size={28} />
-                </div>
-                <div
-                  className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity ${benefit.textColor}`}
-                >
-                  Learn More <ChevronRight size={14} />
-                </div>
-              </div>
-
-              <div className="relative z-10">
-                {benefit.isMain && (
-                  <div className="mb-6 p-4 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-md">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                      <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">
-                        Network Pulse
-                      </span>
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-2 bg-emerald-50 rounded-xl">
+                    <item.icon
+                      size={22}
+                      className="text-emerald-600"
+                      strokeWidth={1.5}
+                    />
+                  </div>
+                  <div className="text-right">
+                    <div
+                      className={`text-2xl font-bold text-slate-800 ${bebasNeue.className}`}
+                    >
+                      {item.stat}
                     </div>
-                    <div className="flex justify-between items-end">
-                      <p
-                        className={`text-4xl font-bold text-white ${bebasNeue.className}`}
-                      >
-                        2.4M+
-                      </p>
-                      <p className="text-[9px] font-medium text-slate-300 text-right uppercase tracking-tighter">
-                        Patients reaching <br /> out monthly
-                      </p>
+                    <div
+                      className={`text-[9px] uppercase tracking-wider text-slate-400 ${poppins.className}`}
+                    >
+                      {item.statLabel}
                     </div>
                   </div>
-                )}
-
+                </div>
                 <h3
-                  className={`text-3xl font-bold mb-2 tracking-tight ${benefit.textColor} ${bebasNeue.className}`}
+                  className={`text-xl font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
                 >
-                  {benefit.title}
+                  {item.title}
                 </h3>
                 <p
-                  className={`text-sm font-medium leading-snug mb-4 ${benefit.descColor}`}
+                  className={`text-sm text-slate-500 leading-relaxed ${poppins.className}`}
                 >
-                  {benefit.description}
+                  {item.desc}
                 </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {benefit.features.map((f) => (
-                    <span
-                      key={f}
-                      className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-xl border transition-colors
-                        ${
-                          benefit.isMain
-                            ? "bg-white/10 border-white/20 text-white"
-                            : "bg-slate-100 border-slate-200 text-slate-700"
-                        }`}
-                    >
-                      {f}
-                    </span>
-                  ))}
-                </div>
               </div>
             </motion.div>
           ))}
-
-          {/* 24/7 Global Support Callout */}
-          <motion.div
-            whileHover={{ scale: 0.98 }}
-            className="md:col-span-1 md:row-span-1 bg-emerald-600 rounded-[3rem] p-8 text-white flex flex-col justify-between group cursor-pointer shadow-lg shadow-emerald-200"
-          >
-            <Activity
-              className="text-white group-hover:animate-pulse"
-              size={32}
-            />
-            <div>
-              <h4
-                className={`text-4xl font-bold leading-none text-white ${bebasNeue.className}`}
-              >
-                LIVE <br /> ASSIST
-              </h4>
-              <p className="text-[10px] font-black text-emerald-100 uppercase mt-2 tracking-widest">
-                24/7 Human Support
-              </p>
-            </div>
-          </motion.div>
         </div>
+
+        {/* Bottom CTA – with proper link and less rounded corners */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-20 p-10 rounded-xl bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-6"
+        >
+          <div>
+            <h3 className={`text-3xl md:text-4xl mb-2 ${bebasNeue.className}`}>
+              Ready to transform your facility?
+            </h3>
+            <p className={`text-slate-300 text-sm ${poppins.className}`}>
+              Join healthcare leaders who trust Doza to run their operations.
+            </p>
+          </div>
+          <Link href="/registration/center">
+            <button className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-lg hover:shadow-xl">
+              Join the Doza Network
+            </button>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

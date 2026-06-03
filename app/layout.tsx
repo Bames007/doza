@@ -97,7 +97,7 @@ export default function RootLayout({
         {/* Analytics should generally be inside the body for best practice */}
         <Analytics />
 
-        <FloatingFeedbackButton />
+        {/* <FloatingFeedbackButton /> */}
         <SpeedInsights />
 
         {/* Healthcare-themed background gradient */}

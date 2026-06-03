@@ -1,228 +1,209 @@
 "use client";
 import React, { useRef } from "react";
-import { motion, useInView, Variants } from "framer-motion";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
 import {
-  CheckCircle,
-  Brain,
-  Cloud,
   BarChart3,
-  Globe,
+  ClipboardCheck,
   Cpu,
-  Zap,
-  ArrowRight,
+  Globe,
+  ShieldCheck,
+  FileText,
+  Video,
+  CalendarDays,
+  Box,
+  CreditCard,
+  Activity,
+  Stethoscope,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./constant";
-import { Feature } from "./type";
 
 const CenterFeatures: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-50px" });
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
-  const features: Feature[] = [
-    {
-      icon: Brain,
-      title: "AI-Powered Analytics",
-      description:
-        "Advanced machine learning algorithms providing deep insights into patient flow and operational bottlenecks.",
-      benefits: [
-        "Predictive Volume",
-        "Resource Optimization",
-        "Revenue Forecasting",
-        "Efficiency Scoring",
-      ],
-    },
-    {
-      icon: Cloud,
-      title: "Free EMR Systems",
-      description:
-        "A comprehensive Electronic Medical Records cloud suite at zero cost, built for speed and security.",
-      benefits: [
-        "Zero Upfront Cost",
-        "Cloud Backup",
-        "Instant Migration",
-        "Custom Templates",
-      ],
-    },
+  const features = [
     {
       icon: BarChart3,
-      title: "Inventory Intelligence",
+      title: "Operational Metrics",
       description:
-        "Real-time stock tracking with predictive ordering to ensure your pharmacy or lab never runs dry.",
-      benefits: [
-        "Auto-Reordering",
-        "Waste Tracking",
-        "Supplier Sync",
-        "Profit Tracking",
-      ],
+        "Real time dashboards for patient flow, staff productivity, and revenue trends.",
+      tags: ["Real Time Data", "Volume Tracking", "Custom Reports"],
     },
     {
-      icon: Globe,
-      title: "Geo-Intelligence",
+      icon: ClipboardCheck,
+      title: "Electronic Records (EHR)",
       description:
-        "Connect with patients in your immediate vicinity through our high-intent routing network.",
-      benefits: [
-        "Local Matching",
-        "Emergency Routing",
-        "Market Analysis",
-        "Density Mapping",
-      ],
+        "Centralised, immutable patient records with rapid retrieval and audit trails.",
+      tags: ["Paperless", "Custom Templates", "Version Control"],
     },
     {
       icon: Cpu,
-      title: "Vitals Monitoring",
+      title: "Resource Management",
       description:
-        "Remote patient monitoring tools that alert your staff the moment a patient's vitals cross a threshold.",
-      benefits: [
-        "Remote Tracking",
-        "Smart Alerts",
-        "Live Progress",
-        "Care Workflows",
-      ],
+        "Automated tracking of supplies, medications, and clinical assets to prevent shortages.",
+      tags: ["Auto Reordering", "Waste Audit", "Expiry Alerts"],
     },
     {
-      icon: Zap,
-      title: "Rapid Response",
+      icon: Globe,
+      title: "Connectivity Suite",
       description:
-        "An integrated emergency trigger system that connects you to ambulances and blood banks instantly.",
-      benefits: [
-        "1-Tap Dispatch",
-        "Real-time Tracking",
-        "Trauma Records",
-        "Priority Comms",
-      ],
+        "Seamlessly connect departments, satellite clinics, labs, and pharmacies.",
+      tags: ["Multi Site Sync", "API Access", "HL7 Ready"],
+    },
+    {
+      icon: ShieldCheck,
+      title: "Security & Compliance",
+      description:
+        "End to end encryption, role based access, and full compliance with global standards.",
+      tags: ["NDPR/GDPR", "Access Control", "Audit Logs"],
+    },
+    {
+      icon: Stethoscope,
+      title: "Emergency Workflow",
+      description:
+        "Dedicated triage protocols, staff alerts, and rapid response coordination.",
+      tags: ["Urgent Triage", "Priority Comms", "Mass Casualty Mode"],
+    },
+    {
+      icon: FileText,
+      title: "Digital Prescriptions",
+      description:
+        "Paperless, error free scripts sent directly to integrated pharmacies.",
+      tags: ["E Signatures", "Refill Alerts", "Formulary Check"],
+    },
+    {
+      icon: Video,
+      title: "Telemedicine Suite",
+      description:
+        "High definition video consultations, screen sharing, and secure patient links.",
+      tags: ["Encrypted", "Waiting Room", "Recording"],
+    },
+    {
+      icon: CalendarDays,
+      title: "Smart Scheduling",
+      description:
+        "Intelligent appointment booking that reduces no shows and optimises resources.",
+      tags: ["Auto Reminders", "Waitlist", "Resource Booking"],
+    },
+    {
+      icon: Box,
+      title: "Inventory Sync",
+      description:
+        "Real time stock levels, low stock alerts, and automated reordering.",
+      tags: ["Barcode Scan", "Supplier Integration", "Cost Tracking"],
+    },
+    {
+      icon: CreditCard,
+      title: "Billing & Claims",
+      description:
+        "Seamless insurance verification, automated invoicing, and revenue cycle management.",
+      tags: ["Claims Tracking", "Patient Statements", "Analytics"],
+    },
+    {
+      icon: Activity,
+      title: "Operations Hub",
+      description:
+        "Central command for bed tracking, staff allocation, and discharge planning.",
+      tags: ["Bed Management", "Staff Rostering", "Discharge Workflow"],
     },
   ];
 
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.95, y: 30 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { type: "spring", stiffness: 80, damping: 12 },
-    },
-  };
-
   return (
     <section
-      id="features"
-      className={`py-32 bg-white relative overflow-hidden ${poppins.className}`}
       ref={containerRef}
+      className="py-28 bg-white relative overflow-hidden"
     >
-      {/* Decorative background element */}
-      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-emerald-50/50 rounded-full blur-[120px] -z-10" />
+      {/* Subtle background accent */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[100px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[90px] -z-10" />
 
       <div className="max-w-7xl mx-auto px-6">
-        {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-8">
+        {/* Header – reworded for clarity */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
           <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              className="flex items-center gap-3 mb-6"
-            >
-              <span className="h-[2px] w-12 bg-[#2BB14B]" />
-              <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#2BB14B]">
-                Technological Superiority
-              </span>
-            </motion.div>
-
             <h2
-              className={`text-6xl md:text-9xl font-bold text-slate-900 leading-[0.8] ${bebasNeue.className}`}
+              className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[0.9] tracking-tighter ${bebasNeue.className}`}
             >
-              ENGINEERED FOR <br />
-              <span className="text-[#2BB14B] italic">PRECISION</span> CARE
+              BUILT FOR FASTER, <br />
+              <span className="text-emerald-600">SAFER CARE</span>
             </h2>
           </div>
-          <p className="text-slate-500 max-w-sm text-lg font-medium leading-relaxed pb-2">
-            Eliminate operational manual labor with our suite of clinical
-            intelligence tools designed for the 2026 healthcare landscape.
+          <p className="text-slate-500 font-medium max-w-sm text-lg leading-snug border-l-2 border-emerald-500 pl-6">
+            Move beyond manual management. Our core suite gives you the control
+            to handle high-volume traffic without sacrificing quality.
           </p>
         </div>
 
-        {/* Features Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        {/* Features Grid – 3 columns, clean cards with radial hover */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, idx) => (
             <motion.div
               key={feature.title}
-              variants={itemVariants}
-              className="group relative p-10 rounded-[3.5rem] bg-slate-50/50 border border-slate-200/60 hover:border-[#2BB14B]/40 hover:bg-white transition-all duration-500 hover:shadow-[0_20px_50px_rgba(43,177,75,0.1)]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: idx * 0.05, duration: 0.4 }}
+              whileHover={{ y: -4 }}
+              className="group relative p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300"
             >
-              {/* Subtle hover glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-[3.5rem]" />
+              {/* Radial hover effect */}
+              <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-[#2BB14B] group-hover:bg-[#2BB14B] group-hover:text-white group-hover:rotate-6 transition-all duration-500 shadow-sm mb-8">
-                  <feature.icon size={32} strokeWidth={1.5} />
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-5 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                  <feature.icon size={22} strokeWidth={1.5} />
                 </div>
-
                 <h3
-                  className={`text-4xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
+                  className={`text-xl font-bold text-slate-900 mb-2 ${bebasNeue.className}`}
                 >
                   {feature.title}
                 </h3>
-
-                <p className="text-slate-600 text-sm mb-8 leading-relaxed font-medium">
+                <p
+                  className={`text-sm text-slate-500 leading-relaxed mb-5 ${poppins.className}`}
+                >
                   {feature.description}
                 </p>
-
-                <div className="space-y-3">
-                  {feature.benefits.map((benefit, bIdx) => (
-                    <div key={bIdx} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle size={10} className="text-[#2BB14B]" />
-                      </div>
-                      <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
-                        {benefit}
-                      </span>
-                    </div>
+                <div className="flex flex-wrap gap-2">
+                  {feature.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[9px] font-bold uppercase tracking-wider"
+                    >
+                      {tag}
+                    </span>
                   ))}
                 </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Bottom CTA Card */}
+        {/* Bottom CTA – less rounded, no fake stats */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-24 p-12 md:p-24 rounded-[4rem] bg-slate-950 text-center relative overflow-hidden shadow-2xl"
+          className="mt-24 p-10 rounded-xl bg-slate-900 text-white relative overflow-hidden"
         >
-          <div className="relative z-10 flex flex-col items-center">
-            <h3
-              className={`text-5xl md:text-8xl text-white mb-8 leading-none ${bebasNeue.className}`}
-            >
-              TRANSCEND THE <br />{" "}
-              <span className="text-[#2BB14B]">ORDINARY CLINIC</span>
-            </h3>
-            <p className="text-slate-400 max-w-xl mb-12 text-lg font-medium">
-              Join 2,000+ facilities already using our 2026 infrastructure to
-              automate their future.
-            </p>
-            <button className="group relative flex items-center gap-4 px-12 py-6 bg-[#2BB14B] text-white rounded-2xl font-black text-xl hover:scale-105 transition-all shadow-xl shadow-emerald-900/20">
-              GET STARTED NOW
-              <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-            </button>
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div>
+              <h3
+                className={`text-4xl md:text-5xl mb-2 ${bebasNeue.className}`}
+              >
+                READY TO UPGRADE?
+              </h3>
+              <p className={`text-slate-300 text-sm ${poppins.className}`}>
+                Join healthcare facilities that trust Doza to run their
+                operations.
+              </p>
+            </div>
+            <Link href="/registration/center">
+              <button className="px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-lg hover:shadow-xl">
+                Start Now
+              </button>
+            </Link>
           </div>
-
-          {/* Advanced background decorative patterns */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2BB14B]/20 blur-[120px] rounded-full" />
-          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-500/10 blur-[100px] rounded-full" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/20 blur-[80px] rounded-full -z-0" />
         </motion.div>
       </div>
     </section>

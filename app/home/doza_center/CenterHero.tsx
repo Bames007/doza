@@ -1,156 +1,297 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
+
+import React, { useState, useEffect } from "react";
 import {
-  Building,
   ArrowRight,
-  Play,
-  Heart,
-  Stethoscope,
-  Star,
+  Activity,
+  Users,
+  TrendingUp,
+  Globe,
+  Clock,
+  Shield,
+  Database,
 } from "lucide-react";
-import { bebasNeue, poppins } from "./constant";
-import Link from "next/link";
-import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
-interface CenterHeroProps {
-  onBack: () => void;
-}
+// ============================================================
+// BoomerangVideoBg – captures and loops video frames (15fps)
+// ============================================================
+function BoomerangVideoBg({
+  src,
+  className,
+}: {
+  src: string;
+  className?: string;
+}) {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const displayCanvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [framesReady, setFramesReady] = useState(false);
+  const framesRef = React.useRef<HTMLCanvasElement[]>([]);
 
-export const CenterHero: React.FC<CenterHeroProps> = () => {
+  React.useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const frames: HTMLCanvasElement[] = [];
+    let capturing = true;
+    let lastTime = -1;
+    const MAX_WIDTH = 960;
+
+    const captureFrame = () => {
+      if (!capturing || video.readyState < 2) return;
+      if (video.currentTime === lastTime) return;
+      lastTime = video.currentTime;
+      const vw = video.videoWidth;
+      const vh = video.videoHeight;
+      if (!vw || !vh) return;
+      const scale = Math.min(1, MAX_WIDTH / vw);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(vw * scale);
+      canvas.height = Math.round(vh * scale);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      frames.push(canvas);
+    };
+
+    const vfcVideo = video as any;
+    const hasVFC = typeof vfcVideo.requestVideoFrameCallback === "function";
+    let rafId = 0;
+    const rafLoop = () => {
+      captureFrame();
+      if (capturing) rafId = requestAnimationFrame(rafLoop);
+    };
+    const vfcLoop = () => {
+      captureFrame();
+      if (capturing && vfcVideo.requestVideoFrameCallback)
+        vfcVideo.requestVideoFrameCallback(vfcLoop);
+    };
+
+    const onEnded = () => {
+      capturing = false;
+      if (frames.length > 0) {
+        framesRef.current = frames;
+        setFramesReady(true);
+      }
+    };
+    const onLoaded = () => {
+      video.play().catch(() => {});
+      if (hasVFC) vfcVideo.requestVideoFrameCallback(vfcLoop);
+      else rafId = requestAnimationFrame(rafLoop);
+    };
+
+    video.addEventListener("loadedmetadata", onLoaded);
+    video.addEventListener("ended", onEnded);
+    if (video.readyState >= 1) onLoaded();
+    return () => {
+      capturing = false;
+      cancelAnimationFrame(rafId);
+      video.removeEventListener("loadedmetadata", onLoaded);
+      video.removeEventListener("ended", onEnded);
+    };
+  }, [src]);
+
+  React.useEffect(() => {
+    if (!framesReady) return;
+    const canvas = displayCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const frames = framesRef.current;
+    if (frames.length === 0) return;
+    const first = frames[0];
+    canvas.width = first.width;
+    canvas.height = first.height;
+    let index = 0,
+      direction = 1,
+      last = performance.now();
+    const interval = 1000 / 15;
+    let rafId = 0;
+    const render = (now: number) => {
+      if (now - last >= interval) {
+        last = now;
+        ctx.drawImage(frames[index], 0, 0);
+        index += direction;
+        if (index >= frames.length - 1) {
+          index = frames.length - 1;
+          direction = -1;
+        } else if (index <= 0) {
+          index = 0;
+          direction = 1;
+        }
+      }
+      rafId = requestAnimationFrame(render);
+    };
+    rafId = requestAnimationFrame(render);
+    return () => cancelAnimationFrame(rafId);
+  }, [framesReady]);
+
   return (
-    <div className="relative min-h-[90vh] lg:min-h-screen overflow-hidden bg-white">
-      {/* Refined Background Strategy */}
-      <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:32px_32px] opacity-30" />
-      <div className="absolute inset-0 bg-gradient-to-br from-green-50/60 via-transparent to-emerald-50/40" />
-
-      <section className="relative px-4 sm:px-6 pt-10 pb-16 lg:pt-32 lg:pb-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center lg:text-left order-2 lg:order-1"
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100/80 border border-green-200 text-green-700 mb-6 backdrop-blur-sm">
-                <Building size={14} />
-                <span
-                  className={`text-[10px] sm:text-xs font-bold uppercase tracking-widest ${poppins.className}`}
-                >
-                  Institutional Solutions
-                </span>
-              </div>
-
-              <h1
-                className={`text-4xl sm:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 leading-[0.95] sm:leading-none ${bebasNeue.className}`}
-              >
-                TRANSFORM YOUR <br />
-                <span className="text-[#2BB14B]">HEALTHCARE FACILITY</span>
-              </h1>
-
-              <p
-                className={`text-sm sm:text-base lg:text-lg text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed ${poppins.className}`}
-              >
-                Deploy Doza's AI-powered EMR suite. Connect your facility to a
-                global network of patients and medical professionals instantly.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                <Link href="/registration/center" className="w-full sm:w-auto">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full sm:px-8 py-4 bg-slate-950 text-white rounded-2xl font-bold flex items-center justify-center gap-3 shadow-xl shadow-slate-950/20 hover:bg-[#2BB14B] transition-all"
-                  >
-                    <span>Start Free Trial</span>
-                    <ArrowRight size={18} />
-                  </motion.button>
-                </Link>
-
-                <button className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-slate-900 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-slate-50 transition-all">
-                  <Play size={18} fill="currentColor" />
-                  <span>Watch Demo</span>
-                </button>
-              </div>
-
-              {/* Minimalist Stats Row */}
-              <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-12 pt-8 border-t border-slate-100">
-                {[
-                  { n: "500+", l: "Centers" },
-                  { n: "50K+", l: "Patients" },
-                  { n: "2K+", l: "Medics" },
-                ].map((s) => (
-                  <div key={s.l} className="text-center lg:text-left">
-                    <div
-                      className={`text-2xl sm:text-3xl font-bold text-slate-900 ${bebasNeue.className}`}
-                    >
-                      {s.n}
-                    </div>
-                    <div
-                      className={`text-[9px] sm:text-[10px] text-slate-400 uppercase font-black tracking-widest ${poppins.className}`}
-                    >
-                      {s.l}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Right Content - Dashboard Preview */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative order-1 lg:order-2"
-            >
-              <div className="relative z-10 p-2 sm:p-4 bg-white/50 backdrop-blur-sm rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-white/50">
-                <div className="relative rounded-[1.8rem] sm:rounded-[2rem] overflow-hidden border border-slate-200 shadow-inner">
-                  <Image
-                    src="/assets/images/dashboard screenshot.png"
-                    alt="Doza Dashboard"
-                    width={800}
-                    height={600}
-                    className="w-full h-auto"
-                    priority
-                  />
-                </div>
-
-                {/* Mobile-Friendly Floating Badge */}
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="absolute -bottom-4 right-4 sm:right-10 bg-[#2BB14B] px-5 py-3 rounded-2xl text-white shadow-2xl flex items-center gap-3"
-                >
-                  <div className="p-1.5 bg-white/20 rounded-lg">
-                    <Heart fill="white" size={16} />
-                  </div>
-                  <div>
-                    <div
-                      className={`text-lg font-bold leading-none ${bebasNeue.className}`}
-                    >
-                      +15% Growth
-                    </div>
-                    <div
-                      className={`text-[10px] opacity-80 font-medium ${poppins.className}`}
-                    >
-                      Patient Retention
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Soft decorative ambient glow */}
-              <div className="absolute inset-0 bg-green-400/10 blur-[100px] -z-10 rounded-full scale-110" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
+    <div className={className ?? "absolute inset-0 w-full h-full"}>
+      <video
+        ref={videoRef}
+        src={src}
+        className="w-full h-full object-cover"
+        style={{ display: framesReady ? "none" : "block" }}
+        muted
+        playsInline
+        preload="auto"
+        crossOrigin="anonymous"
+      />
+      <canvas
+        ref={displayCanvasRef}
+        className="w-full h-full object-cover"
+        style={{ display: framesReady ? "block" : "none" }}
+      />
     </div>
   );
-};
+}
+
+// ============================================================
+// CenterHero – Optimized for Mobile and Desktop
+// ============================================================
+export default function CenterHero() {
+  const benefits = [
+    {
+      icon: Globe,
+      title: "Online Infrastructure",
+      desc: "Run your entire facility from any device. Manage beds, staff, and records in real time.",
+    },
+    {
+      icon: Users,
+      title: "Staff Management",
+      desc: "Easily assign roles, track performance, and coordinate shifts – no more spreadsheets.",
+    },
+    {
+      icon: TrendingUp,
+      title: "Higher ROI",
+      desc: "Reduce administrative costs by 35% and increase patient throughput by 20% in months.",
+    },
+    {
+      icon: Activity,
+      title: "Patient Flow",
+      desc: "Know exactly where each patient is – from arrival to discharge – and remove bottlenecks.",
+    },
+    {
+      icon: Shield,
+      title: "Unified EMR",
+      desc: "Complete, cross-department medical records. No lost files, no repeated tests.",
+    },
+    {
+      icon: Clock,
+      title: "24/7 Support",
+      desc: "Mission-critical reliability with 99.9% uptime and dedicated support.",
+    },
+    {
+      icon: Database,
+      title: "Data Insights",
+      desc: "Dashboards that show occupancy, staff productivity, and revenue trends.",
+    },
+  ];
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % benefits.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [benefits.length]);
+
+  return (
+    <section className="relative min-h-screen w-full flex flex-col justify-end overflow-hidden bg-black">
+      <BoomerangVideoBg
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4"
+        className="absolute inset-0 w-full h-full"
+      />
+
+      {/* Overlays */}
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-emerald-900/20" />
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-12 md:pb-16 pt-24 md:pt-16">
+        {/* Main Content Layout */}
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-12">
+          {/* Left Column: Text */}
+          <div className="text-center md:text-left flex flex-col items-center md:items-start">
+            <h1 className="font-['Bebas_Neue'] text-white text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.9] tracking-tighter mb-6">
+              The Operating System <br />
+              <span className="text-emerald-400">for Modern Care</span>
+            </h1>
+            <p className="font-['Poppins'] text-white/70 text-base md:text-lg max-w-md font-light leading-relaxed mb-8">
+              Doza Center brings your entire medical infrastructure into one
+              platform. Real-time patient tracking, unified records, and
+              powerful analytics.
+            </p>
+            <button className="w-full md:w-auto px-8 py-4 bg-white text-black rounded-full font-semibold font-['Poppins'] text-sm uppercase tracking-wider hover:bg-emerald-400 hover:text-white transition-all shadow-lg flex items-center justify-center gap-2">
+              Book Now
+              <ArrowRight size={16} />
+            </button>
+          </div>
+
+          {/* Right Column: Carousel */}
+          <div className="w-full max-w-md mx-auto md:mx-0">
+            <div className="relative p-6 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl min-h-[220px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <div className="p-3 w-fit bg-emerald-500/10 rounded-2xl border border-emerald-500/20 mb-4">
+                    {React.createElement(benefits[activeIndex].icon, {
+                      size: 28,
+                      className: "text-emerald-400",
+                    })}
+                  </div>
+                  <h3 className="font-['Bebas_Neue'] text-2xl md:text-3xl text-white mb-2">
+                    {benefits[activeIndex].title}
+                  </h3>
+                  <p className="font-['Poppins'] text-white/60 text-sm leading-relaxed">
+                    {benefits[activeIndex].desc}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Pagination */}
+              <div className="flex gap-2 mt-6">
+                {benefits.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIndex(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      idx === activeIndex
+                        ? "w-8 bg-emerald-400"
+                        : "w-2 bg-white/20"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Metrics (Responsive Grid) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-white/10">
+          {[
+            { label: "Uptime", val: "99.9%" },
+            { label: "Cost Reduction", val: "35%" },
+            { label: "Throughput", val: "20%" },
+            { label: "Support", val: "24/7" },
+          ].map((stat, i) => (
+            <div key={i} className="text-center">
+              <div className="font-['Bebas_Neue'] text-2xl md:text-3xl text-white">
+                {stat.val}
+              </div>
+              <div className="font-['Poppins'] text-[10px] text-white/40 uppercase tracking-widest mt-1">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
