@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight,
   Video,
   Pill,
   Users,
@@ -14,6 +13,9 @@ import {
   Clock,
   Heart,
 } from "lucide-react";
+
+const bebasNeue = { className: "font-['Bebas_Neue']" };
+const poppins = { className: "font-['Poppins']" };
 
 const features = [
   {
@@ -117,10 +119,22 @@ const features = [
   },
 ];
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 export default function Features() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
   const current = features[selectedIndex];
 
   useEffect(() => {
@@ -137,61 +151,61 @@ export default function Features() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#FAFAFA] py-32 text-[#1f2a1d] min-h-screen"
+      className="bg-white py-16 md:py-32 text-slate-900 overflow-hidden"
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={hasAnimated ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-32"
-        >
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px w-12 bg-[#336443]" />
-            <span className="text-[11px] tracking-[0.3em] text-[#336443] uppercase font-['Poppins'] font-semibold">
-              What we offer
-            </span>
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+          <div className="max-w-3xl">
+            <h2
+              className={`text-5xl md:text-8xl font-bold leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
+            >
+              What we <br />
+              <span className="text-emerald-600">Offer</span>
+            </h2>
           </div>
-          <h2 className="text-5xl md:text-6xl font-['Bebas_Neue'] leading-[1.1] text-[#1f2a1d] mb-4">
-            Features <span className="text-[#85AB8B] italic">For you</span>
-          </h2>
-          <p className="text-[#4b5b47] font-['Poppins'] text-lg leading-relaxed">
-            Built for clinicians, patients, and centers each tool solves a real
-            problem, no fluff.
+          <p
+            className={`text-slate-500 font-medium max-w-sm text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
+          >
+            Built for clinicians, patients, and centers – each tool solves a
+            real problem, no fluff.
           </p>
-        </motion.div>
+        </div>
 
         {/* Two‑column layout */}
-        <div className="grid md:grid-cols-12 gap-16 items-start">
-          {/* Left sidebar – interactive list */}
-          <div className="md:col-span-3">
-            <div className="flex flex-col gap-6">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+          {/* Left sidebar – feature list */}
+          <div className="lg:w-1/3">
+            <div
+              className="flex lg:flex-col gap-4 lg:gap-6 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0"
+              style={{ scrollbarWidth: "none" }}
+            >
               {features.map((feature, idx) => (
                 <button
                   key={feature.id}
                   onClick={() => setSelectedIndex(idx)}
-                  className={`group relative flex items-center gap-6 text-left transition-all duration-300 ${
-                    selectedIndex === idx
-                      ? "opacity-100"
-                      : "opacity-50 hover:opacity-100"
-                  }`}
+                  className={`
+                    group relative flex items-center gap-4 lg:gap-6 text-left transition-all duration-300 shrink-0 lg:shrink
+                    ${selectedIndex === idx ? "opacity-100" : "opacity-60 hover:opacity-100"}
+                  `}
                 >
                   <span
-                    className={`font-['Bebas_Neue'] text-4xl transition-colors ${
-                      selectedIndex === idx
-                        ? "text-[#336443]"
-                        : "text-[#1f2a1d] group-hover:text-[#336443]"
-                    }`}
+                    className={`
+                      text-3xl lg:text-4xl transition-colors ${bebasNeue.className}
+                      ${selectedIndex === idx ? "text-emerald-600" : "text-slate-400 group-hover:text-emerald-500"}
+                    `}
                   >
                     {feature.id}
                   </span>
-                  <span className="font-['Poppins'] text-sm uppercase tracking-widest">
+                  <span
+                    className={`text-xs lg:text-sm uppercase tracking-wider whitespace-nowrap lg:whitespace-normal ${poppins.className}`}
+                  >
                     {feature.title}
                   </span>
                   {selectedIndex === idx && (
                     <motion.div
                       layoutId="activeBar"
-                      className="absolute -left-6 w-1 h-10 bg-[#2AB04A] rounded-r"
+                      className="absolute -left-4 lg:-left-6 w-1 h-8 lg:h-10 bg-emerald-500 rounded-r"
                       initial={{ scaleY: 0 }}
                       animate={{ scaleY: 1 }}
                       transition={{
@@ -206,8 +220,8 @@ export default function Features() {
             </div>
           </div>
 
-          {/* Right panel – solid card, no blur */}
-          <div className="md:col-span-9">
+          {/* Right panel – feature details */}
+          <div className="lg:w-2/3">
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedIndex}
@@ -215,47 +229,47 @@ export default function Features() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-white p-8 md:p-16 shadow-xl rounded-[2rem] border border-black/5"
+                className="bg-slate-50 p-6 md:p-10 rounded-2xl border border-slate-200 shadow-sm"
               >
-                <div className="grid md:grid-cols-2 gap-12">
+                <div className="flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-12">
                   {/* Left side content */}
-                  <div className="space-y-8">
-                    <h3 className="text-5xl md:text-6xl font-['Bebas_Neue'] leading-[1.1] text-[#1f2a1d]">
+                  <div className="order-2 md:order-1 space-y-6 md:space-y-8">
+                    <h3
+                      className={`text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-slate-900 ${bebasNeue.className}`}
+                    >
                       {current.title}
                     </h3>
-                    <p className="font-['Poppins'] text-[#4b5b47] leading-relaxed text-base">
+                    <p
+                      className={`text-slate-600 leading-relaxed text-sm md:text-base ${poppins.className}`}
+                    >
                       {current.longDesc}
                     </p>
-                    <div className="flex items-center gap-8 pt-8 border-t border-black/10">
+                    <div className="flex items-center gap-6 pt-6 border-t border-slate-200">
                       <div>
-                        <div className="text-3xl font-['Bebas_Neue'] text-[#336443]">
+                        <div
+                          className={`text-2xl md:text-3xl text-emerald-600 ${bebasNeue.className}`}
+                        >
                           {current.stat}
                         </div>
-                        <div className="text-[10px] uppercase tracking-widest text-[#4b5b47]">
+                        <div
+                          className={`text-[10px] uppercase tracking-widest text-slate-400 ${poppins.className}`}
+                        >
                           {current.statLabel}
                         </div>
                       </div>
-                      <button className="group flex items-center gap-3 font-['Poppins'] text-sm uppercase font-bold text-[#1f2a1d] hover:text-[#336443] transition-all">
-                        Explore
-                        <ArrowRight
-                          size={16}
-                          className="transition-transform group-hover:translate-x-1"
-                        />
-                      </button>
                     </div>
                   </div>
 
-                  {/* Image container – solid overlay, no gradient */}
-                  <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[#1f2a1d] shadow-xl group/image">
+                  {/* Image container */}
+                  <div className="order-1 md:order-2 relative aspect-square overflow-hidden rounded-xl md:rounded-2xl bg-slate-800 shadow-md group/image">
                     <img
                       src={current.image}
                       alt={current.title}
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover/image:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-105"
                     />
-                    {/* Solid overlay instead of gradient */}
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/image:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/90 border border-white flex items-center justify-center shadow-md">
-                      <current.icon className="text-[#1f2a1d]" size={20} />
+                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover/image:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 border border-white flex items-center justify-center shadow-md">
+                      <current.icon className="text-slate-800" size={18} />
                     </div>
                   </div>
                 </div>
@@ -264,8 +278,8 @@ export default function Features() {
           </div>
         </div>
 
-        {/* Solid bottom line – no gradient */}
-        <div className="mt-32 w-24 h-px bg-[#336443] mx-auto opacity-30" />
+        {/* Decorative line */}
+        <div className="mt-20 md:mt-32 w-24 h-px bg-emerald-600/30 mx-auto" />
       </div>
     </section>
   );

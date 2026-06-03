@@ -3,189 +3,143 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+const bebasNeue = { className: "font-['Bebas_Neue']" };
+
+const sections = [
+  {
+    id: "commitment",
+    title: "1. Our Commitment",
+    content:
+      "Doza is built on the principle that your health data belongs to you. We are committed to maintaining your privacy and earning your trust. We process all data in compliance with the Nigeria Data Protection Regulation (NDPR) and relevant international standards like GDPR and HIPAA.",
+  },
+  {
+    id: "collect",
+    title: "2. Information We Collect",
+    content:
+      "We collect information you provide directly, including Identity Data (name, DOB, contact details), Health Records (symptoms, history, prescriptions, lab results), and Communication Data (messages with providers). We also collect Usage Data (IP addresses, device info) to optimize performance.",
+  },
+  {
+    id: "use",
+    title: "3. How We Use Your Data",
+    content:
+      "We use your data to: (i) Facilitate the delivery of telemedicine and healthcare services; (ii) Maintain secure medical records; (iii) Verify your identity and prevent fraud; (iv) Communicate appointment updates and health reminders; and (v) Improve the safety and efficacy of our platform.",
+  },
+  {
+    id: "sharing",
+    title: "4. Data Sharing & Disclosure",
+    content:
+      "We do not sell your personal data. We only share information with: (i) Healthcare Providers explicitly authorized by you; (ii) Trusted Service Providers (e.g., cloud hosting, payment gateways) under strict confidentiality agreements; and (iii) Regulatory Authorities only when compelled by law.",
+  },
+  {
+    id: "rights",
+    title: "5. Your Rights",
+    content:
+      "You maintain control over your data. You have the right to: Request access to your personal information; Correct inaccurate data; Request deletion of your account and data (subject to legal retention requirements); Request data portability; and Object to specific processing activities.",
+  },
+  {
+    id: "security",
+    title: "6. Data Security",
+    content:
+      "We implement industry-standard security measures, including AES-256 encryption for data at rest and TLS 1.3 for data in transit. We conduct regular security audits, maintain strict access controls, and use multi-factor authentication for sensitive administrative access.",
+  },
+  {
+    id: "children",
+    title: "7. Children's Privacy",
+    content:
+      "Doza is not intended for use by children under the age of 13 without verifiable parental consent. If we discover we have collected personal information from a child without appropriate authorization, we will take steps to delete that information promptly.",
+  },
+  {
+    id: "transfers",
+    title: "8. International Transfers",
+    content:
+      "If you access Doza from outside your home country, your data may be processed on servers located in different jurisdictions. We ensure that any international transfer of your data is protected by appropriate safeguards and contractual clauses.",
+  },
+  {
+    id: "changes",
+    title: "9. Changes to This Policy",
+    content:
+      "We may update this policy periodically to reflect changes in legal requirements or our service offerings. We will notify you of material changes via email or an in-app banner before they take effect.",
+  },
+  {
+    id: "contact",
+    title: "10. Contact Us",
+    content:
+      "If you have questions, concerns, or wish to exercise your data rights, please contact our Data Protection Officer at privacy@dozamedic.com.",
+  },
+];
+
 export default function PrivacyPolicy() {
   return (
-    <main className="bg-white min-h-screen py-16 px-6 md:px-12">
-      <div className="max-w-4xl mx-auto">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-[#336443] hover:text-[#2AB04A] mb-8 transition-colors"
-        >
-          <ArrowLeft size={16} /> Back to Home
-        </Link>
+    <main className="bg-[#FDFDFC] min-h-screen py-8 md:py-16 px-6 md:px-12">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8 md:mb-12">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-emerald-700 hover:text-emerald-600 transition-colors mb-6 md:mb-8 font-medium text-sm"
+          >
+            <ArrowLeft size={16} /> Home
+          </Link>
+          <div className="border-b border-slate-200 pb-6 md:pb-8">
+            <h1
+              className={`text-4xl md:text-7xl text-slate-900 mb-4 ${bebasNeue.className}`}
+            >
+              Privacy Policy
+            </h1>
+            <div className="px-3 py-1 bg-slate-100 rounded-full text-slate-600 text-xs inline-block">
+              Last updated: June 3, 2026
+            </div>
+          </div>
+        </div>
 
-        <h1 className="text-4xl md:text-5xl font-['Bebas_Neue'] text-[#1f2a1d] mb-4">
-          Privacy Policy
-        </h1>
-        <p className="text-sm text-[#4b5b47] mb-12">
-          Last updated: {new Date().toLocaleDateString()}
-        </p>
+        <div className="grid md:grid-cols-12 gap-12">
+          <aside className="hidden md:block md:col-span-3">
+            <nav className="sticky top-10 space-y-2">
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">
+                Content
+              </p>
+              {sections.map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className="block text-sm text-slate-600 hover:text-emerald-600 py-1 transition-colors"
+                >
+                  {s.title}
+                </a>
+              ))}
+            </nav>
+          </aside>
 
-        <div className="space-y-8 font-['Poppins'] text-[#1f2a1d]">
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              1. Our Commitment
-            </h2>
-            <p className="text-[#4b5b47] leading-relaxed">
-              Doza is built on the principle that your health data belongs to
-              you, and only you. We never sell, rent, or trade your personal
-              information. This policy explains how we collect, use, and protect
-              your data in full compliance with HIPAA, GDPR, and local
-              healthcare regulations.
-            </p>
-          </section>
+          <div className="md:col-span-9 space-y-12 md:space-y-16">
+            {sections.map((s) => (
+              <section key={s.id} id={s.id} className="scroll-mt-10">
+                <h2
+                  className={`text-2xl md:text-3xl text-slate-900 mb-4 md:mb-6 ${bebasNeue.className}`}
+                >
+                  {s.title}
+                </h2>
+                <div className="prose prose-sm md:prose-base prose-slate max-w-none text-slate-600 leading-relaxed font-['Poppins']">
+                  {s.content}
+                </div>
+              </section>
+            ))}
 
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              2. Information We Collect
-            </h2>
-            <ul className="list-disc pl-6 space-y-2 text-[#4b5b47]">
-              <li>
-                <strong>Identity data</strong> – name, date of birth, contact
-                details.
-              </li>
-              <li>
-                <strong>Health records</strong> – symptoms, diagnoses,
-                prescriptions, lab results, medical history.
-              </li>
-              <li>
-                <strong>Usage data</strong> – app interactions, device info, IP
-                address (anonymised where possible).
-              </li>
-              <li>
-                <strong>Communication data</strong> – messages with doctors,
-                support inquiries.
-              </li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              3. How We Use Your Data
-            </h2>
-            <ul className="list-disc pl-6 space-y-2 text-[#4b5b47]">
-              <li>
-                Provide and personalise healthcare services (appointments,
-                telemedicine, prescriptions).
-              </li>
-              <li>
-                Enable secure sharing with your chosen doctors and centres.
-              </li>
-              <li>
-                Improve platform safety, performance, and user experience.
-              </li>
-              <li>Comply with legal obligations and prevent fraud.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              4. Data Sharing & Disclosure
-            </h2>
-            <p className="text-[#4b5b47] leading-relaxed">
-              We only share your identifiable health information with:
-            </p>
-            <ul className="list-disc pl-6 mt-2 space-y-2 text-[#4b5b47]">
-              <li>
-                Healthcare providers you explicitly authorise (doctors, labs,
-                hospitals).
-              </li>
-              <li>
-                Third‑party service providers who help us operate (e.g., cloud
-                hosting, analytics) – all bound by strict confidentiality
-                agreements.
-              </li>
-              <li>Regulatory authorities when required by law.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              5. Your Rights
-            </h2>
-            <ul className="list-disc pl-6 space-y-2 text-[#4b5b47]">
-              <li>
-                <strong>Access:</strong> Request a copy of your data at any
-                time.
-              </li>
-              <li>
-                <strong>Correction:</strong> Ask us to fix inaccurate
-                information.
-              </li>
-              <li>
-                <strong>Deletion:</strong> Request deletion of your account and
-                associated data (subject to legal retention periods).
-              </li>
-              <li>
-                <strong>Portability:</strong> Download your health records in a
-                standard format.
-              </li>
-              <li>
-                <strong>Objection:</strong> Opt out of non‑essential data
-                processing.
-              </li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              6. Data Security
-            </h2>
-            <p className="text-[#4b5b47] leading-relaxed">
-              We use industry‑standard encryption (AES‑256 at rest, TLS 1.3 in
-              transit), multi‑factor authentication, and regular security
-              audits. Access to your data is strictly logged and monitored.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              7. Children's Privacy
-            </h2>
-            <p className="text-[#4b5b47] leading-relaxed">
-              Doza is not intended for children under 13 without parental
-              consent. If you believe we have collected such data, please
-              contact us to delete it.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              8. International Transfers
-            </h2>
-            <p className="text-[#4b5b47] leading-relaxed">
-              If you use Doza outside your home country, your data may be
-              transferred to servers in a different jurisdiction. We ensure
-              appropriate safeguards (e.g., Standard Contractual Clauses) to
-              protect your information.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              9. Changes to This Policy
-            </h2>
-            <p className="text-[#4b5b47] leading-relaxed">
-              We may update this policy. Significant changes will be notified
-              via email or in‑app banner.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-['Bebas_Neue'] mb-3">
-              10. Contact Us
-            </h2>
-            <p className="text-[#4b5b47] leading-relaxed">
-              For privacy questions or to exercise your rights, email{" "}
+            <div className="bg-emerald-50 p-6 md:p-8 rounded-2xl border border-emerald-100">
+              <h3
+                className={`text-xl md:text-2xl text-emerald-900 mb-2 ${bebasNeue.className}`}
+              >
+                Questions?
+              </h3>
+              <p className="text-emerald-800 text-sm mb-4 font-['Poppins']">
+                Reach out to our privacy team directly.
+              </p>
               <a
                 href="mailto:privacy@dozamedic.com"
-                className="text-[#2AB04A] hover:underline"
+                className="inline-block bg-emerald-600 text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-emerald-700 transition-colors w-full md:w-auto text-center"
               >
                 privacy@dozamedic.com
-              </a>{" "}
-              or call +234 812 772 8084.
-            </p>
-          </section>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </main>
