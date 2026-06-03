@@ -13,6 +13,8 @@ import {
   FileText,
   CheckCircle,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const slides = [
@@ -107,6 +109,17 @@ const slides = [
   },
 ];
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 export default function WhatDozaDoes() {
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -114,12 +127,12 @@ export default function WhatDozaDoes() {
   const wheelDelta = useRef(0);
   const wheelTimeout = useRef<NodeJS.Timeout | null>(null);
   const indexRef = useRef(index);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     indexRef.current = index;
   }, [index]);
 
-  // Safety check: if slides is empty or currentSlide undefined, return null
   if (!slides.length) return null;
   const currentSlide = slides[index];
   if (!currentSlide) return null;
@@ -142,7 +155,9 @@ export default function WhatDozaDoes() {
     }
   }, [isTransitioning, index]);
 
+  // Desktop wheel handling
   useEffect(() => {
+    if (isMobile) return;
     const handleWheel = (e: WheelEvent) => {
       const currentIdx = indexRef.current;
       if (currentIdx === slides.length - 1 && e.deltaY > 0) return;
@@ -162,8 +177,9 @@ export default function WhatDozaDoes() {
       container.addEventListener("wheel", handleWheel, { passive: false });
       return () => container.removeEventListener("wheel", handleWheel);
     }
-  }, [nextSlide, prevSlide, isTransitioning]);
+  }, [nextSlide, prevSlide, isTransitioning, isMobile]);
 
+  // Keyboard works everywhere
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
@@ -178,10 +194,13 @@ export default function WhatDozaDoes() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [nextSlide, prevSlide]);
 
+  const handleMobileNext = () => nextSlide();
+  const handleMobilePrev = () => prevSlide();
+
   return (
     <div
       ref={containerRef}
-      className="relative h-screen w-full overflow-hidden"
+      className="relative h-screen w-full overflow-x-hidden bg-black"
       style={{ touchAction: "none" }}
     >
       <AnimatePresence mode="wait">
@@ -213,112 +232,130 @@ export default function WhatDozaDoes() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute top-0 left-0 right-0 z-20 h-1 bg-white/20">
-        <div
-          className="h-full bg-[#2AB04A] transition-all duration-700"
-          style={{ width: `${((index + 1) / slides.length) * 100}%` }}
-        />
-      </div>
+      {/* Progress bar – hidden on mobile */}
+      {!isMobile && (
+        <div className="absolute top-0 left-0 right-0 z-20 h-1 bg-white/20">
+          <div
+            className="h-full bg-[#2AB04A] transition-all duration-700"
+            style={{ width: `${((index + 1) / slides.length) * 100}%` }}
+          />
+        </div>
+      )}
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -30 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="h-full flex items-center justify-center px-6 md:px-12 relative z-10"
-        >
-          <div className="max-w-6xl w-full mx-auto grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              <div className="mb-8">
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-lg backdrop-blur-sm"
-                  style={{ backgroundColor: `${currentSlide.color}30` }}
-                >
-                  <currentSlide.icon
-                    size={28}
-                    style={{ color: currentSlide.color }}
-                    strokeWidth={1.2}
-                  />
+      <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-6 md:px-12 py-8 sm:py-12 overflow-y-auto">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full"
+          >
+            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+              {/* Left: Problem */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                <div className="mb-6 md:mb-8">
+                  <div
+                    className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-4 md:mb-6 shadow-lg backdrop-blur-sm"
+                    style={{ backgroundColor: `${currentSlide.color}30` }}
+                  >
+                    <currentSlide.icon
+                      size={24}
+                      style={{ color: currentSlide.color }}
+                      strokeWidth={1.2}
+                    />
+                  </div>
+                  <span className="text-[10px] md:text-[11px] tracking-[0.3em] text-white/80 uppercase font-['Poppins'] font-semibold">
+                    The Problem
+                  </span>
                 </div>
-                <span className="text-[11px] tracking-[0.3em] text-white/80 uppercase font-['Poppins'] font-semibold">
-                  The Problem
-                </span>
-              </div>
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-['Bebas_Neue'] leading-[1.2] text-white mb-6 drop-shadow-lg">
-                {currentSlide.problem}
-              </h3>
-            </motion.div>
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-['Bebas_Neue'] leading-[1.3] md:leading-[1.2] text-white mb-6 drop-shadow-lg break-words">
+                  {currentSlide.problem}
+                </h3>
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-black/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative bg-black/40 backdrop-blur-md p-8 md:p-10 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500">
-                <div className="flex items-start gap-5">
-                  <CheckCircle
-                    size={32}
-                    className="text-[#2AB04A] flex-shrink-0"
-                    strokeWidth={1.5}
-                  />
-                  <div>
-                    <span className="text-[11px] tracking-[0.3em] text-[#2AB04A] uppercase font-['Poppins'] font-semibold block mb-4">
-                      Doza Helps
-                    </span>
-                    <p className="text-white/90 font-['Poppins'] text-base md:text-lg leading-relaxed font-medium">
-                      {currentSlide.solution}
-                    </p>
-                    <div className="mt-6 flex items-center gap-2 text-[#2AB04A] group/btn">
-                      <span className="text-xs font-medium uppercase tracking-wider">
-                        Learn more
+              {/* Right: Solution */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="relative group"
+              >
+                <div className="absolute inset-0 bg-black/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500">
+                  <div className="flex items-start gap-4 md:gap-5">
+                    <CheckCircle
+                      size={28}
+                      className="text-[#2AB04A] flex-shrink-0"
+                      strokeWidth={1.5}
+                    />
+                    <div>
+                      <span className="text-[10px] md:text-[11px] tracking-[0.3em] text-[#2AB04A] uppercase font-['Poppins'] font-semibold block mb-3 md:mb-4">
+                        Doza Helps
                       </span>
-                      <ArrowRight
-                        size={14}
-                        className="transition-transform group-hover/btn:translate-x-1"
-                      />
+                      <p className="text-white/90 font-['Poppins'] text-sm md:text-base lg:text-lg leading-relaxed font-medium break-words">
+                        {currentSlide.solution}
+                      </p>
+                      <div className="mt-5 md:mt-6 flex items-center gap-2 text-[#2AB04A] group/btn">
+                        <span className="text-[10px] md:text-xs font-medium uppercase tracking-wider">
+                          Learn more
+                        </span>
+                        <ArrowRight
+                          size={14}
+                          className="transition-transform group-hover/btn:translate-x-1"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+              </motion.div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
-        <div className="flex items-baseline gap-1 text-white/90">
-          <span className="text-5xl font-['Bebas_Neue'] leading-none tracking-tighter">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="text-sm font-['Poppins'] text-white/40 mx-1">/</span>
-          <span className="text-2xl font-['Bebas_Neue'] text-white/40">
-            {String(slides.length).padStart(2, "0")}
-          </span>
-        </div>
-        <div className="w-12 h-px bg-[#2AB04A]/50 mt-2" />
+        {/* Pagination – only on desktop */}
+        {!isMobile && (
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+            <div className="flex items-baseline gap-1 text-white/90">
+              <span className="text-5xl font-['Bebas_Neue'] leading-none tracking-tighter">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="text-sm font-['Poppins'] text-white/40 mx-1">
+                /
+              </span>
+              <span className="text-2xl font-['Bebas_Neue'] text-white/40">
+                {String(slides.length).padStart(2, "0")}
+              </span>
+            </div>
+            <div className="w-12 h-px bg-[#2AB04A]/50 mt-2" />
+          </div>
+        )}
       </div>
 
-      {index < slides.length - 1 && (
-        <div className="absolute bottom-8 right-8 z-20 hidden md:flex items-center gap-2 bg-black/50 backdrop-blur-sm px-3 py-2 rounded-full">
-          <span className="text-[9px] tracking-wider text-white/80 uppercase font-['Poppins'] font-medium">
-            Scroll
-          </span>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path
-              d="M7 2v10m0 0l-3-3m3 3 3-3"
-              stroke="white"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-          </svg>
+      {/* Mobile navigation buttons */}
+      {isMobile && (
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 z-20">
+          {index > 0 && (
+            <button
+              onClick={handleMobilePrev}
+              className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          )}
+          {index < slides.length - 1 && (
+            <button
+              onClick={handleMobileNext}
+              className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+            >
+              <ChevronRight size={24} />
+            </button>
+          )}
         </div>
       )}
     </div>

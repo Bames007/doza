@@ -38,7 +38,7 @@ export default function DozaMainPage({ onRoleSelect }: DozaMainPageProps) {
         <WhatDozaDoes />
       </section>
 
-      <RoleSelector onSelectRole={onRoleSelect} />
+      {/* <RoleSelector onSelectRole={onRoleSelect} />
 
       <section id="features">
         <Features />
@@ -54,7 +54,7 @@ export default function DozaMainPage({ onRoleSelect }: DozaMainPageProps) {
         <Contact />
       </section>
 
-      <Footer />
+      <Footer /> */}
     </main>
   );
 }

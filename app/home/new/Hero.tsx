@@ -11,6 +11,8 @@ import {
   Building2,
   Quote,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -76,7 +78,6 @@ type Slide = {
 };
 
 const slides: Slide[] = [
-  // ... (your existing slides array, unchanged)
   {
     id: 1,
     title: "Doza",
@@ -257,6 +258,17 @@ interface DozaHeroProps {
   onSeeDifferenceClick?: () => void;
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 export default function DozaHero({
   onRoleSelect,
   onExploreClick,
@@ -268,6 +280,7 @@ export default function DozaHero({
   const wheelDelta = useRef(0);
   const wheelTimeout = useRef<NodeJS.Timeout | null>(null);
   const indexRef = useRef(index);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     indexRef.current = index;
@@ -294,7 +307,9 @@ export default function DozaHero({
     }
   }, [isTransitioning, index]);
 
+  // Desktop wheel handling
   useEffect(() => {
+    if (isMobile) return;
     const handleWheel = (e: WheelEvent) => {
       const currentIdx = indexRef.current;
       if (currentIdx === slides.length - 1 && e.deltaY > 0) return;
@@ -314,8 +329,9 @@ export default function DozaHero({
       container.addEventListener("wheel", handleWheel, { passive: false });
       return () => container.removeEventListener("wheel", handleWheel);
     }
-  }, [nextSlide, prevSlide, isTransitioning]);
+  }, [nextSlide, prevSlide, isTransitioning, isMobile]);
 
+  // Keyboard works everywhere
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown" || e.key === "ArrowRight") {
@@ -366,10 +382,13 @@ export default function DozaHero({
       onSeeDifferenceClick();
   };
 
+  const handleMobileNext = () => nextSlide();
+  const handleMobilePrev = () => prevSlide();
+
   return (
     <div
       ref={containerRef}
-      className="relative h-screen w-full overflow-hidden bg-black"
+      className="relative h-screen w-full overflow-x-hidden bg-black"
       style={{ touchAction: "none" }}
     >
       <video
@@ -390,13 +409,12 @@ export default function DozaHero({
       <div className="absolute inset-0 z-10 bg-black/60" />
       <div className="absolute inset-0 z-10" style={gradientStyle} />
 
-      {/* Responsive container – smaller side padding on mobile */}
-      <div className="relative z-20 h-full flex flex-col px-4 sm:px-6 md:px-12 lg:px-16 py-6 sm:py-8">
-        <header className="flex justify-between items-center">
+      <div className="relative z-20 h-full flex flex-col px-4 sm:px-6 md:px-12 lg:px-16 py-6 sm:py-8 overflow-y-auto">
+        <header className="flex justify-between items-center flex-shrink-0">
           <img
             src="/logo.png"
             alt="DOZA Logo"
-            className="h-6 sm:h-8 w-auto object-contain"
+            className="h-6 sm:h-8 w-auto object-contain max-w-full"
           />
         </header>
 
@@ -409,17 +427,17 @@ export default function DozaHero({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="max-w-3xl mx-auto sm:mx-0 text-center sm:text-left"
+                className="w-full"
               >
-                <h1 className="font-['Bebas_Neue'] text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[0.9] tracking-tighter text-white">
+                <h1 className="font-['Bebas_Neue'] text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[0.9] tracking-tighter text-white break-words max-w-full">
                   {currentSlide.title}
                 </h1>
-                <p className="font-['Poppins'] text-white/70 text-base sm:text-lg md:text-xl mt-4 sm:mt-6 max-w-lg mx-auto sm:mx-0 font-light">
+                <p className="font-['Poppins'] text-white/70 text-sm sm:text-lg md:text-xl mt-4 sm:mt-6 max-w-full font-light break-words">
                   {currentSlide.desc}
                 </p>
                 <button
                   onClick={handleCinematicClick}
-                  className="group mt-8 sm:mt-10 flex items-center gap-3 py-2 pl-2 pr-5 sm:pr-6 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-500 mx-auto sm:mx-0"
+                  className="group mt-8 sm:mt-10 flex items-center gap-3 py-2 pl-2 pr-5 sm:pr-6 rounded-full bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-500"
                 >
                   <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white flex items-center justify-center text-black transition-transform duration-300 group-hover:rotate-12">
                     <Play
@@ -429,7 +447,7 @@ export default function DozaHero({
                       className="ml-0.5"
                     />
                   </div>
-                  <span className="font-['Poppins'] text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-white">
+                  <span className="font-['Poppins'] text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-white whitespace-nowrap">
                     {currentSlide.cta}
                   </span>
                 </button>
@@ -437,8 +455,7 @@ export default function DozaHero({
             </AnimatePresence>
           ) : (
             <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 lg:gap-14">
-              {/* Left column */}
-              <div className="w-full lg:w-1/2 flex flex-col justify-end mb-6 lg:mb-0">
+              <div className="w-full lg:w-1/2 flex flex-col justify-end">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={index}
@@ -448,14 +465,12 @@ export default function DozaHero({
                     transition={{ duration: 0.6, delay: 0.2 }}
                     className="space-y-4 sm:space-y-5"
                   >
-                    <h1 className="font-['Bebas_Neue'] text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tighter text-white">
+                    <h1 className="font-['Bebas_Neue'] text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tighter text-white break-words max-w-full">
                       {currentSlide.title}
                     </h1>
-                    <p className="font-['Poppins'] text-white/80 text-sm sm:text-base md:text-lg max-w-md font-light">
+                    <p className="font-['Poppins'] text-white/80 text-sm sm:text-base md:text-lg max-w-full font-light break-words">
                       {currentSlide.desc}
                     </p>
-
-                    {/* Become card */}
                     <div className="mt-4 sm:mt-6 p-4 sm:p-5 rounded-2xl bg-black/50 border border-white/10">
                       <h3 className="font-['Poppins'] text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#2AB04A]">
                         Become a Doza{" "}
@@ -465,7 +480,7 @@ export default function DozaHero({
                         {currentSlide.becomePoints.map((point, i) => (
                           <li
                             key={i}
-                            className="flex items-start gap-2 text-white/70 text-xs sm:text-sm font-['Poppins']"
+                            className="flex items-start gap-2 text-white/70 text-xs sm:text-sm font-['Poppins'] break-words"
                           >
                             <span className="text-[#2E98ED] text-lg leading-5">
                               •
@@ -475,8 +490,6 @@ export default function DozaHero({
                         ))}
                       </ul>
                     </div>
-
-                    {/* CTA Button */}
                     <button
                       onClick={() =>
                         currentSlide.role && onRoleSelect(currentSlide.role)
@@ -491,7 +504,7 @@ export default function DozaHero({
                           className="ml-0.5"
                         />
                       </div>
-                      <span className="font-['Poppins'] text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-white/90 group-hover:text-white">
+                      <span className="font-['Poppins'] text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-white/90 group-hover:text-white whitespace-nowrap">
                         {currentSlide.cta}
                       </span>
                     </button>
@@ -499,8 +512,7 @@ export default function DozaHero({
                 </AnimatePresence>
               </div>
 
-              {/* Right column */}
-              <div className="w-full lg:w-1/2 space-y-5 sm:space-y-6">
+              <div className="hidden md:block w-full lg:w-1/2 space-y-5 sm:space-y-6">
                 {benefitCard && (
                   <SingleBenefitCard
                     icon={benefitCard.icon}
@@ -520,7 +532,6 @@ export default function DozaHero({
           )}
         </div>
 
-        {/* Responsive footer */}
         <footer className="flex flex-wrap justify-between items-center pt-4 sm:pt-6 border-t border-white/10 gap-3">
           <div className="flex items-center gap-3 sm:gap-5">
             <Facebook
@@ -533,26 +544,50 @@ export default function DozaHero({
               className="text-white/50 cursor-pointer hover:text-[#2E98ED] transition"
             />
           </div>
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="flex items-baseline gap-0.5 sm:gap-1">
-              <span className="text-3xl sm:text-5xl md:text-6xl font-mono font-bold text-white leading-none tracking-tighter">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="text-sm sm:text-base text-white/30 font-mono mx-0.5 sm:mx-1">
-                /
-              </span>
-              <span className="text-sm sm:text-base font-mono text-white/30">
-                {String(slides.length).padStart(2, "0")}
-              </span>
+
+          {!isMobile && (
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex items-baseline gap-0.5 sm:gap-1">
+                <span className="text-3xl sm:text-5xl md:text-6xl font-mono font-bold text-white leading-none tracking-tighter">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="text-sm sm:text-base text-white/30 font-mono mx-0.5 sm:mx-1">
+                  /
+                </span>
+                <span className="text-sm sm:text-base font-mono text-white/30">
+                  {String(slides.length).padStart(2, "0")}
+                </span>
+              </div>
+              <div className="w-16 sm:w-24 md:w-36 h-0.5 bg-white/20 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[#2AB04A] transition-all duration-700 rounded-full"
+                  style={{ width: `${((index + 1) / slides.length) * 100}%` }}
+                />
+              </div>
             </div>
-            <div className="w-16 sm:w-24 md:w-36 h-0.5 bg-white/20 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#2AB04A] transition-all duration-700 rounded-full"
-                style={{ width: `${((index + 1) / slides.length) * 100}%` }}
-              />
-            </div>
-          </div>
+          )}
         </footer>
+
+        {isMobile && (
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-6 z-20">
+            {index > 0 && (
+              <button
+                onClick={handleMobilePrev}
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+              >
+                <ChevronLeft size={24} />
+              </button>
+            )}
+            {index < slides.length - 1 && (
+              <button
+                onClick={handleMobileNext}
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
+              >
+                <ChevronRight size={24} />
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <style jsx>{`
@@ -562,7 +597,7 @@ export default function DozaHero({
   );
 }
 
-// ---------- Helper components (with responsive adjustments) ----------
+// ---------- Helper components ----------
 interface BenefitCardProps {
   icon: React.ReactNode;
   title: string;
@@ -623,14 +658,12 @@ interface ReviewArchProps {
 }
 function ReviewArch({ reviews, brandColor }: ReviewArchProps) {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  // Responsive avatar offsets: smaller lift on mobile
   const avatarOffsets = [
     "translate-y-0",
     "-translate-y-2",
     "-translate-y-2",
     "translate-y-0",
   ];
-
   return (
     <div className="w-full max-w-2xl mx-auto">
       <div className="flex justify-center items-end gap-3 sm:gap-4 py-4 sm:py-8">
