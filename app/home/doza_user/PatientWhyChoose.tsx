@@ -9,88 +9,88 @@ import {
   Video,
   MessageCircle,
   CheckCircle,
-  Zap,
   ArrowUpRight,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
-import { SectionLabel, PremiumCard, GrainOverlay } from "@/app/ui/Premium";
+import { PremiumCard, GrainOverlay } from "@/app/ui/Premium";
 
 export default function PatientWhyChoose() {
   const features = [
     {
       icon: FileText,
-      title: "Omniscient EMR Access",
+      title: "Your Medical Records",
       description:
-        "Your entire medical biography, decrypted and delivered in one secure digital vault.",
-      benefits: [
-        "Instant portability",
-        "HIPAA Gold-Standard",
-        "Emergency override access",
-      ],
+        "All your health information in one secure place. Share with any doctor instantly.",
+      benefits: ["Access anywhere", "Secure & private", "Emergency access"],
       scenario:
-        "Paramedics can access your critical vitals instantly in emergencies.",
+        "Paramedics can see your critical health information right away in an emergency.",
       color: "blue",
-      span: "lg:col-span-2", // Large Card
+      span: "lg:col-span-2",
     },
     {
       icon: Activity,
-      title: "Predictive AI Vitals",
-      description: "Biometric tracking that doesn't just monitor—it predicts.",
+      title: "Health Tracking",
+      description:
+        "Monitor your heart rate, activity, and other vital signs. Get alerts when something looks wrong.",
       benefits: [
-        "Trend forecasting",
-        "Early warning system",
-        "Direct doc-sync",
+        "Spot problems early",
+        "Share with your doctor",
+        "Track changes over time",
       ],
       scenario:
-        "Doza detected a heart rate anomaly and alerted your specialist automatically.",
+        "Doza noticed an irregular heartbeat and alerted your doctor automatically.",
       color: "green",
       span: "lg:col-span-1",
     },
     {
       icon: Video,
-      title: "Elite Telepresence",
+      title: "Video Doctor Visits",
       description:
-        "Global specialists in your living room via 4K clinical-grade video.",
+        "See a doctor from home. Get prescriptions, referrals, and medical advice without traveling.",
       benefits: [
-        "No-wait triage",
-        "Multi-family calls",
+        "No waiting rooms",
+        "Include family members",
         "Digital prescriptions",
       ],
       scenario:
-        "Consult with a London-based neurologist from your home in minutes.",
+        "Had a video visit with a specialist 100 miles away within 30 minutes.",
       color: "blue",
       span: "lg:col-span-1",
     },
     {
       icon: MapPin,
-      title: "Hyper-Local Facility Finder",
+      title: "Find Nearby Care",
       description:
-        "Live-inventory tracking for hospitals and pharmacies near you.",
-      benefits: ["Live wait times", "Inventory tracking", "ER status updates"],
+        "See live wait times at ERs and which pharmacies have your medication in stock.",
+      benefits: [
+        "Real ER wait times",
+        "Medicine inventory",
+        "Hospital status updates",
+      ],
       scenario:
-        "Found the only pharmacy within 10 miles with your specific med in stock.",
+        "Found the only pharmacy near you that had your specific medication ready.",
       color: "green",
-      span: "lg:col-span-2", // Large Card
+      span: "lg:col-span-2",
     },
     {
       icon: Bell,
-      title: "Precision Med-Logic",
+      title: "Medication Help",
       description:
-        "Intelligent adherence tools that manage the complexity of your health.",
-      benefits: ["Auto-refill sync", "Interaction alerts", "Dose tracking"],
+        "Get reminders for every dose. Never run out with automatic refill alerts.",
+      benefits: ["Refill reminders", "Drug safety checks", "Dose tracking"],
       scenario:
-        "Refills are scheduled and delivered before you ever hit 'zero'.",
+        "Your refill is ordered and delivered before you take your last pill.",
       color: "blue",
       span: "lg:col-span-1",
     },
     {
       icon: MessageCircle,
-      title: "The Doza Social Circle",
+      title: "Patient Communities",
       description:
-        "Exclusive access to curated medical communities and elite practitioners.",
-      benefits: ["Verified insights", "Peer support", "Direct medic feeds"],
+        "Connect with others who have the same condition. Learn from real patient experiences.",
+      benefits: ["Verified information", "Peer support", "Doctor-led groups"],
       scenario:
-        "Joined a nutrition circle led by the country's top clinical dietitians.",
+        "Joined a diabetes support group led by a certified diabetes educator.",
       color: "green",
       span: "lg:col-span-1",
     },
@@ -101,28 +101,27 @@ export default function PatientWhyChoose() {
       <GrainOverlay />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* --- Header --- */}
-        <div className="flex flex-col items-center text-center mb-24">
-          <SectionLabel text="The Doza Advantage" />
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className={`mt-6 text-6xl md:text-8xl font-bold text-slate-950 leading-[0.9] tracking-tighter ${bebasNeue.className}`}
-          >
-            THE FUTURE OF <br />
-            <span className="text-[#2BB14B]">PATIENT</span>{" "}
-            <span className="text-[#0086DB]">POWER</span>
-          </motion.h2>
+        {/* --- New Header: Two-column layout (same as provided) --- */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-24 gap-8">
+          <div className="max-w-3xl">
+            <h2
+              className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
+            >
+              WHY PATIENTS
+              <br />
+              <span className="text-emerald-600">CHOOSE DOZA</span>
+            </h2>
+          </div>
           <p
-            className={`mt-8 text-slate-500 max-w-2xl text-lg md:text-xl font-light leading-relaxed ${poppins.className}`}
+            className={`text-slate-500 font-medium max-w-sm text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
           >
-            We didn’t just build an app; we engineered a proactive ecosystem
-            designed to keep you at your peak performance.
+            Doza puts you in control of your health. Keep your records, see
+            doctors fast, track your medications, and find care near you all in
+            one simple app.
           </p>
         </div>
 
-        {/* --- Luxury Bento Grid --- */}
+        {/* --- Bento Grid --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, idx) => (
             <motion.div
@@ -141,7 +140,6 @@ export default function PatientWhyChoose() {
                       feature.color === "blue" ? "bg-[#0086DB]" : "bg-[#2BB14B]"
                     }`}
                   >
-                    {/* Background Glow */}
                     <div
                       className={`absolute inset-0 blur-xl opacity-40 -z-10 ${
                         feature.color === "blue"
@@ -186,19 +184,27 @@ export default function PatientWhyChoose() {
                   </div>
                 </div>
 
-                {/* Real World Impact - The "Luxury" Footer */}
+                {/* Real‑world impact footer (without Zap) */}
                 <div className="mt-auto pt-6 border-t border-slate-100">
                   <div className="flex items-start gap-3">
                     <div
-                      className={`p-1.5 rounded-lg ${feature.color === "blue" ? "bg-blue-50 text-[#0086DB]" : "bg-emerald-50 text-[#2BB14B]"}`}
+                      className={`p-1.5 rounded-lg ${
+                        feature.color === "blue"
+                          ? "bg-blue-50 text-[#0086DB]"
+                          : "bg-emerald-50 text-[#2BB14B]"
+                      }`}
                     >
-                      <Zap size={14} fill="currentColor" />
+                      <CheckCircle size={14} />
                     </div>
                     <div className="flex flex-col">
                       <span
-                        className={`text-[9px] font-black uppercase tracking-[0.2em] mb-1 ${feature.color === "blue" ? "text-[#0086DB]" : "text-[#2BB14B]"}`}
+                        className={`text-[9px] font-black uppercase tracking-[0.2em] mb-1 ${
+                          feature.color === "blue"
+                            ? "text-[#0086DB]"
+                            : "text-[#2BB14B]"
+                        }`}
                       >
-                        Real-World Impact
+                        Real example
                       </span>
                       <p
                         className={`text-[11px] text-slate-500 italic leading-snug ${poppins.className}`}

@@ -1,112 +1,202 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Play, ShieldCheck, Star, Stethoscope } from "lucide-react";
+import {
+  ArrowRight,
+  Play,
+  ShieldCheck,
+  Star,
+  Stethoscope,
+  CheckCircle,
+  Users,
+  Heart,
+} from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
-import { MagneticButton, GrainOverlay } from "@/app/ui/Premium";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FinalCTA() {
   return (
-    <section className="relative py-24 lg:py-40 px-6 bg-[#FCFDFF] overflow-hidden">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative overflow-hidden p-12 lg:p-32 bg-slate-950 rounded-[3rem] lg:rounded-[5rem] text-center shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
-        >
-          <GrainOverlay />
-
-          {/* Dynamic Light Rays */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full overflow-hidden pointer-events-none">
-            <div className="absolute -top-[20%] left-1/2 -translate-x-1/2 Resorts w-[800px] h-[500px] bg-[#2BB14B]/20 blur-[150px] rounded-full opacity-50" />
-            <div className="absolute -bottom-[20%] right-0 w-[400px] h-[400px] bg-[#0086DB]/10 blur-[120px] rounded-full opacity-30" />
-          </div>
-
-          <div className="relative z-10">
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-10"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#2BB14B] animate-pulse" />
-              <span
-                className={`text-[10px] font-bold tracking-[0.2em] text-white/60 uppercase ${poppins.className}`}
-              >
-                Ready to transform?
-              </span>
-            </motion.div>
-
+    <section className="relative py-24 lg:py-32 px-4 sm:px-6 bg-gradient-to-b from-white via-emerald-50/20 to-white overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left side – main content */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-left"
+          >
             <h2
-              className={`text-6xl md:text-8xl lg:text-[10rem] font-bold text-white mb-10 leading-[0.8] tracking-tighter ${bebasNeue.className}`}
+              className={`text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tighter ${bebasNeue.className}`}
             >
-              SECURE YOUR <br />
-              <span className="text-[#2BB14B] italic">HEALTH FUTURE.</span>
+              Your health,
+              <br />
+              <span className="text-emerald-600">fully in your hands</span>
             </h2>
 
             <p
-              className={`text-lg md:text-2xl text-slate-400 mb-16 max-w-2xl mx-auto leading-relaxed font-light ${poppins.className}`}
+              className={`text-base md:text-lg text-slate-500 mt-6 mb-8 leading-relaxed max-w-md ${poppins.className}`}
             >
-              Join 50,000+ Nigerians who have upgraded to a proactive health
-              lifestyle. Mastered by Doza,{" "}
-              <span className="text-white">perfected by you.</span>
+              Join thousands of patients who have simplified their care. Get
+              instant access to your records, video visits, medication tracking,
+              and more – all from your browser.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link href="/registration/user" className="w-full sm:w-auto">
-                <MagneticButton className="w-full px-12 py-7 bg-[#2BB14B] text-white rounded-2xl font-black text-xl flex items-center justify-center gap-4 hover:shadow-[0_20px_50px_rgba(43,177,75,0.3)] transition-all group">
+            {/* Feature list */}
+            <div className="space-y-3 mb-10">
+              {[
+                "Free during beta – no credit card",
+                "Set up in under 2 minutes",
+                "Cancel anytime, no questions",
+              ].map((feature, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <CheckCircle size={16} className="text-emerald-500" />
                   <span
-                    className={
-                      bebasNeue.className + " tracking-widest text-2xl"
-                    }
+                    className={`text-sm text-slate-600 ${poppins.className}`}
                   >
-                    START FREE TRIAL
+                    {feature}
                   </span>
-                  <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-                </MagneticButton>
-              </Link>
-
-              <button className="w-full sm:w-auto px-10 py-7 bg-white/5 backdrop-blur-md border border-white/10 text-white rounded-2xl font-bold flex items-center justify-center gap-4 hover:bg-white/10 transition-all group">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                  <Play size={14} fill="white" />
                 </div>
-                <span
-                  className={bebasNeue.className + " tracking-widest text-2xl"}
-                >
+              ))}
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/registration/user">
+                <button className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-md group">
+                  <span className={`${bebasNeue.className} tracking-wider`}>
+                    JOIN NOW
+                  </span>
+                  <ArrowRight
+                    size={18}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </button>
+              </Link>
+              <button className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-slate-50 transition-all group">
+                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-50">
+                  <Play size={14} fill="currentColor" />
+                </div>
+                <span className={`${bebasNeue.className} tracking-wider`}>
                   WATCH STORIES
                 </span>
               </button>
             </div>
+          </motion.div>
 
-            {/* Social Proof */}
-            <div className="mt-20 flex flex-col md:flex-row items-center justify-center gap-10 opacity-50">
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="text-[#0086DB]" size={24} />
-                <span
-                  className={`text-[10px] font-bold text-white tracking-[0.2em] uppercase ${poppins.className}`}
-                >
-                  Bank-Level Encryption
-                </span>
+          {/* Right side – testimonial card + stats */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative"
+          >
+            {/* Main testimonial card */}
+            <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8 relative z-10">
+              <div className="flex items-center gap-1 text-amber-500 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} fill="currentColor" stroke="none" />
+                ))}
               </div>
-              <div className="hidden md:block w-px h-4 bg-white/20" />
-              <div className="flex items-center gap-2">
-                <div className="flex text-[#2BB14B]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={12} fill="currentColor" />
-                  ))}
+              <p
+                className={`text-slate-700 text-base md:text-lg italic leading-relaxed mb-6 ${poppins.className}`}
+              >
+                “Doza helped me find the right specialist in minutes instead of
+                days. My whole family uses it now.”
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-xl">
+                  A
                 </div>
-                <span
-                  className={`text-[10px] font-bold text-white tracking-[0.2em] uppercase ${poppins.className}`}
-                >
-                  4.9/5 User Rating
-                </span>
+                <div>
+                  <p
+                    className={`font-bold text-slate-800 ${bebasNeue.className} text-lg`}
+                  >
+                    Amina B.
+                  </p>
+                  <p className={`text-xs text-slate-500 ${poppins.className}`}>
+                    Lagos • Verified patient
+                  </p>
+                </div>
               </div>
             </div>
+
+            {/* Decorative floating elements */}
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-emerald-100 rounded-full blur-2xl opacity-60 -z-10" />
+            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-sky-100 rounded-full blur-2xl opacity-60 -z-10" />
+
+            {/* Stats row below the card */}
+            <div className="mt-8 grid grid-cols-3 gap-4 text-center">
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-100">
+                <Users size={20} className="text-emerald-500 mx-auto mb-2" />
+                <div
+                  className={`text-xl font-bold text-slate-800 ${bebasNeue.className}`}
+                >
+                  2,000+
+                </div>
+                <div
+                  className={`text-[9px] text-slate-500 uppercase tracking-wide ${poppins.className}`}
+                >
+                  Active users
+                </div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-100">
+                <Heart size={20} className="text-emerald-500 mx-auto mb-2" />
+                <div
+                  className={`text-xl font-bold text-slate-800 ${bebasNeue.className}`}
+                >
+                  98%
+                </div>
+                <div
+                  className={`text-[9px] text-slate-500 uppercase tracking-wide ${poppins.className}`}
+                >
+                  Satisfaction
+                </div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-100">
+                <ShieldCheck
+                  size={20}
+                  className="text-emerald-500 mx-auto mb-2"
+                />
+                <div
+                  className={`text-xl font-bold text-slate-800 ${bebasNeue.className}`}
+                >
+                  AES-256
+                </div>
+                <div
+                  className={`text-[9px] text-slate-500 uppercase tracking-wide ${poppins.className}`}
+                >
+                  Encryption
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Additional social proof bar at bottom (optional) */}
+        <div className="mt-20 pt-8 border-t border-slate-100 flex flex-wrap justify-center gap-8 text-center">
+          <div className="flex items-center gap-2">
+            <Stethoscope size={18} className="text-emerald-500" />
+            <span className={`text-xs text-slate-500 ${poppins.className}`}>
+              10+ specialties
+            </span>
           </div>
-        </motion.div>
+          <div className="w-px h-4 bg-slate-200 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <CheckCircle size={18} className="text-emerald-500" />
+            <span className={`text-xs text-slate-500 ${poppins.className}`}>
+              Instant care access
+            </span>
+          </div>
+          <div className="w-px h-4 bg-slate-200 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={18} className="text-emerald-500" />
+            <span className={`text-xs text-slate-500 ${poppins.className}`}>
+              HIPAA & GDPR ready
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );

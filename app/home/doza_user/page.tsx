@@ -32,8 +32,8 @@ const PatientHomePage: React.FC<PatientHomePageProps> = ({ onChangeRole }) => {
       <PatientFeatures />
       <PatientStories />
       <AppDownload />
-      <ContactPage />
       <FinalCTA />
+      <ContactPage />
       <Footer />
     </>
   );

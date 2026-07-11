@@ -4,17 +4,17 @@ import { motion } from "framer-motion";
 import {
   Phone,
   Mail,
-  MapPin,
   Clock,
   Send,
   User,
   Building,
-  Heart,
   ShieldCheck,
+  MessageCircle,
+  Stethoscope,
+  Hospital,
 } from "lucide-react";
 import { bebasNeue, poppins } from "./doza_center/constant";
 import { useState } from "react";
-import { SectionLabel, PremiumCard } from "@/app/ui/Premium";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -22,189 +22,290 @@ export default function ContactPage() {
     email: "",
     subject: "",
     message: "",
-    userType: "user",
+    userType: "patient", // patient, medic, center
   });
 
-  return (
-    <section className="relative py-24 lg:py-32 px-6 bg-slate-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-12 gap-16 items-start">
-          {/* Left: Contact Info */}
-          <div className="lg:col-span-5">
-            <SectionLabel text="Support Hub" />
-            <h1
-              className={`mt-6 text-6xl md:text-8xl font-bold text-slate-950 leading-[0.85] tracking-tighter ${bebasNeue.className}`}
-            >
-              GLOBAL CARE. <br />
-              <span className="text-[#0086DB]">PERSONAL TOUCH.</span>
-            </h1>
-            <p
-              className={`mt-8 text-slate-500 text-lg leading-relaxed max-w-md ${poppins.className}`}
-            >
-              Whether you are a patient seeking care or a medical professional
-              looking to join our network, we are 24/7.
-            </p>
+  const whatsappNumber = "2348127728084"; // Without + for URL
 
-            <div className="mt-12 space-y-4">
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // User type label
+    const userTypeLabel =
+      formData.userType === "patient"
+        ? "Patient"
+        : formData.userType === "medic"
+          ? "Medical Professional"
+          : "Healthcare Center";
+
+    // Build WhatsApp message
+    const message = `*New message from Doza contact form*%0A%0A*Name:* ${formData.name}%0A*Email:* ${formData.email}%0A*User Type:* ${userTypeLabel}%0A*Subject:* ${formData.subject || "(Not specified)"}%0A*Message:*%0A${formData.message}`;
+
+    // Open WhatsApp with pre-filled message
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+  };
+
+  return (
+    <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 bg-gradient-to-br from-white via-emerald-50/20 to-slate-50/50 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Two‑column header */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 md:mb-16 gap-6 md:gap-8">
+          <div className="max-w-3xl">
+            <h2
+              className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-tight ${bebasNeue.className}`}
+            >
+              WE'RE HERE
+              <br />
+              <span className="text-emerald-600">TO HELP</span>
+            </h2>
+          </div>
+          <div className="max-w-sm">
+            <p
+              className={`text-slate-500 font-medium text-sm sm:text-base leading-relaxed border-l-2 border-emerald-500 pl-4 sm:pl-6 ${poppins.className}`}
+            >
+              Whether you're a patient, medic, or healthcare center, our team is
+              ready 24/7. Reach out any way you prefer.
+            </p>
+          </div>
+        </div>
+
+        {/* Main grid */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          {/* Left side – contact methods + WhatsApp direct */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="grid sm:grid-cols-2 gap-4">
               {[
                 {
                   icon: Phone,
-                  label: "EMERGENCY HOTLINE",
-                  val: "+234 812 772 8084",
-                  color: "#EF4444",
+                  label: "Call us",
+                  value: "+234 812 772 8084",
+                  action: "tel:+2348127728084",
+                  color: "emerald",
                 },
                 {
                   icon: Mail,
-                  label: "GENERAL SUPPORT",
-                  val: "care@dozamedic.com",
-                  color: "#0086DB",
+                  label: "Email us",
+                  value: "care@dozamedic.com",
+                  action: "mailto:care@dozamedic.com",
+                  color: "blue",
+                },
+                {
+                  icon: MessageCircle,
+                  label: "WhatsApp",
+                  value: "+234 812 772 8084",
+                  action: "https://wa.me/2348127728084",
+                  color: "green",
                 },
                 {
                   icon: Clock,
-                  label: "AVAILABILITY",
-                  val: "24/7/365 Non-Stop",
-                  color: "#2BB14B",
+                  label: "Support hours",
+                  value: "24/7 / 365",
+                  action: null,
+                  color: "purple",
                 },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-6 p-6 rounded-3xl bg-white border border-slate-100 shadow-sm group hover:border-[#0086DB]/30 transition-all"
+              ].map((item, idx) => (
+                <motion.a
+                  key={idx}
+                  href={item.action || "#"}
+                  target={
+                    item.action?.startsWith("http") ? "_blank" : undefined
+                  }
+                  rel={
+                    item.action?.startsWith("http")
+                      ? "noopener noreferrer"
+                      : undefined
+                  }
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className={`group block p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all ${
+                    !item.action ? "cursor-default" : "hover:border-emerald-200"
+                  }`}
                 >
-                  <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center transition-colors"
-                    style={{
-                      backgroundColor: `${item.color}10`,
-                      color: item.color,
-                    }}
-                  >
-                    <item.icon size={24} />
-                  </div>
-                  <div>
-                    <p
-                      className={`text-[10px] font-bold tracking-[0.2em] text-slate-400 ${poppins.className}`}
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all group-hover:scale-105 ${
+                        item.color === "emerald"
+                          ? "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white"
+                          : item.color === "blue"
+                            ? "bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white"
+                            : item.color === "green"
+                              ? "bg-green-50 text-green-600 group-hover:bg-green-600 group-hover:text-white"
+                              : "bg-purple-50 text-purple-600"
+                      }`}
                     >
-                      {item.label}
-                    </p>
-                    <p
-                      className={`text-xl font-bold text-slate-900 ${bebasNeue.className}`}
-                    >
-                      {item.val}
-                    </p>
+                      <item.icon size={22} />
+                    </div>
+                    <div>
+                      <p
+                        className={`text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ${poppins.className}`}
+                      >
+                        {item.label}
+                      </p>
+                      <p
+                        className={`text-base font-bold text-slate-800 ${bebasNeue.className}`}
+                      >
+                        {item.value}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </motion.a>
               ))}
+            </div>
+
+            {/* Trust badge */}
+            <div className="flex items-center gap-3 pt-4">
+              <ShieldCheck size={18} className="text-emerald-600" />
+              <span
+                className={`text-[11px] font-bold text-slate-500 uppercase tracking-wider ${poppins.className}`}
+              >
+                HIPAA & GDPR compliant • Encrypted
+              </span>
             </div>
           </div>
 
-          {/* Right: Premium Form */}
-          <div className="lg:col-span-7 relative">
-            <PremiumCard className="relative overflow-hidden !p-10 bg-white shadow-2xl rounded-[3rem]">
-              <div className="flex items-center gap-4 mb-10">
-                <div className="w-12 h-12 rounded-full bg-[#2BB14B] flex items-center justify-center text-white shadow-lg shadow-[#2BB14B]/20">
-                  <Send size={20} />
-                </div>
-                <div>
-                  <h2
-                    className={`text-3xl font-bold text-slate-900 ${bebasNeue.className}`}
-                  >
-                    SECURE MESSAGE PORTAL
-                  </h2>
-                  <p className={`text-xs text-slate-400 ${poppins.className}`}>
-                    End-to-end encrypted communication
-                  </p>
-                </div>
+          {/* Right side – contact form (sends to WhatsApp) */}
+          <div className="lg:col-span-7">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8 md:p-10 transition-all"
+            >
+              <div className="mb-8">
+                <h3
+                  className={`text-3xl md:text-4xl font-bold text-slate-800 ${bebasNeue.className}`}
+                >
+                  SEND US A MESSAGE
+                </h3>
+                <p
+                  className={`text-sm text-slate-500 mt-2 ${poppins.className}`}
+                >
+                  Fill out the form and we'll reply via WhatsApp within minutes.
+                </p>
               </div>
 
-              <form className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  {["user", "medic"].map((type) => (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* User type toggle – three options */}
+                <div className="flex flex-wrap gap-2 p-1 bg-slate-100 rounded-2xl w-full max-w-md">
+                  {[
+                    { id: "patient", label: "Patient", icon: User },
+                    { id: "medic", label: "Medic", icon: Stethoscope },
+                    { id: "center", label: "Center", icon: Hospital },
+                  ].map((type) => (
                     <button
-                      key={type}
+                      key={type.id}
                       type="button"
                       onClick={() =>
-                        setFormData({ ...formData, userType: type })
+                        setFormData({ ...formData, userType: type.id })
                       }
-                      className={`p-4 rounded-2xl border-2 flex items-center justify-center gap-3 transition-all ${
-                        formData.userType === type
-                          ? "border-[#2BB14B] bg-[#2BB14B]/5 text-[#2BB14B]"
-                          : "border-slate-100 text-slate-400"
+                      className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                        formData.userType === type.id
+                          ? "bg-white text-emerald-600 shadow-sm"
+                          : "text-slate-500 hover:text-slate-700"
                       }`}
                     >
-                      {type === "user" ? (
-                        <User size={18} />
-                      ) : (
-                        <Building size={18} />
-                      )}
-                      <span
-                        className={`text-sm font-bold uppercase tracking-wider ${bebasNeue.className}`}
-                      >
-                        I AM A {type}
+                      <type.icon size={16} />
+                      <span className={`${poppins.className}`}>
+                        {type.label}
                       </span>
                     </button>
                   ))}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <InputField label="Full Name" placeholder="John Doe" />
-                  <InputField
-                    label="Email Address"
-                    placeholder="john@example.com"
-                    type="email"
+                {/* Form fields */}
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div>
+                    <label
+                      className={`block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 ${poppins.className}`}
+                    >
+                      Full name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      className="w-full px-5 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all"
+                      placeholder="John Doe"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label
+                      className={`block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 ${poppins.className}`}
+                    >
+                      Email address *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      className="w-full px-5 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all"
+                      placeholder="john@example.com"
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    className={`block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 ${poppins.className}`}
+                  >
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-5 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all"
+                    placeholder="How can we help?"
+                    value={formData.subject}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
                   />
                 </div>
 
-                <InputField label="Subject" placeholder="How can we help?" />
-
-                <div className="space-y-2">
+                <div>
                   <label
-                    className={`text-[10px] font-bold tracking-widest text-slate-400 uppercase ml-4 ${poppins.className}`}
+                    className={`block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 ${poppins.className}`}
                   >
-                    Your Message
+                    Message *
                   </label>
                   <textarea
                     rows={4}
-                    className="w-full px-6 py-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0086DB]/20 outline-none transition-all placeholder:text-slate-300"
-                    placeholder="Describe your inquiry..."
+                    required
+                    className="w-full px-5 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all resize-none"
+                    placeholder="Describe your inquiry or request..."
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                   />
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  className={`w-full py-6 bg-slate-950 text-white rounded-2xl font-bold text-xl tracking-widest hover:bg-[#2BB14B] transition-colors shadow-xl ${bebasNeue.className}`}
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold text-lg tracking-wide hover:bg-emerald-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                 >
-                  DISPATCH MESSAGE
-                </motion.button>
-
-                <div className="flex justify-center items-center gap-2 text-slate-400">
-                  <ShieldCheck size={14} />
-                  <span
-                    className={`text-[10px] font-medium ${poppins.className}`}
-                  >
-                    Your data is protected by AES-256 encryption
+                  <Send size={18} />
+                  <span className={`${bebasNeue.className}`}>
+                    SEND VIA WHATSAPP
                   </span>
-                </div>
+                </button>
+
+                <p
+                  className={`text-[10px] text-slate-400 text-center ${poppins.className}`}
+                >
+                  Your message will be sent securely to our WhatsApp support.
+                  We'll get back to you shortly.
+                </p>
               </form>
-            </PremiumCard>
+            </motion.div>
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function InputField({ label, ...props }: any) {
-  return (
-    <div className="space-y-2">
-      <label
-        className={`text-[10px] font-bold tracking-widest text-slate-400 uppercase ml-4 ${poppins.className}`}
-      >
-        {label}
-      </label>
-      <input
-        {...props}
-        className="w-full px-6 py-4 bg-slate-50 rounded-2xl border-none focus:ring-2 focus:ring-[#0086DB]/20 outline-none transition-all placeholder:text-slate-300"
-      />
-    </div>
   );
 }

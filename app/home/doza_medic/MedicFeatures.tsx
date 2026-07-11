@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -7,183 +8,106 @@ import {
   FileText,
   BarChart3,
   Shield,
-  Users,
-  Zap,
-  DollarSign,
-  Award,
   Globe,
-  Smartphone,
-  Cloud,
-  Plus,
+  DollarSign,
+  ArrowRight,
+  Database,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
-import { useRouter } from "next/navigation";
-import {
-  PremiumCard,
-  TiltCard,
-  SectionLabel,
-  MagneticButton,
-  GrainOverlay,
-} from "../../ui/Premium";
+import Link from "next/link";
+
+const clinicalTools = [
+  {
+    icon: Calendar,
+    title: "Smart Scheduling",
+    desc: "Automated booking with reminders to reduce missed appointments and no‑shows.",
+  },
+  {
+    icon: Video,
+    title: "Telehealth Visits",
+    desc: "Secure, high‑quality video consultations with screen sharing and file transfer.",
+  },
+  {
+    icon: FileText,
+    title: "Digital Records",
+    desc: "Easy to use templates for quick, accurate patient documentation.",
+  },
+  {
+    icon: BarChart3,
+    title: "Practice Analytics",
+    desc: "Real time dashboard showing revenue, patient volume, and staff performance.",
+  },
+];
+
+const backendInfrastructure = [
+  {
+    icon: Shield,
+    title: "HIPAA & NDPR Ready",
+    desc: "End to end encryption with multi‑factor authentication for all users.",
+  },
+  {
+    icon: Database,
+    title: "System Integration",
+    desc: "Works with lab services, pharmacies, and existing practice software.",
+  },
+  {
+    icon: DollarSign,
+    title: "Billing Automation",
+    desc: "Insurance verification, claim submission, and payment tracking made simple.",
+  },
+  {
+    icon: Globe,
+    title: "Remote Access",
+    desc: "Secure access to patient data from any browser, anywhere.",
+  },
+];
 
 export default function MedicFeatures() {
-  const router = useRouter();
-  const navToRegister = () => router.push("/registration/medic");
-
-  const mainFeatures = [
-    {
-      icon: Calendar,
-      title: "Smart Scheduling",
-      color: "#2BB14B",
-      desc: "AI-optimized calendar that slashes no-shows by 40%.",
-    },
-    {
-      icon: Video,
-      title: "Telehealth Hub",
-      color: "#0086DB",
-      desc: "Military-grade secure video for the borderless clinician.",
-    },
-    {
-      icon: FileText,
-      title: "Next-Gen EHR",
-      color: "#2BB14B",
-      desc: "Custom templates & lab sync designed for speed.",
-    },
-    {
-      icon: BarChart3,
-      title: "Practice Insights",
-      color: "#0086DB",
-      desc: "Real-time revenue and growth analytics at a glance.",
-    },
-  ];
-
   return (
-    <div className="relative min-h-screen bg-white selection:bg-[#2BB14B] selection:text-white">
-      <GrainOverlay />
-
-      {/* --- HERO SECTION --- */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <SectionLabel text="The Doza Ecosystem" />
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`text-7xl md:text-9xl font-bold text-slate-900 mb-8 leading-[0.85] tracking-tighter ${bebasNeue.className}`}
-          >
-            PRECISION TOOLS. <br />
-            <span className="text-[#2BB14B]">UNMATCHED POWER.</span>
-          </motion.h1>
-
-          <p
-            className={`text-slate-500 text-xl max-w-2xl mx-auto mb-12 ${poppins.className}`}
-          >
-            A comprehensive suite of clinical intelligence designed to eliminate
-            friction and amplify your impact.
-          </p>
-
-          <MagneticButton
-            onClick={navToRegister}
-            className="px-12 py-6 bg-slate-900 text-white rounded-[2rem] font-bold flex items-center gap-4 mx-auto hover:bg-[#0086DB] transition-all duration-500 shadow-2xl"
-          >
-            GET FULL ACCESS <Plus size={20} />
-          </MagneticButton>
-        </div>
-
-        {/* Decorative background blur */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#0086DB]/5 blur-[120px] -z-10" />
-      </section>
-
-      {/* --- CORE TOOLS (3D TILT EXPERIENCE) --- */}
-      <section className="py-24 px-6 bg-slate-50/50">
+    <div className="bg-white min-h-screen pb-20">
+      {/* Core Clinical Tools same header pattern */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 bg-gradient-to-br from-slate-50/50 to-white">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {mainFeatures.map((f, i) => (
-              <TiltCard key={i} className="h-full">
-                <PremiumCard className="h-full border-none shadow-xl">
-                  <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 text-white shadow-lg"
-                    style={{ backgroundColor: f.color }}
-                  >
-                    <f.icon size={28} />
-                  </div>
-                  <h3
-                    className={`text-4xl font-bold text-slate-900 mb-4 ${bebasNeue.className}`}
-                  >
-                    {f.title}
-                  </h3>
-                  <p className="text-slate-500 text-sm font-medium leading-relaxed">
-                    {f.desc}
-                  </p>
-                </PremiumCard>
-              </TiltCard>
-            ))}
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+            <div className="max-w-3xl">
+              <h2
+                className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
+              >
+                CORE CLINICAL
+                <br />
+                <span className="text-emerald-600">TOOLS.</span>
+              </h2>
+            </div>
+            <div className="max-w-sm">
+              <p
+                className={`text-slate-500 font-medium text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
+              >
+                Everything you need to run a modern practice from scheduling to
+                deep analytics.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* --- ADVANCED CAPABILITIES (THE DARK MODE EXPERIENCE) --- */}
-      <section className="py-32 px-6 bg-slate-900 mx-4 md:mx-8 rounded-[4rem] relative overflow-hidden">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20">
-          <div className="lg:w-1/3">
-            <SectionLabel text="Enterprise Grade" />
-            <h2 className={`text-6xl text-white mb-8 ${bebasNeue.className}`}>
-              ADVANCED <br />
-              <span className="text-[#0086DB]">INFRASTRUCTURE</span>
-            </h2>
-            <p className="text-slate-400 mb-10">
-              Scalable technology that grows with your practice, from
-              solo-provider to multi-state clinics.
-            </p>
-
-            <button
-              onClick={navToRegister}
-              className="text-[#2BB14B] font-bold flex items-center gap-2 group tracking-widest text-xs"
-            >
-              EXPLORE DOCS{" "}
-              <Plus
-                size={16}
-                className="group-hover:rotate-90 transition-transform"
-              />
-            </button>
-          </div>
-
-          <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                icon: Shield,
-                t: "HIPAA ELITE",
-                d: "End-to-end encryption & total data sovereignty.",
-              },
-              {
-                icon: Globe,
-                t: "MULTI-CLINIC",
-                d: "Manage 50+ locations from one unified dashboard.",
-              },
-              {
-                icon: DollarSign,
-                t: "SMART REVENUE",
-                d: "Auto-insurance verification & instant payouts.",
-              },
-              {
-                icon: Users,
-                t: "PATIENT PORTAL",
-                d: "Custom branded patient apps for your practice.",
-              },
-            ].map((item, i) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {clinicalTools.map((tool, i) => (
               <motion.div
                 key={i}
-                whileHover={{ x: 10 }}
-                className="p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all"
               >
-                <item.icon className="text-[#0086DB] mb-4" size={32} />
+                <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-6">
+                  <tool.icon size={28} />
+                </div>
                 <h4
-                  className={`text-2xl text-white mb-2 ${bebasNeue.className}`}
+                  className={`text-2xl font-bold text-slate-800 mb-3 ${bebasNeue.className}`}
                 >
-                  {item.t}
+                  {tool.title}
                 </h4>
-                <p className="text-slate-500 text-sm leading-relaxed">
-                  {item.d}
+                <p
+                  className={`text-slate-500 text-sm leading-relaxed ${poppins.className}`}
+                >
+                  {tool.desc}
                 </p>
               </motion.div>
             ))}
@@ -191,45 +115,105 @@ export default function MedicFeatures() {
         </div>
       </section>
 
-      {/* --- TECH STACK STRIP --- */}
-      <section className="py-32 px-6">
+      {/* Technical Foundation same header */}
+      <section className="py-16 md:py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-4">
-            {[
-              "EHR Systems",
-              "Lab Services",
-              "Pharmacy Networks",
-              "Insurance Providers",
-              "Medical Devices",
-              "Payment Processors",
-              "Scheduling Tools",
-            ].map((tag, i) => (
-              <motion.span
-                key={i}
-                whileHover={{ scale: 1.1, color: "#2BB14B" }}
-                className={`px-8 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-900 font-bold text-sm cursor-default transition-colors ${poppins.className}`}
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+            <div className="max-w-3xl">
+              <h2
+                className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
               >
-                {tag}
-              </motion.span>
+                TECHNICAL
+                <br />
+                <span className="text-emerald-600">FOUNDATION.</span>
+              </h2>
+            </div>
+            <div className="max-w-sm">
+              <p
+                className={`text-slate-500 font-medium text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
+              >
+                Built to be secure, reliable, and easy to integrate with your
+                existing systems.
+              </p>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {backendInfrastructure.map((feat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="flex gap-6 p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
+                  <feat.icon size={28} />
+                </div>
+                <div>
+                  <h4
+                    className={`text-2xl font-bold text-slate-800 mb-2 ${bebasNeue.className}`}
+                  >
+                    {feat.title}
+                  </h4>
+                  <p
+                    className={`text-slate-500 text-sm leading-relaxed ${poppins.className}`}
+                  >
+                    {feat.desc}
+                  </p>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* --- FINAL CTA --- */}
-      <section className="pb-32 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2
-            className={`text-6xl md:text-8xl font-bold text-slate-900 mb-10 ${bebasNeue.className}`}
-          >
-            READY TO <span className="text-[#0086DB]">INTEGRATE?</span>
-          </h2>
-          <MagneticButton
-            onClick={navToRegister}
-            className="px-16 py-8 bg-[#2BB14B] text-white rounded-3xl font-bold text-xl shadow-2xl hover:shadow-green-500/20 transition-all"
-          >
-            START YOUR PRACTICE
-          </MagneticButton>
+      {/* Trust badges clean */}
+      <section className="py-12 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-6 text-center text-slate-400 text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold">
+            <span className={poppins.className}>HL7 & FHIR ready</span>
+            <span>•</span>
+            <span className={poppins.className}>Multi‑factor auth</span>
+            <span>•</span>
+            <span className={poppins.className}>Real time sync</span>
+            <span>•</span>
+            <span className={poppins.className}>Audit logs</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA same as about page */}
+      <section className="py-16 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-10 md:p-16 text-center shadow-xl">
+            <h2
+              className={`text-4xl md:text-6xl font-bold text-white mb-6 ${bebasNeue.className}`}
+            >
+              READY TO UPGRADE
+              <br />
+              <span className="text-emerald-400">YOUR PRACTICE?</span>
+            </h2>
+            <p
+              className={`text-slate-300 text-base md:text-lg mb-10 max-w-xl mx-auto ${poppins.className}`}
+            >
+              Join the growing network of providers using Doza every day. It's
+              free during beta no strings attached.
+            </p>
+            <Link href="/registration/medic">
+              <button className="group inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-md hover:shadow-lg">
+                Join Doza
+                <ArrowRight
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </button>
+            </Link>
+            <p
+              className={`text-[10px] text-slate-400 mt-6 ${poppins.className}`}
+            >
+              No credit card required • Free during beta
+            </p>
+          </div>
         </div>
       </section>
     </div>

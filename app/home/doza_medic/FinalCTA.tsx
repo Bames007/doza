@@ -1,368 +1,205 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
-  Award,
-  Users,
-  TrendingUp,
-  Calculator,
-  X,
+  Play,
   ShieldCheck,
-  Globe,
-  StethoscopeIcon,
-  Sparkles,
-  Zap,
+  Star,
+  Stethoscope,
+  CheckCircle,
+  Users,
+  Clock,
+  TrendingUp,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function FinalCTA() {
-  const router = useRouter();
-  const [isCalcOpen, setIsCalcOpen] = useState(false);
-  const [patientsPerMonth, setPatientsPerMonth] = useState(60);
-  const [estimatedEarnings, setEstimatedEarnings] = useState(0);
-
-  useEffect(() => {
-    const baseRate = 14500;
-    setEstimatedEarnings(patientsPerMonth * baseRate);
-  }, [patientsPerMonth]);
-
-  const handleJoin = () => router.push("/registration/medic");
-
-  const partnershipTiers = [
-    {
-      name: "Starter",
-      price: "₦0",
-      description: "For solo practitioners entering the digital health space.",
-      features: ["100 Patients/mo", "Telehealth Core", "Basic Analytics"],
-      potential: "₦500K",
-      highlight: false,
-    },
-    {
-      name: "Professional",
-      price: "₦0",
-      description: "Scale your clinical impact with priority patient routing.",
-      features: [
-        "Unlimited Patients",
-        "Advanced AI Triage",
-        "Priority Referrals",
-        "Billing Automation",
-      ],
-      potential: "₦1.8M",
-      highlight: true,
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      description: "Full-stack solutions for hospitals and centers.",
-      features: ["Multi-Center Sync", "Custom API Access", "Dedicated AM"],
-      potential: "₦5M+",
-      highlight: false,
-    },
-  ];
-
+export default function MedicFinalCTA() {
   return (
-    <div
-      className={`min-h-screen bg-[#F8FAFC] text-slate-900 selection:bg-emerald-200 ${poppins.className} overflow-x-hidden`}
-    >
-      {/* --- Ambient Background Elements --- */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-emerald-100/40 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[5%] left-[-5%] w-[400px] h-[400px] bg-blue-100/30 rounded-full blur-[100px]" />
-      </div>
-
-      {/* --- HERO SECTION --- */}
-      <section className="relative pt-24 pb-16 px-6 z-10">
-        <div className="max-w-6xl mx-auto text-center">
+    <section className="relative py-24 lg:py-32 px-4 sm:px-6 bg-gradient-to-b from-white via-emerald-50/20 to-white overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left side – main content */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-emerald-100 shadow-sm mb-8"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-left"
           >
-            <Sparkles size={14} className="text-emerald-500" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700">
-              2026 Partner Intake Now Open
-            </span>
+            <h2
+              className={`text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tighter ${bebasNeue.className}`}
+            >
+              Your practice,
+              <br />
+              <span className="text-emerald-600">fully in your hands</span>
+            </h2>
+
+            <p
+              className={`text-base md:text-lg text-slate-500 mt-6 mb-8 leading-relaxed max-w-md ${poppins.className}`}
+            >
+              Join hundreds of clinics and independent practitioners who have
+              streamlined their workflow. Get instant access to patient records,
+              telemedicine, automated billing, and more – all from your browser.
+            </p>
+
+            {/* Feature list – medic relevant */}
+            <div className="space-y-3 mb-10">
+              {[
+                "Free during beta – no credit card",
+                "Set up your practice in under 5 minutes",
+                "Cancel anytime, no obligations",
+              ].map((feature, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <CheckCircle size={16} className="text-emerald-500" />
+                  <span
+                    className={`text-sm text-slate-600 ${poppins.className}`}
+                  >
+                    {feature}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Buttons – link to medic registration */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/registration/medic">
+                <button className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-md group">
+                  <span className={`${bebasNeue.className} tracking-wider`}>
+                    JOIN DOZA
+                  </span>
+                  <ArrowRight
+                    size={18}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </button>
+              </Link>
+              <button className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-slate-50 transition-all group">
+                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-50">
+                  <Play size={14} fill="currentColor" />
+                </div>
+                <span className={`${bebasNeue.className} tracking-wider`}>
+                  WATCH DEMO
+                </span>
+              </button>
+            </div>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`text-6xl md:text-[9rem] font-bold leading-[0.85] tracking-tighter mb-8 ${bebasNeue.className}`}
+          {/* Right side – testimonial card + stats (medic-focused) */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative"
           >
-            PRACTICE <span className="text-emerald-600">LIMITLESS</span>
-          </motion.h1>
-
-          <p className="text-lg md:text-2xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Join 15,000+ Nigerian medics using Doza to automate their growth and
-            focus on what matters:{" "}
-            <span className="text-slate-900 font-semibold underline decoration-emerald-400 decoration-2">
-              their patients.
-            </span>
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button
-              onClick={handleJoin}
-              className="w-full sm:w-auto px-10 py-5 bg-emerald-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 group"
-            >
-              START GROWING{" "}
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button
-              onClick={() => setIsCalcOpen(true)}
-              className="w-full sm:w-auto px-10 py-5 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-3"
-            >
-              <Calculator size={20} /> CHECK EARNINGS
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* --- BENTO GRID STATS --- */}
-      <section className="px-6 py-10 z-10 relative">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Main Stat */}
-          <div className="col-span-2 md:col-span-2 p-8 bg-slate-900 rounded-[2.5rem] text-white flex flex-col justify-between min-h-[240px] group overflow-hidden relative">
-            <div className="relative z-10">
-              <Globe
-                className="text-emerald-400 mb-6 group-hover:rotate-12 transition-transform"
-                size={32}
-              />
-              <h3 className={`text-6xl font-bold ${bebasNeue.className}`}>
-                36 STATES
-              </h3>
-              <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">
-                Nationwide Coverage
-              </p>
-            </div>
-            <div className="absolute right-[-20px] bottom-[-20px] opacity-10">
-              <Globe size={200} />
-            </div>
-          </div>
-
-          {/* Secure Stat */}
-          <div className="col-span-2 md:col-span-1 p-8 bg-emerald-50 border border-emerald-100 rounded-[2.5rem] flex flex-col justify-between">
-            <ShieldCheck className="text-emerald-600" size={32} />
-            <div>
-              <h3
-                className={`text-4xl font-bold text-slate-900 ${bebasNeue.className}`}
-              >
-                NDPR SECURE
-              </h3>
-              <p className="text-slate-500 text-[10px] font-bold uppercase mt-1">
-                Hospital Grade Encryption
-              </p>
-            </div>
-          </div>
-
-          {/* Revenue Stat */}
-          <div className="col-span-2 md:col-span-1 p-8 bg-white border border-slate-200 rounded-[2.5rem] shadow-sm flex flex-col justify-between">
-            <div className="flex justify-between items-start">
-              <TrendingUp className="text-emerald-600" size={32} />
-              <span className="bg-emerald-100 text-emerald-700 text-[9px] font-black px-2 py-1 rounded-md uppercase">
-                Top Growth
-              </span>
-            </div>
-            <div>
-              <h3
-                className={`text-5xl font-bold text-slate-900 ${bebasNeue.className}`}
-              >
-                +85%
-              </h3>
-              <p className="text-slate-500 text-[10px] font-bold uppercase mt-1">
-                Avg. Rev Increase
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- PARTNERSHIP CARDS --- */}
-      <section className="py-24 px-6 relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2
-              className={`text-5xl md:text-7xl font-bold ${bebasNeue.className}`}
-            >
-              PARTNERSHIP LEVELS
-            </h2>
-            <p className="text-slate-500 font-medium">
-              Simple, transparent, and built for Nigerian healthcare.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {partnershipTiers.map((tier, i) => (
-              <div
-                key={i}
-                className={`p-10 rounded-[3rem] border-2 transition-all duration-500 flex flex-col ${
-                  tier.highlight
-                    ? "bg-white border-emerald-500 shadow-2xl shadow-emerald-100 scale-105 z-20"
-                    : "bg-white border-slate-100 hover:border-slate-200"
-                }`}
-              >
-                <div className="mb-8">
-                  {tier.highlight && (
-                    <span className="bg-emerald-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase mb-4 inline-block">
-                      Most Popular
-                    </span>
-                  )}
-                  <h4 className={`text-4xl font-bold ${bebasNeue.className}`}>
-                    {tier.name}
-                  </h4>
-                  <p className="text-slate-500 text-xs mt-2 leading-relaxed">
-                    {tier.description}
-                  </p>
-                </div>
-
-                <div className="mb-8">
-                  <span
-                    className={`text-6xl font-bold ${bebasNeue.className} text-slate-900`}
-                  >
-                    {tier.price}
-                  </span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-2">
-                    / Setup
-                  </span>
-                </div>
-
-                <div className="space-y-4 mb-10 flex-grow">
-                  {tier.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <Zap size={14} className="text-emerald-500" />
-                      <span className="text-sm font-semibold text-slate-700">
-                        {feat}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={handleJoin}
-                  className={`w-full py-5 rounded-2xl font-bold text-sm transition-all ${
-                    tier.highlight
-                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                      : "bg-slate-900 text-white hover:bg-black"
-                  }`}
-                >
-                  SELECT {tier.name.toUpperCase()}
-                </button>
+            <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8 relative z-10">
+              <div className="flex items-center gap-1 text-amber-500 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} fill="currentColor" stroke="none" />
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- CALCULATOR MODAL --- */}
-      <AnimatePresence>
-        {isCalcOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCalcOpen(false)}
-              className="absolute inset-0 bg-slate-950/60 backdrop-blur-md"
-            />
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-xl bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border border-slate-100"
-            >
-              <button
-                onClick={() => setIsCalcOpen(false)}
-                className="absolute top-8 right-8 text-slate-400 hover:text-slate-900 transition-colors"
+              <p
+                className={`text-slate-700 text-base md:text-lg italic leading-relaxed mb-6 ${poppins.className}`}
               >
-                <X size={24} />
-              </button>
-
-              <div className="mb-10">
-                <h3
-                  className={`text-5xl font-bold text-slate-900 leading-none ${bebasNeue.className}`}
-                >
-                  REVENUE ESTIMATOR
-                </h3>
-                <p className="text-slate-500 text-xs font-bold uppercase mt-2">
-                  Adjust volume to see your potential
-                </p>
-              </div>
-
-              <div className="space-y-8">
+                “Doza helped us cut admin time by 40% and improved our patient
+                follow‑up rates. Our whole clinic is now on it.”
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold text-xl">
+                  D
+                </div>
                 <div>
-                  <div className="flex justify-between items-end mb-4">
-                    <span className="text-xs font-black uppercase text-slate-400 tracking-widest">
-                      Patients / Month
-                    </span>
-                    <span
-                      className={`text-4xl font-bold text-emerald-600 ${bebasNeue.className}`}
-                    >
-                      {patientsPerMonth}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="10"
-                    max="1000"
-                    step="10"
-                    value={patientsPerMonth}
-                    onChange={(e) =>
-                      setPatientsPerMonth(parseInt(e.target.value))
-                    }
-                    className="w-full h-2 bg-slate-100 rounded-full appearance-none cursor-pointer accent-emerald-600"
-                  />
-                </div>
-
-                <div className="p-8 bg-slate-900 rounded-[2.5rem] text-center">
-                  <p className="text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em] mb-2">
-                    Projected Monthly Net
-                  </p>
-                  <h2
-                    className={`text-6xl md:text-7xl text-white font-bold ${bebasNeue.className}`}
+                  <p
+                    className={`font-bold text-slate-800 ${bebasNeue.className} text-lg`}
                   >
-                    ₦{estimatedEarnings.toLocaleString()}
-                  </h2>
+                    Dr. Olu Adeyemi
+                  </p>
+                  <p className={`text-xs text-slate-500 ${poppins.className}`}>
+                    Lagos • Family Medicine
+                  </p>
                 </div>
-
-                <button
-                  onClick={handleJoin}
-                  className="w-full py-6 bg-emerald-600 text-white rounded-2xl font-bold text-lg hover:bg-emerald-700 transition-all flex items-center justify-center gap-3"
-                >
-                  CLAIM THIS REVENUE <ArrowRight size={20} />
-                </button>
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+            </div>
 
-      {/* --- MOBILE STICKY CTA --- */}
-      <div className="fixed bottom-8 left-6 right-6 md:hidden z-50">
-        <motion.div
-          initial={{ y: 100 }}
-          animate={{ y: 0 }}
-          className="bg-white p-2 rounded-3xl shadow-2xl border border-slate-100 flex items-center gap-4"
-        >
-          <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white ml-1">
-            <StethoscopeIcon size={24} />
+            {/* Decorative blurs */}
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-emerald-100 rounded-full blur-2xl opacity-60 -z-10" />
+            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-sky-100 rounded-full blur-2xl opacity-60 -z-10" />
+
+            {/* Stats row – medic metrics */}
+            <div className="mt-8 grid grid-cols-3 gap-4 text-center">
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-100">
+                <Users size={20} className="text-emerald-500 mx-auto mb-2" />
+                <div
+                  className={`text-xl font-bold text-slate-800 ${bebasNeue.className}`}
+                >
+                  2,000+
+                </div>
+                <div
+                  className={`text-[9px] text-slate-500 uppercase tracking-wide ${poppins.className}`}
+                >
+                  Active providers
+                </div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-100">
+                <TrendingUp
+                  size={20}
+                  className="text-emerald-500 mx-auto mb-2"
+                />
+                <div
+                  className={`text-xl font-bold text-slate-800 ${bebasNeue.className}`}
+                >
+                  30%
+                </div>
+                <div
+                  className={`text-[9px] text-slate-500 uppercase tracking-wide ${poppins.className}`}
+                >
+                  Efficiency gain
+                </div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-100">
+                <ShieldCheck
+                  size={20}
+                  className="text-emerald-500 mx-auto mb-2"
+                />
+                <div
+                  className={`text-xl font-bold text-slate-800 ${bebasNeue.className}`}
+                >
+                  HIPAA
+                </div>
+                <div
+                  className={`text-[9px] text-slate-500 uppercase tracking-wide ${poppins.className}`}
+                >
+                  Ready certified
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bottom social proof – medic friendly */}
+        <div className="mt-20 pt-8 border-t border-slate-100 flex flex-wrap justify-center gap-8 text-center">
+          <div className="flex items-center gap-2">
+            <Stethoscope size={18} className="text-emerald-500" />
+            <span className={`text-xs text-slate-500 ${poppins.className}`}>
+              10+ specialties
+            </span>
           </div>
-          <div className="flex-grow">
-            <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest leading-none mb-1">
-              Join the 15k
-            </p>
-            <p className="font-bold text-slate-900 text-sm">Become a Partner</p>
+          <div className="w-px h-4 bg-slate-200 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <CheckCircle size={18} className="text-emerald-500" />
+            <span className={`text-xs text-slate-500 ${poppins.className}`}>
+              Automated billing
+            </span>
           </div>
-          <button
-            onClick={handleJoin}
-            className="bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold text-xs uppercase"
-          >
-            Join
-          </button>
-        </motion.div>
+          <div className="w-px h-4 bg-slate-200 hidden sm:block" />
+          <div className="flex items-center gap-2">
+            <Clock size={18} className="text-emerald-500" />
+            <span className={`text-xs text-slate-500 ${poppins.className}`}>
+              5 min onboarding
+            </span>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -12,6 +12,7 @@ export interface UserRegistrationData {
   };
   selectedPlan: "basic" | "plus" | "premium" | null;
   agreedToTerms: boolean;
+  role: "user" | "medic" | "center";
 }
 
 export interface Plan {

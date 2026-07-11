@@ -37,6 +37,7 @@ export interface Legal {
 }
 
 export interface CenterRegistrationData {
+  role: "center";
   centerType: string;
   customType?: string;
   centerName: string;

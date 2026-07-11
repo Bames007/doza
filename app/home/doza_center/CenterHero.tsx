@@ -14,7 +14,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 // ============================================================
-// BoomerangVideoBg – captures and loops video frames (15fps)
+// BoomerangVideoBg – (unchanged)
 // ============================================================
 function BoomerangVideoBg({
   src,
@@ -148,7 +148,7 @@ function BoomerangVideoBg({
 }
 
 // ============================================================
-// CenterHero – Optimized for Mobile and Desktop
+// CenterHero – Desktop two-column, mobile stacked, stats hidden on mobile
 // ============================================================
 export default function CenterHero() {
   const benefits = [
@@ -209,12 +209,12 @@ export default function CenterHero() {
       <div className="absolute inset-0 bg-black/60" />
       <div className="absolute inset-0 bg-emerald-900/20" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-12 md:pb-16 pt-24 md:pt-16">
-        {/* Main Content Layout */}
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-12">
-          {/* Left Column: Text */}
-          <div className="text-center md:text-left flex flex-col items-center md:items-start">
-            <h1 className="font-['Bebas_Neue'] text-white text-[clamp(2.5rem,8vw,5.5rem)] leading-[0.9] tracking-tighter mb-6">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-12 md:pb-16 pt-20 md:pt-16">
+        {/* Grid: two columns on desktop, one column on mobile */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-8 md:mb-12">
+          {/* Left column – always left‑aligned */}
+          <div className="text-left">
+            <h1 className="font-['Bebas_Neue'] text-white text-[clamp(2.5rem,8vw,5.5rem)] leading-[1.1] md:leading-[0.9] tracking-tighter mb-5">
               The Operating System <br />
               <span className="text-emerald-400">for Modern Care</span>
             </h1>
@@ -229,9 +229,9 @@ export default function CenterHero() {
             </button>
           </div>
 
-          {/* Right Column: Carousel */}
+          {/* Right column – carousel */}
           <div className="w-full max-w-md mx-auto md:mx-0">
-            <div className="relative p-6 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl min-h-[220px]">
+            <div className="relative p-5 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl min-h-[200px] md:min-h-[220px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
@@ -240,22 +240,22 @@ export default function CenterHero() {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <div className="p-3 w-fit bg-emerald-500/10 rounded-2xl border border-emerald-500/20 mb-4">
+                  <div className="p-2.5 w-fit bg-emerald-500/10 rounded-2xl border border-emerald-500/20 mb-4">
                     {React.createElement(benefits[activeIndex].icon, {
-                      size: 28,
+                      size: 24,
                       className: "text-emerald-400",
                     })}
                   </div>
-                  <h3 className="font-['Bebas_Neue'] text-2xl md:text-3xl text-white mb-2">
+                  <h3 className="font-['Bebas_Neue'] text-xl md:text-2xl text-white mb-2">
                     {benefits[activeIndex].title}
                   </h3>
-                  <p className="font-['Poppins'] text-white/60 text-sm leading-relaxed">
+                  <p className="font-['Poppins'] text-white/60 text-xs md:text-sm leading-relaxed">
                     {benefits[activeIndex].desc}
                   </p>
                 </motion.div>
               </AnimatePresence>
 
-              {/* Pagination */}
+              {/* Pagination dots */}
               <div className="flex gap-2 mt-6">
                 {benefits.map((_, idx) => (
                   <button
@@ -264,7 +264,7 @@ export default function CenterHero() {
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       idx === activeIndex
                         ? "w-8 bg-emerald-400"
-                        : "w-2 bg-white/20"
+                        : "w-1.5 bg-white/20"
                     }`}
                   />
                 ))}
@@ -273,8 +273,8 @@ export default function CenterHero() {
           </div>
         </div>
 
-        {/* Bottom Metrics (Responsive Grid) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-white/10">
+        {/* Bottom metrics – hidden on mobile, visible on desktop */}
+        <div className="hidden md:grid grid-cols-4 gap-6 pt-8 border-t border-white/10">
           {[
             { label: "Uptime", val: "99.9%" },
             { label: "Cost Reduction", val: "35%" },
@@ -282,7 +282,7 @@ export default function CenterHero() {
             { label: "Support", val: "24/7" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
-              <div className="font-['Bebas_Neue'] text-2xl md:text-3xl text-white">
+              <div className="font-['Bebas_Neue'] text-3xl text-white">
                 {stat.val}
               </div>
               <div className="font-['Poppins'] text-[10px] text-white/40 uppercase tracking-widest mt-1">

@@ -1,105 +1,87 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Users,
-  Stethoscope,
-  Building,
-  CheckCircle,
-  ArrowUpRight,
-} from "lucide-react";
+import { ShieldCheck, Stethoscope, Activity, ArrowUpRight } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
-import {
-  SectionLabel,
-  PremiumCard,
-  TiltCard,
-  GrainOverlay,
-} from "@/app/ui/Premium";
+import { PremiumCard, TiltCard, GrainOverlay } from "@/app/ui/Premium";
 
 export default function PatientAbout() {
   const items = [
     {
       id: "01",
-      icon: Users,
-      title: "The Patient Portal",
-      desc: "Personalized health journeys powered by AI. Navigate your wellness with precision tools and instant clinical access.",
+      icon: ShieldCheck,
+      title: "Your Medical Records",
+      desc: "Stop repeating your health history to every new doctor. Keep all your records in one secure place that you control.",
       features: [
-        "Biometric Syncing",
-        "Smart Med-Reminders",
-        "Instant Telehealth",
-        "Emergency SOS",
+        "All records in one place",
+        "Share with your doctors",
+        "You decide who sees what",
+        "Keep records for life",
       ],
-      color: "from-[#2BB14B] to-[#1e7a34]", // Brand Green
-      lightBg: "bg-emerald-50/50",
-      iconColor: "text-[#2BB14B]",
+      color: "from-[#059669] to-[#065f46]",
+      lightBg: "bg-emerald-50",
+      iconColor: "text-[#059669]",
     },
     {
       id: "02",
       icon: Stethoscope,
-      title: "The Practitioner Suite",
-      desc: "An elite workspace for modern healers. Reduce administrative burden and focus on what matters: the patient.",
+      title: "See a Doctor Fast",
+      desc: "Connect with the right specialist when you need one. Get help for emergencies or regular checkups without long waits.",
       features: [
-        "Cloud-Based EHR",
-        "Automated Billing",
-        "Global Med-Network",
-        "AI Diagnostics",
+        "Video visits with doctors",
+        "Find the right specialist",
+        "See ER wait times",
+        "Talk to a nurse anytime",
       ],
-      color: "from-[#0086DB] to-[#005fa0]", // Brand Blue
-      lightBg: "bg-blue-50/50",
-      iconColor: "text-[#0086DB]",
+      color: "from-[#10b981] to-[#059669]",
+      lightBg: "bg-emerald-50",
+      iconColor: "text-[#10b981]",
     },
     {
       id: "03",
-      icon: Building,
-      title: "The Institutional Hub",
-      desc: "Enterprise-grade integration for hospitals and clinics. Synchronize your entire facility under one digital roof.",
+      icon: Activity,
+      title: "Track Your Health",
+      desc: "Keep track of your medications, daily habits, and health measurements. Get reminders so you never miss a dose.",
       features: [
-        "Resource Analytics",
-        "Staff Optimization",
-        "Inventory Control",
-        "Patient Flow Tech",
+        "Connect health devices",
+        "Medication reminders",
+        "Track your daily routine",
+        "See your health progress",
       ],
-      color: "from-[#0086DB] via-[#2BB14B] to-[#2BB14B]", // Mixed Gradient
-      lightBg: "bg-slate-50/50",
-      iconColor: "text-slate-900",
+      color: "from-[#064e3b] to-[#059669]",
+      lightBg: "bg-emerald-50",
+      iconColor: "text-[#064e3b]",
     },
   ];
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden bg-[#FCFDFF]">
+    <section className="relative py-32 px-6 overflow-hidden bg-[#F8FDF9]">
       <GrainOverlay />
 
       {/* Subtle Background Elements */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#0086DB]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#2BB14B]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-200/20 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* --- Header Section --- */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="max-w-2xl"
-          >
-            <SectionLabel text="Our Ecosystem" />
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+          <div className="max-w-3xl">
             <h2
-              className={`text-6xl md:text-8xl font-bold text-slate-900 leading-[0.9] mt-6 ${bebasNeue.className}`}
+              className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
             >
-              A NEW ERA OF <br />
-              <span className="text-[#0086DB]">CONNECTED</span>{" "}
-              <span className="text-[#2BB14B]">VITALITY</span>
+              YOUR HEALTH,
+              <br />
+              <span className="text-emerald-600">IN ONE PLACE</span>
             </h2>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className={`text-slate-500 max-w-sm text-lg font-light leading-relaxed pb-2 ${poppins.className}`}
+          </div>
+          <p
+            className={`text-slate-500 font-medium max-w-sm text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
           >
-            Doza isn’t just an app; it’s a symbiotic network where technology
-            serves humanity, making elite care a universal standard.
-          </motion.p>
+            Doza gives you control over your medical care. Manage your health
+            records, see doctors quickly, and track your medications — all in
+            one simple app.
+          </p>
         </div>
 
         {/* --- Cards Grid --- */}
@@ -113,10 +95,9 @@ export default function PatientAbout() {
               viewport={{ once: true }}
             >
               <TiltCard className="h-full">
-                <PremiumCard className="h-full group hover:border-[#0086DB]/30 transition-colors duration-500 overflow-hidden">
-                  {/* Decorative Background ID */}
+                <PremiumCard className="h-full group border-emerald-100 hover:border-emerald-300 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-emerald-100/50">
                   <span
-                    className={`absolute -right-4 -top-8 text-9xl font-bold opacity-[0.03] select-none ${bebasNeue.className}`}
+                    className={`absolute -right-4 -top-8 text-9xl font-bold opacity-[0.05] select-none ${bebasNeue.className}`}
                   >
                     {item.id}
                   </span>
@@ -141,10 +122,7 @@ export default function PatientAbout() {
 
                   <ul className="space-y-4 mb-8">
                     {item.features.map((feat) => (
-                      <li
-                        key={feat}
-                        className="flex items-center gap-3 group/item"
-                      >
+                      <li key={feat} className="flex items-center gap-3">
                         <div
                           className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${item.color}`}
                         />
@@ -157,48 +135,49 @@ export default function PatientAbout() {
                     ))}
                   </ul>
 
-                  <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#0086DB] group-hover:gap-4 transition-all">
-                    Explore Platform <ArrowUpRight size={14} />
-                  </button>
+                  <Link href="/registration/user">
+                    <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#059669] group-hover:gap-4 transition-all">
+                      Start Your Journey <ArrowUpRight size={14} />
+                    </button>
+                  </Link>
                 </PremiumCard>
               </TiltCard>
             </motion.div>
           ))}
         </div>
 
-        {/* --- Luxury Stats Bar --- */}
+        {/* --- Simple Stats Bar --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           className="mt-24 relative"
         >
-          {/* Floating Glass Container */}
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-2xl rounded-[3rem] border border-white/50 shadow-[0_20px_50px_rgba(0,0,0,0.05)]" />
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-xl rounded-[2rem] border border-emerald-50 shadow-[0_20px_50px_rgba(5,150,105,0.05)]" />
 
           <div className="relative grid grid-cols-2 md:grid-cols-4 gap-12 p-12 md:p-16">
             {[
               {
-                number: "10k+",
-                label: "Verified Specialists",
-                sub: "Global Network",
-              },
-              {
-                number: "250+",
-                label: "Elite Centers",
-                sub: "Integrated Facilities",
+                number: "100%",
+                label: "Your Records",
+                sub: "You stay in control",
               },
               {
                 number: "24/7",
-                label: "Concierge Care",
-                sub: "Instant Access",
+                label: "Doctor Access",
+                sub: "Help when you need it",
               },
               {
-                number: "99.9%",
-                label: "Uptime Health",
-                sub: "Platform Reliability",
+                number: "Fast",
+                label: "ER Wait Times",
+                sub: "Know before you go",
               },
-            ].map((stat, i) => (
+              {
+                number: "Clear",
+                label: "Health Tracking",
+                sub: "See your progress",
+              },
+            ].map((stat) => (
               <div key={stat.label} className="text-center md:text-left">
                 <div
                   className={`text-5xl md:text-6xl font-bold text-slate-900 mb-1 tracking-tighter ${bebasNeue.className}`}
@@ -206,7 +185,7 @@ export default function PatientAbout() {
                   {stat.number}
                 </div>
                 <div
-                  className={`text-[10px] font-black uppercase tracking-[0.2em] text-[#0086DB] mb-1 ${poppins.className}`}
+                  className={`text-[10px] font-black uppercase tracking-[0.2em] text-[#059669] mb-1 ${poppins.className}`}
                 >
                   {stat.label}
                 </div>

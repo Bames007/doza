@@ -1,7 +1,19 @@
+"use client";
+
 import React, { useState } from "react";
-import { Award, GraduationCap, FileText, Plus, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Award,
+  GraduationCap,
+  Plus,
+  X,
+  ChevronRight,
+  ChevronLeft,
+  Briefcase,
+} from "lucide-react";
 import { MedicRegistrationData } from "../type";
 import { medicRoles } from "../data/constants";
+import { bebasNeue, poppins } from "@/app/home/doza_center/constant";
 
 interface ProfessionalInfoProps {
   formData: MedicRegistrationData;
@@ -56,118 +68,111 @@ const ProfessionalInfo: React.FC<ProfessionalInfoProps> = ({
     }
   };
 
-  const removeQualification = (qualification: string) => {
-    updateFormData({
-      professionalInfo: {
-        ...formData.professionalInfo,
-        qualifications: formData.professionalInfo.qualifications.filter(
-          (q) => q !== qualification,
-        ),
-      },
-    });
-  };
-
   const isFormValid =
     formData.professionalInfo.licenseNumber.trim() !== "" &&
     formData.professionalInfo.yearsOfExperience > 0 &&
-    formData.professionalInfo.specialties.length > 0 &&
+    (formData.professionalInfo.specialties.length > 0 ||
+      formData.professionalInfo.customSpecialty.trim() !== "") &&
     formData.professionalInfo.qualifications.length > 0;
 
   return (
-    <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg">
-      <div className="text-center mb-6 sm:mb-8">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <Award className="text-green-600" size={24} />
+    <div className={`w-full max-w-4xl mx-auto px-4 py-8 ${poppins.className}`}>
+      {/* Header */}
+      <header className="mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <span
+            className={`text-3xl text-emerald-600 font-bold ${bebasNeue.className}`}
+          >
+            03
+          </span>
+          <div className="h-[2px] flex-grow bg-slate-200" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+            Professional Background
+          </span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
-          Professional Information
+        <h2
+          className={`text-5xl md:text-7xl font-bold leading-tight ${bebasNeue.className}`}
+        >
+          YOUR <span className="text-emerald-600">EXPERTISE</span>
         </h2>
-        <p className="text-sm sm:text-base text-gray-600">
-          Share your professional background and expertise
-        </p>
-      </div>
+      </header>
 
-      <div className="space-y-5 sm:space-y-6">
-        {/* License Number */}
-        <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
-            Professional License Number *
-          </label>
-          <input
-            type="text"
-            value={formData.professionalInfo.licenseNumber}
-            onChange={(e) =>
-              updateFormData({
-                professionalInfo: {
-                  ...formData.professionalInfo,
-                  licenseNumber: e.target.value,
-                },
-              })
-            }
-            className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
-            placeholder="Enter your license number"
-          />
-        </div>
-
-        {/* Experience */}
-        <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
-            Years of Experience *
-          </label>
-          <input
-            type="number"
-            min="0"
-            max="50"
-            value={formData.professionalInfo.yearsOfExperience}
-            onChange={(e) =>
-              updateFormData({
-                professionalInfo: {
-                  ...formData.professionalInfo,
-                  yearsOfExperience: parseInt(e.target.value) || 0,
-                },
-              })
-            }
-            className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
-            placeholder="Number of years"
-          />
+      <div className="space-y-8">
+        {/* Row: License & Experience */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-bold text-slate-900 mb-2">
+              License Number
+            </label>
+            <input
+              type="text"
+              value={formData.professionalInfo.licenseNumber}
+              onChange={(e) =>
+                updateFormData({
+                  professionalInfo: {
+                    ...formData.professionalInfo,
+                    licenseNumber: e.target.value,
+                  },
+                })
+              }
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all"
+              placeholder="e.g. LIC-123456"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-slate-900 mb-2">
+              Years of Experience
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={formData.professionalInfo.yearsOfExperience}
+              onChange={(e) =>
+                updateFormData({
+                  professionalInfo: {
+                    ...formData.professionalInfo,
+                    yearsOfExperience: parseInt(e.target.value) || 0,
+                  },
+                })
+              }
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all"
+              placeholder="0"
+            />
+          </div>
         </div>
 
         {/* Specialties */}
-        {selectedRole && selectedRole.specialties.length > 0 && (
+        {selectedRole && selectedRole.specialties.length > 0 ? (
           <div>
-            <label className="block text-gray-700 mb-3 sm:mb-4 text-sm sm:text-base">
-              Specialties * (Select all that apply)
+            <label className="block text-sm font-bold text-slate-900 mb-4">
+              Select Your Specialties
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-              {selectedRole.specialties.map((specialty) => (
-                <label
-                  key={specialty}
-                  className={`flex items-center p-2.5 sm:p-3 rounded-lg border-2 cursor-pointer transition-all text-sm sm:text-base ${
-                    formData.professionalInfo.specialties.includes(specialty)
-                      ? "border-blue-600 bg-blue-50"
-                      : "border-gray-200 bg-gray-50 hover:border-blue-400"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={formData.professionalInfo.specialties.includes(
-                      specialty,
-                    )}
-                    onChange={() => handleSpecialtyToggle(specialty)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-600 mr-2 sm:mr-3 shrink-0"
-                  />
-                  <span className="text-gray-700 break-words">{specialty}</span>
-                </label>
-              ))}
+            <div className="flex flex-wrap gap-2">
+              {selectedRole.specialties.map((specialty) => {
+                const isSelected =
+                  formData.professionalInfo.specialties.includes(specialty);
+                return (
+                  <motion.button
+                    key={specialty}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleSpecialtyToggle(specialty)}
+                    className={`px-4 py-2 rounded-full border text-sm font-medium transition-all ${
+                      isSelected
+                        ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-500/20"
+                        : "bg-white text-slate-600 border-slate-200 hover:border-emerald-500"
+                    }`}
+                  >
+                    {specialty}
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
-        )}
-
-        {/* Custom Specialty */}
-        {formData.professionalInfo.specialties.length === 0 && (
+        ) : (
           <div>
-            <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
-              Please specify your specialty *
+            <label className="block text-sm font-bold text-slate-900 mb-2">
+              Specify Specialty
             </label>
             <input
               type="text"
@@ -180,70 +185,74 @@ const ProfessionalInfo: React.FC<ProfessionalInfoProps> = ({
                   },
                 })
               }
-              className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
-              placeholder="Enter your specialty"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all"
+              placeholder="Enter your specific medical specialty"
             />
           </div>
         )}
 
         {/* Qualifications */}
         <div>
-          <label className="block text-gray-700 mb-3 sm:mb-4 text-sm sm:text-base">
-            Qualifications & Certifications *
+          <label className="block text-sm font-bold text-slate-900 mb-4">
+            Certifications & Qualifications
           </label>
-          <div className="space-y-2 sm:space-y-3">
-            {formData.professionalInfo.qualifications.map(
-              (qualification, index) => (
-                <div
+          <div className="flex flex-wrap gap-2 mb-4">
+            <AnimatePresence>
+              {formData.professionalInfo.qualifications.map((q, index) => (
+                <motion.div
                   key={index}
-                  className="flex items-center justify-between p-2.5 sm:p-3 bg-gray-50 rounded-lg"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-lg text-slate-700 text-sm"
                 >
-                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <GraduationCap
-                      size={16}
-                      className="text-gray-400 shrink-0"
-                    />
-                    <span className="text-gray-700 text-sm sm:text-base truncate">
-                      {qualification}
-                    </span>
-                  </div>
+                  <GraduationCap size={14} />
+                  {q}
                   <button
-                    onClick={() => removeQualification(qualification)}
-                    className="text-red-500 hover:text-red-700 p-1 shrink-0"
+                    onClick={() =>
+                      updateFormData({
+                        professionalInfo: {
+                          ...formData.professionalInfo,
+                          qualifications:
+                            formData.professionalInfo.qualifications.filter(
+                              (x) => x !== q,
+                            ),
+                        },
+                      })
+                    }
                   >
-                    <X size={16} />
+                    <X
+                      size={14}
+                      className="hover:text-red-500 transition-colors"
+                    />
                   </button>
-                </div>
-              ),
-            )}
-
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newQualification}
-                onChange={(e) => setNewQualification(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && addQualification()}
-                className="flex-1 px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none text-sm sm:text-base"
-                placeholder="Add a qualification"
-              />
-              <button
-                onClick={addQualification}
-                disabled={!newQualification.trim()}
-                className="bg-blue-600 text-white px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-              >
-                <Plus size={18} />
-              </button>
-            </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newQualification}
+              onChange={(e) => setNewQualification(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && addQualification()}
+              className="flex-1 px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 transition-all"
+              placeholder="Add qualification (e.g. Board Certified)"
+            />
+            <button
+              onClick={addQualification}
+              disabled={!newQualification.trim()}
+              className="bg-slate-900 text-white px-6 rounded-xl hover:bg-emerald-600 transition-colors disabled:bg-slate-200"
+            >
+              <Plus size={20} />
+            </button>
           </div>
         </div>
 
-        {/* Professional Bio */}
+        {/* Bio */}
         <div>
-          <label className="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">
+          <label className="block text-sm font-bold text-slate-900 mb-2">
             Professional Bio
-            <span className="text-xs sm:text-sm text-gray-500 block mt-0.5">
-              Briefly describe your professional background and approach
-            </span>
           </label>
           <textarea
             value={formData.professionalInfo.bio}
@@ -256,25 +265,32 @@ const ProfessionalInfo: React.FC<ProfessionalInfoProps> = ({
               })
             }
             rows={4}
-            className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none resize-none text-sm sm:text-base"
-            placeholder="Describe your professional experience, approach to care, and any special expertise..."
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all"
+            placeholder="Tell us about your background and approach to patient care..."
           />
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 mt-6 sm:mt-8">
+      {/* Footer Navigation */}
+      <div className="flex justify-between items-center mt-12 pt-8 border-t border-slate-100">
         <button
           onClick={onBack}
-          className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 rounded-xl text-sm sm:text-base text-gray-600 hover:bg-gray-50 transition-colors order-2 sm:order-1"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-slate-500 hover:text-slate-900 transition-colors"
         >
+          <ChevronLeft size={20} />
           Back
         </button>
         <button
           onClick={onNext}
           disabled={!isFormValid}
-          className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 bg-blue-600 text-white rounded-xl font-semibold text-sm sm:text-base hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors order-1 sm:order-2"
+          className={`px-10 py-4 rounded-2xl font-bold transition-all flex items-center gap-3 shadow-lg ${
+            isFormValid
+              ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-emerald-500/20"
+              : "bg-slate-100 text-slate-400 cursor-not-allowed"
+          }`}
         >
           Continue
+          <ChevronRight size={18} />
         </button>
       </div>
     </div>

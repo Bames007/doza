@@ -1,161 +1,103 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 import {
   DollarSign,
-  Zap,
-  Shield,
-  Users,
-  TrendingUp,
   Clock,
-  Award,
-  Globe,
   BarChart3,
-  MessageSquare,
-  FileText,
-  Calendar,
-  ChevronRight,
-  ArrowUpRight,
-  Sparkles,
+  Globe,
+  Shield,
+  ArrowRight,
+  CheckCircle2,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+const primaryBenefits = [
+  {
+    icon: DollarSign,
+    title: "Practice Growth",
+    text: "See a real increase in billable hours with our smart scheduling and automated billing. No more missed appointments or delayed payments.",
+    features: ["Smart billing", "No‑show reduction", "Flexible payment plans"],
+  },
+  {
+    icon: Clock,
+    title: "Less Paperwork",
+    text: "Save over 10 hours each month on forms and charts. Voice‑to‑text notes and auto‑filled templates let you focus on patients, not typing.",
+    features: [
+      "Voice‑to‑text charting",
+      "Auto‑scheduling",
+      "One‑click referrals",
+    ],
+  },
+];
+
+const performanceMetrics = [
+  { value: "2,000+", label: "Active providers" },
+  { value: "30%", label: "Efficiency gain" },
+  { value: "94%", label: "Patient retention" },
+  { value: "HIPAA", label: "Ready certified" },
+];
 
 export default function MedicWhyChoose() {
-  const router = useRouter();
-  const navToRegister = () => router.push("/registration/medic");
-
-  const benefits = [
-    {
-      icon: DollarSign,
-      title: "Revenue Unleashed",
-      accent: "#2BB14B",
-      description:
-        "Stop leaving money on the table. Our medics see an average 40% uptick in billable hours through automated optimization.",
-      features: [
-        "Smart Billing Engine",
-        "No-Show Protection",
-        "Tiered Patient Access",
-      ],
-    },
-    {
-      icon: Clock,
-      title: "Reclaim Your Time",
-      accent: "#0086DB",
-      description:
-        "We handle the bureaucracy. You handle the healing. Save 15+ hours monthly on digital paperwork.",
-      features: ["AI Voice Charting", "Auto-Scheduling", "Instant Referrals"],
-    },
-  ];
-
-  const metrics = [
-    { value: "40%", label: "Revenue Lift", color: "text-[#2BB14B]" },
-    { value: "15hr", label: "Monthly Saved", color: "text-[#0086DB]" },
-    { value: "95%", label: "Patient Loyalty", color: "text-[#2BB14B]" },
-    { value: "Top 1%", label: "Tech Stack", color: "text-[#0086DB]" },
-  ];
-
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden w-full">
-      {/* Background Ambience */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#2BB14B]/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#0086DB]/5 rounded-full blur-[100px]" />
-      </div>
+    <div className="bg-white min-h-screen pb-20">
+      {/* 1. CORE BENEFITS */}
 
-      {/* 1. THE HOOK SECTION */}
-      <section className="relative pt-24 pb-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 mb-8"
-          >
-            <Sparkles size={14} className="text-[#2BB14B]" />
-            <span
-              className={`text-white text-[10px] tracking-[0.3em] font-bold uppercase ${poppins.className}`}
-            >
-              Elite Medical Infrastructure
-            </span>
-          </motion.div>
+      <section className="py-16 md:py-24 px-4 sm:px-6 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+            <div className="max-w-3xl">
+              <h2
+                className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
+              >
+                CORE BENEFITS <br />
+                <span className="text-emerald-600">THAT MATTER.</span>
+              </h2>
+            </div>
+            <div className="max-w-sm">
+              <p
+                className={`text-slate-500 font-medium text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
+              >
+                Two pillars that transform how you run your practice more
+                revenue, less paperwork, happier staff.
+              </p>
+            </div>
+          </div>
 
-          <h2
-            className={`text-7xl md:text-9xl font-bold text-slate-900 leading-[0.85] tracking-tighter mb-10 ${bebasNeue.className}`}
-          >
-            YOU HEAL THE WORLD. <br />
-            <span className="text-[#0086DB]">WE RUN THE REST.</span>
-          </h2>
-
-          <p
-            className={`text-slate-500 text-xl max-w-2xl mx-auto mb-12 ${poppins.className}`}
-          >
-            Why settle for fragmented software? Join the unified ecosystem where
-            luxury design meets clinical precision.
-          </p>
-        </div>
-      </section>
-
-      {/* 2. THE DUAL POWER CARDS */}
-      <section className="py-10 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {benefits.map((b, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ y: -10 }}
-              className="relative p-12 rounded-[3.5rem] bg-slate-50 border border-slate-100 overflow-hidden group"
-            >
-              <div className="relative z-10">
-                <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 text-white shadow-lg"
-                  style={{ backgroundColor: b.accent }}
-                >
-                  <b.icon size={32} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {primaryBenefits.map((b, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="p-8 md:p-10 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-6">
+                  <b.icon size={28} />
                 </div>
                 <h3
-                  className={`text-5xl font-bold text-slate-900 mb-6 ${bebasNeue.className}`}
+                  className={`text-4xl font-bold text-slate-800 mb-4 ${bebasNeue.className}`}
                 >
                   {b.title}
                 </h3>
-                <p className="text-slate-500 text-lg mb-10 leading-relaxed font-medium">
-                  {b.description}
+                <p className="text-slate-500 text-base md:text-lg mb-8 leading-relaxed">
+                  {b.text}
                 </p>
-
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {b.features.map((f, fi) => (
                     <div key={fi} className="flex items-center gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-slate-900 opacity-20" />
-                      <span className="text-slate-700 font-bold text-sm tracking-tight uppercase">
+                      <CheckCircle2 size={16} className="text-emerald-500" />
+                      <span
+                        className={`text-sm font-medium text-slate-700 uppercase tracking-wide ${poppins.className}`}
+                      >
                         {f}
                       </span>
                     </div>
                   ))}
-                </div>
-              </div>
-              {/* Background Accent */}
-              <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-white rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700" />
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. THE "RESULTS" STRIP */}
-      <section className="py-24 bg-slate-900 mx-6 rounded-[4rem] relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-            {metrics.map((m, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <div
-                  className={`text-6xl md:text-8xl font-bold mb-2 ${bebasNeue.className} ${m.color}`}
-                >
-                  {m.value}
-                </div>
-                <div className="text-white/40 text-[10px] font-black uppercase tracking-[0.3em]">
-                  {m.label}
                 </div>
               </motion.div>
             ))}
@@ -163,91 +105,163 @@ export default function MedicWhyChoose() {
         </div>
       </section>
 
-      {/* 4. CLINICAL BEAUTY (Image/Content) */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
-          <div className="lg:w-1/2">
-            <h2
-              className={`text-6xl md:text-8xl font-bold text-slate-900 leading-[0.8] mb-10 ${bebasNeue.className}`}
-            >
-              A DASHBOARD AS <br />{" "}
-              <span className="text-[#2BB14B]">PURE AS YOUR CARE.</span>
-            </h2>
+      {/* 2. REAL RESULTS */}
+      <section className="py-16 md:py-24 px-4 sm:px-6 bg-gradient-to-br from-slate-50/50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+            <div className="max-w-3xl">
+              <h2
+                className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
+              >
+                REAL RESULTS, <br />
+                <span className="text-emerald-600">REAL NUMBERS.</span>
+              </h2>
+            </div>
+            <div className="max-w-sm">
+              <p
+                className={`text-slate-500 font-medium text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
+              >
+                From solo practitioners to large clinics Doza delivers
+                measurable improvements in efficiency and patient care.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {performanceMetrics.map((m, i) => (
+              <div key={i}>
+                <div
+                  className={`text-4xl md:text-5xl font-bold text-emerald-600 mb-2 ${bebasNeue.className}`}
+                >
+                  {m.value}
+                </div>
+                <div
+                  className={`text-[10px] md:text-xs text-slate-500 font-bold uppercase tracking-[0.2em] ${poppins.className}`}
+                >
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. DASHBOARD */}
+      <section className="py-16 md:py-24 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-8">
+            <div className="max-w-3xl">
+              <h2
+                className={`text-5xl md:text-8xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-[0.01rem] ${bebasNeue.className}`}
+              >
+                A DASHBOARD AS <br />
+                <span className="text-emerald-600">CLEAR AS YOUR CARE.</span>
+              </h2>
+            </div>
+            <div className="max-w-sm">
+              <p
+                className={`text-slate-500 font-medium text-base md:text-lg leading-relaxed border-l-2 border-emerald-500 pl-6 ${poppins.className}`}
+              >
+                Turn complex patient data into simple, actionable views all from
+                one central hub.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               {[
                 {
-                  title: "Practice Analytics",
-                  desc: "Visual data that actually makes sense.",
                   icon: BarChart3,
+                  title: "Practice Analytics",
+                  desc: "See your busiest hours, top services, and revenue trends at a glance.",
                 },
                 {
-                  title: "Global Reach",
-                  desc: "Consult with anyone, anywhere, instantly.",
                   icon: Globe,
+                  title: "Telemedicine Ready",
+                  desc: "Secure video visits integrated directly into patient records.",
                 },
                 {
-                  title: "Military-Grade Security",
-                  desc: "Beyond HIPAA. Peace of mind included.",
                   icon: Shield,
+                  title: "HIPAA Compliant",
+                  desc: "Bank level encryption and full audit logs for every action.",
                 },
               ].map((item, i) => (
-                <div key={i} className="flex gap-6 group cursor-default">
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-[#0086DB] group-hover:text-white transition-all">
-                    <item.icon size={24} />
+                <div key={i} className="flex gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
+                    <item.icon size={22} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 text-lg">
+                    <h4
+                      className={`text-lg font-bold text-slate-800 mb-1 ${bebasNeue.className}`}
+                    >
                       {item.title}
                     </h4>
-                    <p className="text-slate-500 text-sm">{item.desc}</p>
+                    <p
+                      className={`text-slate-500 text-sm leading-relaxed ${poppins.className}`}
+                    >
+                      {item.desc}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
 
-          <div className="lg:w-1/2 relative">
-            <div className="p-4 bg-white rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border border-slate-100">
-              <img
-                src="/assets/images/medic-dashboard-preview.jpg"
-                alt="The Beauty of Doza"
-                className="rounded-[2rem] w-full grayscale hover:grayscale-0 transition-all duration-1000"
-              />
-            </div>
-            {/* Absolute badge */}
-            <div className="absolute -bottom-10 -left-10 p-8 bg-[#2BB14B] rounded-[2rem] text-white shadow-2xl rotate-3">
-              <TrendingUp size={32} className="mb-2" />
-              <div className={`text-3xl font-bold ${bebasNeue.className}`}>
-                PEAK PERFORMANCE
+            <div className="bg-slate-50 rounded-2xl border border-slate-100 p-4 shadow-sm">
+              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
+                <div className="w-3 h-3 rounded-full bg-slate-300" />
+                <div className="w-3 h-3 rounded-full bg-slate-300" />
+                <div className="w-3 h-3 rounded-full bg-slate-300" />
+                <div className="mx-auto text-[9px] text-slate-400 font-mono">
+                  doza.health/dashboard
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="h-8 w-2/3 bg-white rounded-md border border-slate-100" />
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="h-24 bg-white rounded-xl border border-slate-100" />
+                  <div className="h-24 bg-white rounded-xl border border-slate-100" />
+                  <div className="h-24 bg-white rounded-xl border border-slate-100" />
+                </div>
+                <div className="h-32 bg-white rounded-xl border border-slate-100" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. THE FINAL CALL (Seductive Join) */}
-      <section className="pb-32 px-6">
-        <motion.div
-          onClick={navToRegister}
-          whileHover={{ scale: 1.01 }}
-          className="max-w-6xl mx-auto rounded-[4rem] bg-gradient-to-br from-slate-900 to-slate-800 p-1 bg-white relative overflow-hidden group cursor-pointer"
-        >
-          <div className="bg-slate-900 rounded-[3.9rem] p-16 md:p-24 text-center relative z-10">
+      {/* 4. FINAL CTA */}
+      <section className="py-16 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-10 md:p-16 text-center shadow-xl">
             <h2
-              className={`text-6xl md:text-9xl font-bold text-white mb-10 ${bebasNeue.className}`}
+              className={`text-4xl md:text-6xl font-bold text-white mb-6 ${bebasNeue.className}`}
             >
-              YOUR PRACTICE. <br />{" "}
-              <span className="text-[#2BB14B]">EVOLVED.</span>
+              YOUR PRACTICE. <br />
+              <span className="text-emerald-400">EVOLVED.</span>
             </h2>
-            <button className="px-12 py-6 bg-[#0086DB] text-white rounded-2xl font-bold flex items-center gap-4 mx-auto hover:bg-[#2BB14B] transition-all duration-500 hover:scale-110 shadow-xl shadow-blue-500/20">
-              JOIN DOZA MEDICS
-              <ArrowUpRight size={24} />
-            </button>
+            <p
+              className={`text-slate-300 text-base md:text-lg mb-10 max-w-xl mx-auto ${poppins.className}`}
+            >
+              Join hundreds of providers who have already upgraded to Doza. It's
+              free during beta no strings attached.
+            </p>
+            <Link href="/registration/medic">
+              <button className="group inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-md hover:shadow-lg">
+                Join Doza
+                <ArrowRight
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </button>
+            </Link>
+            <p
+              className={`text-[10px] text-slate-400 mt-6 ${poppins.className}`}
+            >
+              No credit card required • Free during beta
+            </p>
           </div>
-
-          {/* Subtle brand lines in background */}
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#2BB14B]/5 to-transparent pointer-events-none" />
-        </motion.div>
+        </div>
       </section>
     </div>
   );

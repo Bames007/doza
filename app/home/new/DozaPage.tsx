@@ -6,10 +6,10 @@ import About from "./About";
 import WhatDozaDoes from "./WhatDozaDoes";
 import Features from "./Features";
 import Safety from "./Safety";
-import Contact from "../doza_medic/ContactPage";
 import Footer from "../Footer";
 import MeetFounder from "./MeetFounder";
 import RoleSelector from "./ChooseExperience";
+import ContactPage from "../Contact";
 
 interface DozaMainPageProps {
   onRoleSelect: (role: "user" | "medic" | "center") => void;
@@ -47,7 +47,7 @@ export default function DozaMainPage({ onRoleSelect }: DozaMainPageProps) {
         <Safety />
       </section>
       <section id="contact">
-        <Contact />
+        <ContactPage />
       </section>
       <Footer />
     </main>

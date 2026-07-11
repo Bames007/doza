@@ -1,342 +1,289 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { motion, useInView, useSpring, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  Smartphone,
-  Zap,
-  Shield,
-  Cloud,
-  Check,
-  Star,
-  Activity,
-  TrendingUp,
   Globe,
+  Users,
+  Shield,
+  Activity,
+  Check,
+  ArrowRight,
+  Stethoscope,
+  Clock,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../doza_center/constant";
+import { MagneticButton } from "@/app/ui/Premium";
 import Image from "next/image";
+import Link from "next/link";
 
-// --- Main Component ---
-const AppDownload: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+// Custom SVG icons for social media
+const FacebookIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z" />
+  </svg>
+);
+
+const XIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
+const InstagramIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.509-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.247-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.218-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772c.5-.509 1.105-.902 1.772-1.153.637-.247 1.363-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z" />
+  </svg>
+);
+
+export default function MedicWebApp() {
+  const features = [
+    {
+      icon: Globe,
+      title: "WEB FIRST",
+      desc: "Access your practice dashboard from any browser, any device. No app install needed.",
+    },
+    {
+      icon: Activity,
+      title: "PATIENT ANALYTICS",
+      desc: "Real time vitals, medication adherence, and care coordination across your entire caseload.",
+    },
+    {
+      icon: Shield,
+      title: "SECURE & COMPLIANT",
+      desc: "Bank level encryption and HIPAA ready. You control who accesses patient data.",
+    },
+    {
+      icon: Users,
+      title: "TEAM ACCESS",
+      desc: "Invite nurses, admin staff, and other clinicians to collaborate on shared patients.",
+    },
+  ];
+
+  const socialLinks = [
+    {
+      name: "Facebook",
+      icon: FacebookIcon,
+      url: "https://facebook.com/dozahealth",
+    },
+    { name: "X", icon: XIcon, url: "https://x.com/dozahealth" },
+    {
+      name: "Instagram",
+      icon: InstagramIcon,
+      url: "https://instagram.com/dozahealth",
+    },
+  ];
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative py-24 md:py-32 bg-slate-950 overflow-hidden"
-    >
-      <GrainOverlay />
-
-      {/* --- Dynamic Background Atmosphere --- */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-600/10 blur-[120px] rounded-full opacity-50" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full opacity-50" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 pointer-events-none"></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="flex flex-col gap-12 md:gap-20">
-          {/* --- Top: Header & CTA --- */}
-          <div className="text-center flex flex-col items-center">
-            <SectionLabel text="Institutional Mobility" />
-
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              className={`text-5xl md:text-8xl text-white mb-8 leading-none tracking-tight ${bebasNeue.className}`}
+    <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 bg-gradient-to-br from-white via-emerald-50/30 to-white overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Two‑column header – responsive */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 md:mb-16 gap-6 md:gap-8">
+          <div className="max-w-3xl">
+            <h2
+              className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.1] md:leading-[0.9] tracking-tight ${bebasNeue.className}`}
             >
-              YOUR CLINIC. <br />
-              <span className="text-emerald-400">UNBOUNDED.</span>
-            </motion.h2>
-
+              YOUR PRACTICE,
+              <br />
+              <span className="text-emerald-600">ON THE WEB</span>
+            </h2>
+          </div>
+          <div className="max-w-sm">
             <p
-              className={`text-slate-400 text-lg md:text-xl mb-12 max-w-2xl leading-relaxed ${poppins.className}`}
+              className={`text-slate-500 font-medium text-sm sm:text-base leading-relaxed border-l-2 border-emerald-500 pl-4 sm:pl-6 ${poppins.className}`}
             >
-              Manage staff schedules, monitor pharmacy inventory, and track
-              revenue in real-time. Whether on a desktop or tablet, stay
-              synchronized with zero downtime.
+              No app download needed. Manage patient records, telemedicine, and
+              team workflows directly from your browser – anywhere, anytime.
             </p>
+          </div>
+        </div>
 
-            {/* Store Buttons & Free Badge */}
-            <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
-              <div className="flex flex-wrap gap-4 justify-center">
-                <MagneticButton className="px-8 py-4 bg-white text-slate-950 rounded-2xl flex items-center gap-3 font-bold hover:bg-emerald-50 transition-colors">
-                  <AppleIcon />
-                  <div className="text-left leading-none">
-                    <span className="text-[10px] uppercase block opacity-60">
-                      App Store
-                    </span>
-                    <span className="text-sm uppercase tracking-tighter">
-                      Download
-                    </span>
-                  </div>
-                </MagneticButton>
-
-                <MagneticButton className="px-8 py-4 bg-slate-900 text-white border border-white/10 rounded-2xl flex items-center gap-3 font-bold hover:bg-slate-800 transition-colors">
-                  <GooglePlayIcon />
-                  <div className="text-left leading-none">
-                    <span className="text-[10px] uppercase block opacity-60">
-                      Google Play
-                    </span>
-                    <span className="text-sm uppercase tracking-tighter">
-                      Install
-                    </span>
-                  </div>
-                </MagneticButton>
-              </div>
-              <div className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-                <Check size={18} className="text-emerald-400" />
-                <span
-                  className={`text-white text-sm font-semibold ${poppins.className}`}
+        {/* Main grid */}
+        <div className="grid lg:grid-cols-2 gap-10 md:gap-12 lg:gap-20 items-start">
+          {/* Left column: features + registration */}
+          <div>
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-10 md:mb-12">
+              {features.map((feat, idx) => (
+                <motion.div
+                  key={feat.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="group p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all"
                 >
-                  Free Forever
+                  <div className="flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                      <feat.icon
+                        size={16}
+                        className="sm:w-[18px] sm:h-[18px]"
+                      />
+                    </div>
+                    <h4
+                      className={`text-base sm:text-lg font-bold text-slate-800 tracking-tight ${bebasNeue.className}`}
+                    >
+                      {feat.title}
+                    </h4>
+                  </div>
+                  <p
+                    className={`text-xs sm:text-sm text-slate-500 leading-relaxed ${poppins.className}`}
+                  >
+                    {feat.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA Buttons - medic registration */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
+              <Link href="/registration/medic" className="w-full sm:flex-1">
+                <MagneticButton className="w-full px-6 py-3 sm:px-8 sm:py-4 bg-emerald-600 text-white rounded-xl font-bold flex items-center justify-center hover:bg-emerald-700 transition-all shadow-md">
+                  <div className="text-center leading-tight">
+                    <p
+                      className={`text-[9px] sm:text-[10px] uppercase tracking-wider opacity-90 ${poppins.className}`}
+                    >
+                      Get started
+                    </p>
+                    <p
+                      className={`text-base sm:text-lg ${bebasNeue.className}`}
+                    >
+                      Join Doza
+                    </p>
+                  </div>
+                </MagneticButton>
+              </Link>
+              <Link href="#community" className="w-full sm:flex-1">
+                <MagneticButton className="w-full px-6 py-3 sm:px-8 sm:py-4 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold flex items-center justify-center hover:bg-slate-50 transition-all shadow-sm">
+                  <div className="text-center leading-tight">
+                    <p
+                      className={`text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-500 ${poppins.className}`}
+                    >
+                      Learn more
+                    </p>
+                    <p
+                      className={`text-base sm:text-lg ${bebasNeue.className}`}
+                    >
+                      Watch demo
+                    </p>
+                  </div>
+                </MagneticButton>
+              </Link>
+            </div>
+
+            {/* Trust indicators – medic relevant */}
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-6 border-t border-slate-100">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white bg-emerald-100 flex items-center justify-center overflow-hidden"
+                    >
+                      <div className="w-full h-full bg-gradient-to-tr from-emerald-400 to-emerald-600" />
+                    </div>
+                  ))}
+                </div>
+                <span
+                  className={`text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider ${poppins.className}`}
+                >
+                  2,000+ Providers
+                </span>
+              </div>
+              <div className="h-4 w-px bg-slate-200 hidden sm:block" />
+              <div className="flex items-center gap-2">
+                <Check size={14} className="text-emerald-600" />
+                <span
+                  className={`text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider ${poppins.className}`}
+                >
+                  Free During Beta
                 </span>
               </div>
             </div>
           </div>
 
-          {/* --- Center: Landscape Dashboard Mockup --- */}
-          <div className="relative w-full max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 40 }}
-              animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10"
-            >
-              {/* Luxury Browser Mockup */}
-              <div className="relative z-20 bg-slate-900 rounded-[2rem] p-2 md:p-4 shadow-[0_50px_100px_-20px_rgba(16,185,129,0.2)] border border-white/10 overflow-hidden">
-                {/* Browser Top Bar */}
-                <div className="flex items-center justify-between px-6 py-3 bg-slate-800/50 rounded-t-[1.5rem] border-b border-white/5">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-rose-500/50" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500/50" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
+          {/* Right column: Doza logo + community + preview */}
+          <div className="relative">
+            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8 text-center transition-all hover:shadow-2xl">
+              {/* Doza Logo */}
+              <div className="flex justify-center mb-4 sm:mb-6">
+                <div className="relative w-20 h-20 sm:w-28 sm:h-28">
+                  <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+                    <Image
+                      src="/logo.png"
+                      alt="Doza Logo"
+                      width={100}
+                      height={100}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                  <div
-                    className={`hidden md:block px-6 py-1.5 bg-slate-950/50 rounded-full text-[10px] text-slate-500 font-bold tracking-tight border border-white/5 ${poppins.className}`}
-                  >
-                    cloud.dozacenter.io/analytics/live
-                  </div>
-                  <div className="w-12" />
                 </div>
+              </div>
+              <h3
+                className={`text-2xl sm:text-3xl font-bold text-slate-800 mb-1 sm:mb-2 ${bebasNeue.className}`}
+              >
+                DOZA MEDICS
+              </h3>
+              <p
+                className={`text-xs sm:text-sm text-slate-500 mb-6 sm:mb-8 ${poppins.className}`}
+              >
+                Your clinical command center.
+              </p>
 
-                {/* Landscape Image Container */}
-                <div className="relative aspect-[16/10] md:aspect-[16/9] bg-slate-950 rounded-b-[1.5rem] overflow-hidden group">
-                  <Image
-                    src="/assets/images/dashboard screenshot.png"
-                    alt="Doza Center Landscape Dashboard"
-                    fill
-                    className="object-cover group-hover:scale-[1.02] transition-transform duration-[3s] ease-out"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+              {/* Community section */}
+              <div id="community" className="mb-6 sm:mb-8">
+                <p
+                  className={`text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-600 mb-4 sm:mb-5 ${poppins.className}`}
+                >
+                  Join the community
+                </p>
+                <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 flex-wrap">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col items-center"
+                    >
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-600 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-all duration-300">
+                        <social.icon />
+                      </div>
+                      <span
+                        className={`text-[8px] sm:text-[9px] text-slate-400 mt-1 ${poppins.className}`}
+                      >
+                        {social.name}
+                      </span>
+                    </a>
+                  ))}
                 </div>
               </div>
 
-              {/* --- Floating "Live Data" Badges --- */}
-              {/* Revenue Badge */}
-              <motion.div
-                animate={{ y: [0, -15, 0] }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute -left-4 md:-left-12 top-1/4 p-4 md:p-6 bg-slate-900 text-white rounded-3xl shadow-2xl flex items-center gap-4 border border-white/10 backdrop-blur-xl z-30"
-              >
-                <div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
-                  <TrendingUp size={24} />
-                </div>
-                <div>
-                  <div
-                    className={`text-2xl md:text-3xl font-bold leading-none ${bebasNeue.className}`}
-                  >
-                    ₦1.2M
+              {/* Dashboard preview – medic style */}
+              <div className="mt-6 pt-6 border-t border-slate-100">
+                <div className="bg-slate-50 rounded-xl p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700">
+                    <Stethoscope
+                      size={16}
+                      className="sm:w-[18px] sm:h-[18px]"
+                    />
                   </div>
-                  <div className="text-[9px] font-black uppercase opacity-60 tracking-widest">
-                    Revenue Today
+                  <div className="flex-1 text-left">
+                    <div className="h-2 w-20 sm:w-28 bg-slate-300 rounded-full mb-2" />
+                    <div className="h-2 w-14 sm:w-20 bg-slate-200 rounded-full" />
                   </div>
+                  <ArrowRight
+                    size={14}
+                    className="sm:w-4 sm:h-4 text-emerald-500"
+                  />
                 </div>
-              </motion.div>
-
-              {/* Uptime Badge */}
-              <motion.div
-                animate={{ y: [0, 15, 0] }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1,
-                }}
-                className="absolute -right-4 md:-right-10 top-10 p-4 md:p-5 bg-white rounded-3xl shadow-2xl flex items-center gap-4 z-30 hidden sm:flex"
-              >
-                <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
-                  <Zap size={20} fill="currentColor" />
-                </div>
-                <div>
-                  <div
-                    className={`text-slate-900 text-xl font-bold ${bebasNeue.className}`}
-                  >
-                    99.9%
-                  </div>
-                  <div className="text-[9px] text-slate-400 font-black uppercase tracking-tight">
-                    System Sync
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Rating Badge */}
-              <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -right-6 bottom-20 p-4 bg-emerald-500 rounded-2xl shadow-xl z-30 border-4 border-slate-950 hidden md:block"
-              >
-                <div className="flex items-center gap-2">
-                  <Star size={16} fill="white" className="text-white" />
-                  <span
-                    className={`text-white font-bold text-sm ${poppins.className}`}
-                  >
-                    4.9/5 Rating
-                  </span>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Connectivity Rings */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] aspect-video border border-emerald-500/10 rounded-[4rem] animate-ping [animation-duration:4s]" />
-          </div>
-
-          {/* --- Bottom: Feature Row --- */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 pt-12">
-            {[
-              {
-                icon: Globe,
-                title: "Universal",
-                desc: "Access from any browser.",
-              },
-              {
-                icon: Activity,
-                title: "Live Sync",
-                desc: "Instant staff updates.",
-              },
-              {
-                icon: Shield,
-                title: "Encrypted",
-                desc: "Tier-4 data security.",
-              },
-              {
-                icon: Cloud,
-                title: "Auto-Backup",
-                desc: "Zero data loss sync.",
-              },
-            ].map((f, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ y: -5 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-white/20 transition-all"
-              >
-                <div className="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center mb-4">
-                  <f.icon size={20} />
-                </div>
-                <h3
-                  className={`text-lg font-bold text-white mb-1 ${bebasNeue.className}`}
+                <p
+                  className={`text-[9px] sm:text-[10px] text-slate-400 mt-3 ${poppins.className}`}
                 >
-                  {f.title}
-                </h3>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {f.desc}
+                  Access your dashboard instantly – no app required
                 </p>
-              </motion.div>
-            ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-// --- Sub-Components ---
-
-const SectionLabel: React.FC<{ text: string }> = ({ text }) => (
-  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
-    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-    <span
-      className={`text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em] ${poppins.className}`}
-    >
-      {text}
-    </span>
-  </div>
-);
-
-const MagneticButton: React.FC<{
-  children: React.ReactNode;
-  className?: string;
-}> = ({ children, className }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const springConfig = { damping: 15, stiffness: 150 };
-  const dx = useSpring(x, springConfig);
-  const dy = useSpring(y, springConfig);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const { clientX, clientY } = e;
-    const { left, top, width, height } = ref.current.getBoundingClientRect();
-    const centerI = left + width / 2;
-    const centerJ = top + height / 2;
-    x.set(clientX - centerI);
-    y.set(clientY - centerJ);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ x: dx, y: dy }}
-      className="relative"
-    >
-      <button className={className}>{children}</button>
-    </motion.div>
-  );
-};
-
-const GrainOverlay = () => (
-  <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] mix-blend-overlay">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <filter id="noiseFilter">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.65"
-          numOctaves="3"
-          stitchTiles="stitch"
-        />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-    </svg>
-  </div>
-);
-
-// --- Icons ---
-
-const AppleIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-  </svg>
-);
-
-const GooglePlayIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.25-.84-.76-.84-1.35m13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27zm3.35-4.31c.34.27.59.69.59 1.19s-.22.9-.57 1.18l-2.29 1.32-2.5-2.5 2.5-2.5 2.27 1.31M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z" />
-  </svg>
-);
-
-export default AppDownload;
+}

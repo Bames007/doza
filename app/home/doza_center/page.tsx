@@ -3,13 +3,14 @@ import React from "react";
 import CenterAbout from "./CenterAbout";
 import CenterWhyChoose from "./CenterWhyChoose";
 import CenterStories from "./CenterStories";
-import AppDownload from "./AppDownload";
 import FinalCTA from "./FinalCTA";
-import ContactPage from "./ContactPage";
 import CenterFeatures from "./CenterFeature";
 import Footer from "../Footer";
 import { CenterHeader } from "./CenterHeader";
 import CenterHero from "./CenterHero";
+import ContactPage from "../Contact";
+import AppDownload from "../doza_user/AppDownload";
+import CenterWebApp from "./AppDownload";
 
 interface CenterHomePageProps {
   onChangeRole?: () => void; // receives handleChangeRole from LoadingScreenPage
@@ -33,7 +34,7 @@ const CenterHomePage: React.FC<CenterHomePageProps> = ({ onChangeRole }) => {
       <CenterWhyChoose />
       <CenterFeatures />
       <CenterStories />
-      <AppDownload />
+      <CenterWebApp />
       <ContactPage />
       <Footer />
     </>

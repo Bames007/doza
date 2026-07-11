@@ -22,19 +22,20 @@ export const submitMedicRegistration = async (data: MedicRegistrationData) => {
           const blob = await response.blob();
           const fileRef = storageRef(
             storage,
-            `documents/${data.personalInfo.email}/${doc.type}_${Date.now()}`
+            `documents/${data.personalInfo.email}/${doc.type}_${Date.now()}`,
           );
           const snapshot = await uploadBytes(fileRef, blob);
           const downloadURL = await getDownloadURL(snapshot.ref);
           return { ...doc, fileUrl: downloadURL };
         }
         return doc;
-      })
+      }),
     );
 
     // Prepare final data
     const registrationData = {
       ...data,
+      role: data.role,
       credentials: {
         ...data.credentials,
         documents: uploadedDocuments,

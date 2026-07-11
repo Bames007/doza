@@ -185,6 +185,7 @@ const LegalStep: React.FC<LegalStepProps> = ({
       await sendOtpToEmailAndSave();
 
       const centerData = {
+        role: formData.role,
         centerType: formData.centerType,
         centerName: formData.centerName,
         logo: logoURL,

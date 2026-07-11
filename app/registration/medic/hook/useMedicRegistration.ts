@@ -4,11 +4,13 @@ import { submitMedicRegistration } from "../RegistrationService";
 
 export const useMedicRegistration = () => {
   const [formData, setFormData] = useState<MedicRegistrationData>({
+    role: "medic",
     personalInfo: {
       firstName: "",
       lastName: "",
       email: "",
       phone: "",
+      password: "",
       dateOfBirth: "",
       gender: "",
       profilePhoto: null,
@@ -91,7 +93,7 @@ export const useMedicRegistration = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-        }
+        },
       );
     }
   };

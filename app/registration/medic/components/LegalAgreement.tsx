@@ -1,7 +1,21 @@
-import React, { useEffect } from "react";
-import { Shield, CheckCircle, AlertTriangle } from "lucide-react";
+"use client";
+
+import React from "react";
+import {
+  CheckCircle,
+  AlertTriangle,
+  ChevronLeft,
+  Lock,
+  Edit3,
+  FileText,
+} from "lucide-react";
 import { MedicRegistrationData } from "../type";
-import { alexBrush } from "../../../home/doza_center/constant";
+import { bebasNeue, poppins, alexBrush } from "@/app/home/doza_center/constant";
+
+type LegalBooleanKey =
+  | "agreedToTerms"
+  | "agreedToPrivacy"
+  | "agreedToCommitment";
 
 interface LegalAgreementProps {
   formData: MedicRegistrationData;
@@ -18,33 +32,13 @@ const LegalAgreement: React.FC<LegalAgreementProps> = ({
   onSubmit,
   isSubmitting,
 }) => {
-  // Auto‑fill signature from personal info when component mounts or name changes
-  useEffect(() => {
-    const fullName =
-      `${formData.personalInfo.firstName} ${formData.personalInfo.lastName}`.trim();
-    if (fullName && !formData.legal.signature) {
-      updateFormData({
-        legal: {
-          ...formData.legal,
-          signature: fullName,
-        },
-      });
-    }
-  }, [formData.personalInfo.firstName, formData.personalInfo.lastName]);
-
-  const handleSignatureChange = (signature: string) => {
-    updateFormData({
-      legal: {
-        ...formData.legal,
-        signature,
-        date: new Date().toISOString(),
-      },
-    });
-  };
-
+  // Target name for validation (used for visual guidance)
   const fullName =
     `${formData.personalInfo.firstName} ${formData.personalInfo.lastName}`.trim();
-  const isSignatureValid = formData.legal.signature.trim() === fullName;
+
+  // Validation check: Compares input against target name
+  const isSignatureValid =
+    formData.legal.signature.trim() === fullName && fullName.length > 0;
 
   const isFormValid =
     formData.legal.agreedToTerms &&
@@ -53,256 +47,197 @@ const LegalAgreement: React.FC<LegalAgreementProps> = ({
     isSignatureValid;
 
   return (
-    <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg">
-      <div className="text-center mb-6 sm:mb-8">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-          <Shield className="text-blue-600" size={24} />
+    <div className={`w-full max-w-4xl mx-auto px-4 py-8 ${poppins.className}`}>
+      {/* Header */}
+      <header className="mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <span
+            className={`text-3xl text-emerald-600 font-bold ${bebasNeue.className}`}
+          >
+            06
+          </span>
+          <div className="h-[2px] flex-grow bg-slate-200" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+            Legal Agreement
+          </span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
-          Professional Agreement
+        <h2
+          className={`text-5xl md:text-7xl font-bold leading-tight ${bebasNeue.className}`}
+        >
+          FINAL <span className="text-emerald-600">ATTESTATION</span>
         </h2>
-        <p className="text-sm sm:text-base text-gray-600">
-          Review and accept our terms to join the platform
-        </p>
-      </div>
+      </header>
 
       {/* Commitment Warning */}
-      <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-orange-50 border border-orange-200 rounded-xl">
-        <div className="flex items-start gap-3 sm:gap-4">
-          <AlertTriangle className="text-orange-500 mt-1 shrink-0" size={20} />
-          <div>
-            <h3 className="text-base sm:text-lg font-semibold text-orange-800 mb-1">
-              Platform Commitment
-            </h3>
-            <p className="text-orange-700 text-xs sm:text-sm">
-              To maintain service quality and patient trust, we require all
-              professionals to maintain active engagement with the platform.
-              Inactive accounts or consistent patient dissatisfaction may result
-              in profile suspension.
-            </p>
-          </div>
+      <div className="mb-8 p-6 bg-amber-50 border border-amber-200 rounded-2xl flex gap-4">
+        <AlertTriangle className="text-amber-600 shrink-0 mt-1" size={24} />
+        <div>
+          <h3 className="font-bold text-amber-900">
+            Professional Responsibility
+          </h3>
+          <p className="text-sm text-amber-800/80 mt-1">
+            By signing this agreement, you acknowledge that all information
+            provided is accurate, and you commit to upholding the highest
+            standards of healthcare practice.
+          </p>
         </div>
       </div>
 
-      {/* Terms & Policies (scrollable) */}
-      <div className="space-y-4 sm:space-y-6 max-h-72 sm:max-h-96 overflow-y-auto mb-6 sm:mb-8 p-3 sm:p-4 border border-gray-200 rounded-xl text-sm sm:text-base">
-        {/* Terms of Service */}
-        <div>
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-            Terms of Service
-          </h3>
-          <div className="space-y-2 text-gray-700">
-            <p>
-              <strong>1. Professional Commitment:</strong> I agree to maintain
-              regular activity on the platform and respond to patient inquiries
-              within 24 hours during business days.
-            </p>
-            <p>
-              <strong>2. Service Quality:</strong> I commit to providing
-              high‑quality healthcare services and maintaining professional
-              standards as per my licensing board requirements.
-            </p>
-            <p>
-              <strong>3. Platform Engagement:</strong> I understand that
-              consistent patient no‑shows or cancellations on my part may affect
-              my profile visibility and platform standing.
-            </p>
-            <p>
-              <strong>4. Revenue Share:</strong> I agree to the platform's
-              revenue sharing model of 15% per consultation, which supports
-              platform maintenance and patient acquisition.
-            </p>
-            <p>
-              <strong>5. Availability:</strong> I will maintain accurate
-              availability schedules and update them promptly when changes
-              occur.
-            </p>
-          </div>
+      {/* Expanded Terms Section */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-8 h-[400px] overflow-y-auto shadow-sm">
+        <div className="flex items-center gap-2 text-slate-400 mb-6 border-b pb-4">
+          <FileText size={20} />
+          <span className="text-xs font-bold uppercase tracking-widest">
+            Terms & Conditions of Service
+          </span>
         </div>
-
-        {/* Privacy Policy */}
-        <div>
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-            Privacy & Data Protection
-          </h3>
-          <div className="space-y-2 text-gray-700">
-            <p>
-              Your professional information will be displayed to patients
-              seeking healthcare services. We protect your personal contact
-              information and facilitate communication through our secure
-              platform.
-            </p>
-            <p>
-              Patient medical information is confidential and protected under
-              healthcare privacy laws. You are responsible for maintaining
-              patient confidentiality.
-            </p>
-          </div>
-        </div>
-
-        {/* Quality Commitment */}
-        <div>
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-            Quality & Performance Agreement
-          </h3>
-          <div className="space-y-2 text-gray-700">
-            <p>
-              <strong>Performance Metrics:</strong> Your profile performance
-              will be measured based on patient ratings, response times, and
-              appointment completion rates.
-            </p>
-            <p>
-              <strong>Continuous Engagement:</strong> We expect professionals to
-              maintain minimum platform activity levels to ensure patient access
-              to quality care.
-            </p>
-            <p>
-              <strong>Professional Development:</strong> You agree to maintain
-              current certifications and licenses required for your practice.
-            </p>
-          </div>
+        <div className="space-y-6 text-slate-600 text-sm leading-relaxed">
+          <p>
+            <strong>1. Professional Practice:</strong> The Provider agrees to
+            maintain active licensing and credentials as required by the
+            relevant medical boards. Services provided must adhere to current
+            clinical guidelines and ethical standards.
+          </p>
+          <p>
+            <strong>2. Patient Confidentiality:</strong> All information shared
+            by patients is strictly confidential. The Provider is fully
+            responsible for securing patient records and complying with HIPAA,
+            GDPR, or applicable local data protection regulations.
+          </p>
+          <p>
+            <strong>3. Platform Engagement:</strong> The Provider agrees to
+            maintain a professional presence on the platform. This includes
+            responding to patient inquiries within the defined SLA of 24 hours
+            and maintaining the quality of care expected by our users.
+          </p>
+          <p>
+            <strong>4. Revenue and Fees:</strong> The Provider agrees to the
+            platform's revenue sharing model. Platform fees are calculated at
+            15% per successfully completed consultation to support
+            infrastructure, support, and marketing services.
+          </p>
+          <p>
+            <strong>5. Limitation of Liability:</strong> While the platform
+            provides the infrastructure for care, the Provider maintains
+            clinical autonomy and responsibility for the diagnosis, treatment,
+            and medical advice given to patients.
+          </p>
+          <p>
+            <strong>6. Termination:</strong> Either party may terminate this
+            agreement with 30 days written notice. The platform reserves the
+            right to suspend accounts immediately in the event of gross
+            professional misconduct or policy violations.
+          </p>
         </div>
       </div>
 
-      {/* Agreement Checkboxes */}
-      <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-        <label className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base">
-          <input
-            type="checkbox"
-            checked={formData.legal.agreedToTerms}
-            onChange={(e) =>
-              updateFormData({
-                legal: {
-                  ...formData.legal,
-                  agreedToTerms: e.target.checked,
-                },
-              })
-            }
-            className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-600 shrink-0"
-          />
-          <span className="text-gray-700">
-            I have read and agree to the Terms of Service and Professional
-            Commitment requirements
-          </span>
-        </label>
-
-        <label className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base">
-          <input
-            type="checkbox"
-            checked={formData.legal.agreedToPrivacy}
-            onChange={(e) =>
-              updateFormData({
-                legal: {
-                  ...formData.legal,
-                  agreedToPrivacy: e.target.checked,
-                },
-              })
-            }
-            className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-600 shrink-0"
-          />
-          <span className="text-gray-700">
-            I agree to the Privacy Policy and data handling practices
-          </span>
-        </label>
-
-        <label className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base">
-          <input
-            type="checkbox"
-            checked={formData.legal.agreedToCommitment}
-            onChange={(e) =>
-              updateFormData({
-                legal: {
-                  ...formData.legal,
-                  agreedToCommitment: e.target.checked,
-                },
-              })
-            }
-            className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-600 shrink-0"
-          />
-          <span className="text-gray-700">
-            I commit to maintaining active engagement with the platform and
-            providing quality healthcare services
-          </span>
-        </label>
+      {/* Checkboxes */}
+      <div className="space-y-4 mb-10">
+        {[
+          {
+            key: "agreedToTerms",
+            label:
+              "I have read, understood, and agree to the Terms & Conditions above.",
+          },
+          {
+            key: "agreedToPrivacy",
+            label:
+              "I agree to the Privacy Policy and acknowledge my responsibilities regarding patient data.",
+          },
+          {
+            key: "agreedToCommitment",
+            label:
+              "I commit to active, high-quality participation and service standards.",
+          },
+        ].map((item) => {
+          const checkboxKey = item.key as LegalBooleanKey;
+          return (
+            <label
+              key={item.key}
+              className="flex items-start gap-3 cursor-pointer group"
+            >
+              <input
+                type="checkbox"
+                checked={!!formData.legal[checkboxKey]}
+                onChange={(e) =>
+                  updateFormData({
+                    legal: {
+                      ...formData.legal,
+                      [checkboxKey]: e.target.checked,
+                    },
+                  })
+                }
+                className="mt-1 w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="text-slate-700 font-medium group-hover:text-emerald-700 transition-colors">
+                {item.label}
+              </span>
+            </label>
+          );
+        })}
       </div>
 
-      {/* Electronic Signature */}
-      <div className="mb-6 sm:mb-8">
-        <label className="block text-gray-700 mb-2 text-sm sm:text-base">
-          Electronic Signature *
-          <span className="text-xs sm:text-sm text-gray-500 block mt-0.5">
-            Type your full name as it appears in your registration
+      {/* Manual Signature Verification */}
+      <div className="mb-10 p-8 bg-slate-50 border-2 border-slate-200 rounded-3xl">
+        <label className="block text-sm font-bold text-slate-900 mb-6 text-center">
+          Type your full name exactly as:
+          <span className="block text-emerald-600 text-xl mt-2 tracking-wider font-semibold underline underline-offset-8">
+            {fullName}
           </span>
         </label>
-        <div className="relative">
+
+        <div className="relative max-w-lg mx-auto">
           <input
             type="text"
             value={formData.legal.signature}
-            onChange={(e) => handleSignatureChange(e.target.value)}
-            className={`w-full px-4 py-3 sm:py-4 rounded-xl border-2 bg-gray-50 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-xl sm:text-2xl md:text-3xl text-center ${
+            onChange={(e) =>
+              updateFormData({
+                legal: {
+                  ...formData.legal,
+                  signature: e.target.value,
+                  date: new Date().toISOString(),
+                },
+              })
+            }
+            className={`w-full px-6 py-4 rounded-xl border-2 bg-white transition-all text-xl outline-none text-center ${
               isSignatureValid
-                ? "border-green-500 bg-green-50"
-                : "border-gray-300"
+                ? "border-emerald-500 text-emerald-900 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                : "border-slate-300 text-slate-900 focus:border-slate-400"
             } ${alexBrush.className}`}
-            placeholder="Your full name will appear here"
+            placeholder="Type your name here"
           />
-
-          {/* Signature Preview (only shown if signature exists) */}
-          {formData.legal.signature && (
-            <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-50 rounded-xl border">
-              <p className="text-xs sm:text-sm text-gray-600 mb-1">
-                Signature Preview:
-              </p>
-              <p
-                className={`text-xl sm:text-2xl text-center ${alexBrush.className} text-gray-800 break-words`}
-              >
-                {formData.legal.signature}
-              </p>
-            </div>
-          )}
-
-          {/* Validation Error */}
-          {formData.legal.signature && !isSignatureValid && (
-            <p className="text-red-600 text-xs sm:text-sm mt-2 flex items-center gap-1">
-              <AlertTriangle size={14} />
-              Signature must match your registered name exactly
-            </p>
-          )}
+          <Edit3
+            className={`absolute right-4 top-4 ${isSignatureValid ? "text-emerald-500" : "text-slate-300"}`}
+            size={20}
+          />
         </div>
+
+        {formData.legal.signature.length > 0 && !isSignatureValid && (
+          <p className="text-red-500 text-xs mt-4 text-center font-bold">
+            Signature does not match your registered name.
+          </p>
+        )}
       </div>
 
-      {/* Security Assurance */}
-      <div className="flex items-center justify-center gap-2 text-green-600 mb-6 sm:mb-8">
-        <Shield size={18} />
-        <span className="text-xs sm:text-sm font-medium">
-          Your information is secured with enterprise‑grade encryption
-        </span>
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4">
+      {/* Navigation */}
+      <div className="flex justify-between items-center pt-8 border-t border-slate-100">
         <button
           onClick={onBack}
-          className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 rounded-xl text-sm sm:text-base text-gray-600 hover:bg-gray-50 transition-colors order-2 sm:order-1"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-slate-500 hover:text-slate-900 transition-colors"
         >
-          Back
+          <ChevronLeft size={20} /> Back
         </button>
         <button
           onClick={onSubmit}
           disabled={!isFormValid || isSubmitting}
-          className="w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 bg-green-600 text-white rounded-xl font-semibold text-sm sm:text-base hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 order-1 sm:order-2"
+          className={`px-10 py-4 rounded-2xl font-bold transition-all flex items-center gap-3 shadow-lg ${
+            isFormValid
+              ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-emerald-500/20"
+              : "bg-slate-100 text-slate-400 cursor-not-allowed"
+          }`}
         >
-          {isSubmitting ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              <span>Submitting...</span>
-            </>
-          ) : (
-            <>
-              <CheckCircle size={18} />
-              <span>Complete Registration</span>
-            </>
-          )}
+          {isSubmitting ? "Completing..." : "Complete Registration"}
+          {!isSubmitting && <CheckCircle size={18} />}
         </button>
       </div>
     </div>

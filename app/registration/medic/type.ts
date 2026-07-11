@@ -2,6 +2,7 @@ import { LucideProps } from "lucide-react";
 import { ComponentType } from "react";
 
 export interface MedicRegistrationData {
+  role: "medic";
   // Personal Information
   personalInfo: {
     firstName: string;
@@ -11,6 +12,7 @@ export interface MedicRegistrationData {
     dateOfBirth: string;
     gender: string;
     profilePhoto: string | null;
+    password: string;
   };
 
   // Professional Information
