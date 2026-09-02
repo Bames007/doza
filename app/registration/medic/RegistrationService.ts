@@ -47,7 +47,7 @@ export const submitMedicRegistration = async (data: MedicRegistrationData) => {
     };
 
     // Save to database
-    const medicsRef = ref(db, "healthcareProfessionals");
+    const medicsRef = ref(db, "doza_medics");
     const newMedicRef = push(medicsRef);
     await set(newMedicRef, {
       ...registrationData,
