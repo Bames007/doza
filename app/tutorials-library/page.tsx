@@ -72,13 +72,13 @@ const TutorialsLibraryPage = () => {
       instructor: "Tech Support Team",
     },
     {
-      title: "AI Analytics Deep Dive",
+      title: "Analytics Deep Dive",
       duration: "35:12",
       level: "Advanced",
       views: "4.8K",
       rating: 4.7,
       thumbnail: "/api/placeholder/300/180",
-      instructor: "AI Specialist Team",
+      instructor: "Specialist Team",
     },
   ];
 

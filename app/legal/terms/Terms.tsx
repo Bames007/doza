@@ -197,7 +197,7 @@ export default function TermsPage() {
       ),
     },
     {
-      title: "7. AI-Powered Features",
+      title: "7. Features",
       icon: <RefreshCw className="w-5 h-5" />,
       content: (
         <div className="space-y-3 text-slate-600">
@@ -208,21 +208,19 @@ export default function TermsPage() {
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <span className="font-semibold">"As Is" Basis:</span> AI-generated
-              outputs are provided "as is" and may contain errors or
-              inaccuracies. You should independently verify any information
-              before relying on it.
+              <span className="font-semibold">"As Is" Basis:</span> Outputs are
+              provided "as is" and may contain errors or inaccuracies. You
+              should independently verify any information before relying on it.
             </li>
             <li>
               <span className="font-semibold">Limitation of Liability:</span> We
               are not liable for any decisions made or actions taken based on
-              AI-generated outputs. You are solely responsible for your use of
-              these tools.
+              outputs. You are solely responsible for your use of these tools.
             </li>
             <li>
               <span className="font-semibold">Data Use:</span> To improve our AI
               models, we may use de-identified or aggregated data. We will not
-              share personal or health data with third parties for AI training
+              share personal or health data with third parties for training
               without your explicit consent.
             </li>
           </ul>
@@ -479,7 +477,7 @@ export default function TermsPage() {
   const summaryPoints = [
     "You must be 18+ to use Doza.",
     "You are responsible for your account and all activity.",
-    "AI tools assist but do not replace professional judgment.",
+    "Best Medic tools assist but do not replace professional judgment.",
     "Fees are non-refundable unless stated otherwise.",
     "We provide services 'as is' with no warranties.",
     "Liability is limited to the amount you paid.",

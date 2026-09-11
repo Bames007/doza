@@ -30,11 +30,11 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://doza.com"),
-  title: "Doza | AI-Powered Healthcare Platform for Patients, Medics & Centers",
+  title: "Doza Healthcare Platform for Patients, Medics & Centers",
   description:
-    "Transform your healthcare experience with Doza's comprehensive platform. Connect patients, medical professionals, and healthcare centers through AI-powered tools, free EMR systems, and seamless healthcare management.",
+    "Transform your healthcare experience with Doza's comprehensive platform. Connect patients, medical professionals, and healthcare centers through tools, EMR systems, and seamless healthcare management.",
   keywords:
-    "healthcare platform, medical software, EMR systems, patient management, medic network, healthcare centers, AI healthcare, telemedicine, medical appointments",
+    "healthcare platform, medical software, EMR systems, patient management, medic network, healthcare centers, healthcare, telemedicine, medical appointments",
   authors: [{ name: "Doza Healthcare" }],
   creator: "Doza Healthcare",
   publisher: "Doza Healthcare",
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     shortcut: "/logo.png",
   },
   openGraph: {
-    title: "Doza | AI-Powered Healthcare Platform",
+    title: "Doza Healthcare Platform",
     description:
-      "Connect patients, medical professionals, and healthcare centers through our comprehensive AI-powered healthcare platform.",
+      "Connect patients, medical professionals, and healthcare centers through our comprehensive healthcare platform.",
     images: ["/og-image.png"],
     type: "website",
     locale: "en_US",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Doza | AI-Powered Healthcare Platform",
+    title: "Doza Healthcare Platform",
     description:
       "Transform your healthcare experience with Doza's comprehensive platform for patients, medics, and centers.",
     images: ["/twitter-image.png"],

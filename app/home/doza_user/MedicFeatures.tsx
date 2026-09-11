@@ -40,7 +40,7 @@ export default function MedicFeatures() {
       icon: Calendar,
       title: "Smart Scheduling",
       description:
-        "AI-powered appointment booking that optimizes your calendar and reduces no-shows by 40%",
+        "Appointment booking that optimizes your calendar and reduces no-shows by 40%",
       features: [
         "Automated reminders",
         "Waitlist management",
@@ -165,8 +165,7 @@ export default function MedicFeatures() {
     {
       icon: Zap,
       title: "Automation Tools",
-      description:
-        "AI-powered automation for repetitive tasks and intelligent workflows",
+      description: "Automation for repetitive tasks and intelligent workflows",
       capabilities: [
         "Smart reminders",
         "Document automation",

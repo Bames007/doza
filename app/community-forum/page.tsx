@@ -79,7 +79,7 @@ const CommunityForumPage = () => {
       cat: "System Ops",
     },
     {
-      title: "Upcoming: AI-Driven Diagnosis webinar series",
+      title: "Upcoming: Diagnosis webinar series",
       author: "Doza Team",
       replies: 18,
       views: 742,

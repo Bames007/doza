@@ -39,7 +39,7 @@ const FeaturesTourPage = () => {
   const features = [
     {
       icon: BarChart3,
-      title: "AI-Powered Analytics",
+      title: "Powered Analytics",
       description:
         "Get real-time insights into patient flow and revenue trends with advanced algorithms.",
       benefits: [
