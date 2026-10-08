@@ -1,223 +1,16 @@
-// "use client";
-
-// import React, { useState } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-// import {
-//   User,
-//   Shield,
-//   CheckCircle,
-//   DollarSign,
-//   Award,
-//   FileText,
-//   ChevronLeft,
-// } from "lucide-react";
-// import Link from "next/link";
-
-// // Components
-// import RoleSelection from "./components/RoleSelection";
-// import PersonalInfo from "./components/PersonalInfo";
-// import ProfessionalInfo from "./components/ProfessionalInfo";
-// import PracticeInfo from "./components/PracticeInfo";
-// import CredentialsUpload from "./components/CredentialsUpload";
-// import LegalAgreement from "./components/LegalAgreement";
-// import SuccessStep from "./components/SuccessStep";
-
-// // Types
-// import { RegistrationStep } from "./type";
-// import { useMedicRegistration } from "./hook/useMedicRegistration";
-// import { bebasNeue, poppins } from "@/app/home/doza_center/constant";
-
-// const MedicRegistration: React.FC = () => {
-//   const [currentStep, setCurrentStep] = useState<RegistrationStep>("role");
-
-//   const {
-//     formData,
-//     updateFormData,
-//     handleSubmit,
-//     isSubmitting,
-//     getLocationFromMap,
-//   } = useMedicRegistration();
-
-//   const steps: {
-//     id: RegistrationStep;
-//     label: string;
-//     icon: React.ReactNode;
-//   }[] = [
-//     { id: "role", label: "Role", icon: <User size={16} /> },
-//     { id: "personal", label: "Personal", icon: <User size={16} /> },
-//     { id: "professional", label: "Professional", icon: <Award size={16} /> },
-//     { id: "practice", label: "Practice", icon: <DollarSign size={16} /> },
-//     { id: "credentials", label: "Documents", icon: <FileText size={16} /> },
-//     { id: "legal", label: "Agreement", icon: <Shield size={16} /> },
-//   ];
-
-//   const activeStepIndex = steps.findIndex((s) => s.id === currentStep);
-//   const isSuccess = currentStep === "success";
-
-//   const onSubmitLegal = async () => {
-//     try {
-//       await handleSubmit();
-//       setCurrentStep("success");
-//     } catch (error) {
-//       console.error("Submission failed", error);
-//     }
-//   };
-
-//   const renderStep = () => {
-//     switch (currentStep) {
-//       case "role":
-//         return (
-//           <RoleSelection
-//             formData={formData}
-//             updateFormData={updateFormData}
-//             onNext={() => setCurrentStep("personal")}
-//           />
-//         );
-//       case "personal":
-//         return (
-//           <PersonalInfo
-//             formData={formData}
-//             updateFormData={updateFormData}
-//             onBack={() => setCurrentStep("role")}
-//             onNext={() => setCurrentStep("professional")}
-//           />
-//         );
-//       case "professional":
-//         return (
-//           <ProfessionalInfo
-//             formData={formData}
-//             updateFormData={updateFormData}
-//             onBack={() => setCurrentStep("personal")}
-//             onNext={() => setCurrentStep("practice")}
-//           />
-//         );
-//       case "practice":
-//         return (
-//           <PracticeInfo
-//             formData={formData}
-//             updateFormData={updateFormData}
-//             onBack={() => setCurrentStep("professional")}
-//             onNext={() => setCurrentStep("credentials")}
-//             getLocationFromMap={getLocationFromMap}
-//           />
-//         );
-//       case "credentials":
-//         return (
-//           <CredentialsUpload
-//             formData={formData}
-//             updateFormData={updateFormData}
-//             onBack={() => setCurrentStep("practice")}
-//             onNext={() => setCurrentStep("legal")}
-//           />
-//         );
-//       case "legal":
-//         return (
-//           <LegalAgreement
-//             formData={formData}
-//             updateFormData={updateFormData}
-//             onBack={() => setCurrentStep("credentials")}
-//             onSubmit={onSubmitLegal}
-//             isSubmitting={isSubmitting}
-//           />
-//         );
-//       case "success":
-//         return <SuccessStep formData={formData} />;
-//       default:
-//         return null;
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-slate-50 relative overflow-x-hidden">
-//       {/* Abstract Backgrounds */}
-//       <div className="fixed inset-0 z-0 opacity-40">
-//         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-100 blur-[120px] rounded-full translate-x-1/4 -translate-y-1/4" />
-//         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-50 blur-[120px] rounded-full -translate-x-1/4 translate-y-1/4" />
-//       </div>
-
-//       <header className="relative z-10 bg-white/70 backdrop-blur-md border-b border-slate-200">
-//         <div className="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
-//           <Link
-//             href="/"
-//             className="flex items-center gap-2 text-slate-500 hover:text-emerald-600 transition-colors"
-//           >
-//             <ChevronLeft size={20} />
-//             <span className={`text-sm ${poppins.className} font-medium`}>
-//               Back to Home
-//             </span>
-//           </Link>
-//           <span
-//             className={`text-2xl font-bold text-slate-900 tracking-tight ${bebasNeue.className}`}
-//           >
-//             DOZA
-//           </span>
-//           <div className="w-24" />
-//         </div>
-//       </header>
-
-//       {/* Main Container - Responsive Widths */}
-//       <main className="relative z-10 max-w-2xl md:max-w-4xl lg:max-w-5xl mx-auto px-4 py-12">
-//         {/* Progress Bar Header */}
-//         {!isSuccess && (
-//           <div className="mb-12">
-//             <div className="flex items-center justify-between mb-4">
-//               <h2 className={`text-2xl text-slate-800 ${bebasNeue.className}`}>
-//                 REGISTRATION <span className="text-emerald-600">STEPS</span>
-//               </h2>
-//               <span className="text-sm text-slate-500 font-medium bg-white px-3 py-1 rounded-full border border-slate-200 shadow-sm">
-//                 {activeStepIndex + 1} / {steps.length}
-//               </span>
-//             </div>
-
-//             <div className="flex items-center justify-between gap-3">
-//               {steps.map((step, index) => {
-//                 const isCompleted = index < activeStepIndex;
-//                 const isActive = index === activeStepIndex;
-
-//                 return (
-//                   <div key={step.id} className="flex-1">
-//                     <div
-//                       className={`h-2.5 rounded-full transition-all duration-500 ${
-//                         isActive
-//                           ? "bg-emerald-600 shadow-lg shadow-emerald-600/20"
-//                           : isCompleted
-//                             ? "bg-emerald-500"
-//                             : "bg-slate-200"
-//                       }`}
-//                     />
-//                   </div>
-//                 );
-//               })}
-//             </div>
-//           </div>
-//         )}
-
-//         {/* Dynamic Card Area */}
-//         <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12 min-h-[600px] flex flex-col justify-center">
-//           <AnimatePresence mode="wait">
-//             <motion.div
-//               key={currentStep}
-//               initial={{ opacity: 0, scale: 0.98 }}
-//               animate={{ opacity: 1, scale: 1 }}
-//               exit={{ opacity: 0, scale: 0.98 }}
-//               transition={{ duration: 0.3, ease: "easeInOut" }}
-//             >
-//               {renderStep()}
-//             </motion.div>
-//           </AnimatePresence>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default MedicRegistration;
-
 "use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, AlertCircle } from "lucide-react";
+import {
+  Check,
+  AlertCircle,
+  User,
+  Mail,
+  Phone,
+  Lock,
+  Loader2,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { submitMedicRegistration } from "./RegistrationService";
@@ -290,7 +83,19 @@ const MedicRegistration: React.FC = () => {
     setErrors({});
 
     try {
-      await submitMedicRegistration(formData);
+      const uid = await submitMedicRegistration(formData);
+
+      // Fire-and-forget welcome email. Never block registration on it.
+      fetch("/api/email/send-medic-welcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.personalInfo.email,
+          name: formData.personalInfo.firstName,
+          userId: uid,
+        }),
+      }).catch((err) => console.warn("medic welcome email failed", err));
+
       setSubmitSuccess(true);
     } catch (err: any) {
       setErrors({ form: err.message || "Registration failed" });
@@ -302,25 +107,32 @@ const MedicRegistration: React.FC = () => {
   // ─── Success screen ──────────────────────────────────────────
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-emerald-50/30 flex items-center justify-center p-6">
+      <div
+        className={`min-h-screen flex items-center justify-center p-6 ${poppins.className}`}
+        style={{
+          background:
+            "radial-gradient(1200px 600px at 50% -10%, #d1fae5 0%, #ecfdf5 35%, #f8fafc 75%)",
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="max-w-md w-full bg-white rounded-3xl p-10 shadow-xl border border-slate-100 text-center"
+          className="max-w-md w-full bg-white rounded-3xl p-10 shadow-xl shadow-emerald-900/5 border border-emerald-100/70 text-center"
         >
           <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check className="text-emerald-600 w-10 h-10" />
           </div>
           <h2 className={`text-4xl font-bold mb-4 ${bebasNeue.className}`}>
-            WELCOME TO DOZA.
+            WELCOME TO DOZA MEDIC.
           </h2>
-          <p className="text-slate-500 mb-8">
-            Your medic account is ready. Log in to complete your profile and
-            submit your credentials.
+          <p className="text-slate-500 mb-2">Your medic account is ready.</p>
+          <p className="text-slate-400 text-sm mb-8">
+            Log in to complete your professional profile and submit your
+            credentials.
           </p>
           <button
-            onClick={() => router.push("/medic/login")}
-            className="block w-full bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 transition"
+            onClick={() => router.push("https://medics.dozamedic.com/")}
+            className={`block w-full bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 transition tracking-wide ${bebasNeue.className}`}
           >
             GO TO LOGIN
           </button>
@@ -332,7 +144,11 @@ const MedicRegistration: React.FC = () => {
   // ─── Form ────────────────────────────────────────────────────
   return (
     <div
-      className={`min-h-screen bg-slate-50/50 relative ${poppins.className}`}
+      className={`min-h-screen ${poppins.className}`}
+      style={{
+        background:
+          "radial-gradient(1400px 700px at 50% -10%, #d1fae5 0%, #ecfdf5 30%, #f6faf8 70%, #f8fafc 100%)",
+      }}
     >
       <main className="max-w-3xl mx-auto px-4 py-12">
         <header className="text-center mb-12">
@@ -348,8 +164,8 @@ const MedicRegistration: React.FC = () => {
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Personal info */}
-          <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
+          {/* Step 1: Personal Details */}
+          <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm shadow-emerald-900/5 border border-emerald-100/70">
             <h2
               className={`text-lg font-bold text-slate-800 mb-6 flex items-center gap-2 ${bebasNeue.className}`}
             >
@@ -360,76 +176,95 @@ const MedicRegistration: React.FC = () => {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* First Name */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   First Name
                 </label>
-                <input
-                  type="text"
-                  value={formData.personalInfo.firstName}
-                  onChange={(e) =>
-                    handleInputChange("firstName", e.target.value)
-                  }
-                  placeholder="John"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
-                />
+                <div className="relative">
+                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={formData.personalInfo.firstName}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                    placeholder="John"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm"
+                  />
+                </div>
                 {errors.firstName && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-rose-500 text-xs mt-1">
                     {errors.firstName}
                   </p>
                 )}
               </div>
 
+              {/* Last Name */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Last Name
                 </label>
-                <input
-                  type="text"
-                  value={formData.personalInfo.lastName}
-                  onChange={(e) =>
-                    handleInputChange("lastName", e.target.value)
-                  }
-                  placeholder="Doe"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
-                />
+                <div className="relative">
+                  <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={formData.personalInfo.lastName}
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
+                    placeholder="Doe"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm"
+                  />
+                </div>
                 {errors.lastName && (
-                  <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+                  <p className="text-rose-500 text-xs mt-1">
+                    {errors.lastName}
+                  </p>
                 )}
               </div>
 
+              {/* Email */}
               <div className="md:col-span-2">
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-                  Email
+                  Email Address
                 </label>
-                <input
-                  type="email"
-                  value={formData.personalInfo.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  placeholder="you@yourpractice.com"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
-                />
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="email"
+                    value={formData.personalInfo.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    placeholder="you@yourpractice.com"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm"
+                  />
+                </div>
                 {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                  <p className="text-rose-500 text-xs mt-1">{errors.email}</p>
                 )}
               </div>
 
+              {/* Phone */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-                  Phone
+                  Phone Number
                 </label>
-                <input
-                  type="tel"
-                  value={formData.personalInfo.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  placeholder="+234..."
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
-                />
+                <div className="relative">
+                  <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="tel"
+                    value={formData.personalInfo.phone}
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    placeholder="+2340000000000"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm"
+                  />
+                </div>
                 {errors.phone && (
-                  <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                  <p className="text-rose-500 text-xs mt-1">{errors.phone}</p>
                 )}
               </div>
 
+              {/* Gender */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Gender
@@ -437,50 +272,60 @@ const MedicRegistration: React.FC = () => {
                 <select
                   value={formData.personalInfo.gender}
                   onChange={(e) => handleInputChange("gender", e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm cursor-pointer"
                 >
-                  <option value="">Select...</option>
+                  <option value="">Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
                 {errors.gender && (
-                  <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
+                  <p className="text-rose-500 text-xs mt-1">{errors.gender}</p>
                 )}
               </div>
 
+              {/* Password */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Password
                 </label>
-                <input
-                  type="password"
-                  value={formData.personalInfo.password}
-                  onChange={(e) =>
-                    handleInputChange("password", e.target.value)
-                  }
-                  placeholder="Min 8 characters"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
-                />
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="password"
+                    value={formData.personalInfo.password}
+                    onChange={(e) =>
+                      handleInputChange("password", e.target.value)
+                    }
+                    placeholder="Min 8 characters"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm"
+                  />
+                </div>
                 {errors.password && (
-                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                  <p className="text-rose-500 text-xs mt-1">
+                    {errors.password}
+                  </p>
                 )}
               </div>
 
+              {/* Confirm Password */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Confirm Password
                 </label>
-                <input
-                  type="password"
-                  value={formData.personalInfo.confirmPassword}
-                  onChange={(e) =>
-                    handleInputChange("confirmPassword", e.target.value)
-                  }
-                  placeholder="Repeat password"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
-                />
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="password"
+                    value={formData.personalInfo.confirmPassword}
+                    onChange={(e) =>
+                      handleInputChange("confirmPassword", e.target.value)
+                    }
+                    placeholder="Repeat password"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm"
+                  />
+                </div>
                 {errors.confirmPassword && (
-                  <p className="text-red-500 text-xs mt-1">
+                  <p className="text-rose-500 text-xs mt-1">
                     {errors.confirmPassword}
                   </p>
                 )}
@@ -488,44 +333,68 @@ const MedicRegistration: React.FC = () => {
             </div>
           </div>
 
-          {/* Terms + submit */}
+          {/* Submit */}
           <div className="flex flex-col gap-4">
-            {errors.form && (
-              <div className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-red-600 text-sm">
-                <AlertCircle size={18} className="mt-0.5 shrink-0" />
-                <span>{errors.form}</span>
-              </div>
-            )}
-
-            <label className="flex items-center gap-3">
+            <label className="flex items-start gap-3">
               <input
                 type="checkbox"
                 checked={formData.agreedToTerms}
                 onChange={(e) =>
                   setFormData({ ...formData, agreedToTerms: e.target.checked })
                 }
-                className="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                className="mt-0.5 w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
               />
               <span className="text-sm text-slate-600">
-                I agree to terms and privacy policy
+                I agree to the{" "}
+                <Link
+                  href="/terms"
+                  className="font-semibold text-emerald-600 hover:underline"
+                  target="_blank"
+                >
+                  Terms &amp; Conditions
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="font-semibold text-emerald-600 hover:underline"
+                  target="_blank"
+                >
+                  Privacy Policy
+                </Link>
+                .
               </span>
             </label>
+
             {errors.terms && (
-              <p className="text-red-500 text-xs -mt-3 ml-8">{errors.terms}</p>
+              <p className="text-rose-500 text-xs">{errors.terms}</p>
+            )}
+
+            {errors.form && (
+              <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-600 text-sm flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{errors.form}</span>
+              </div>
             )}
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg hover:bg-emerald-600 transition-all shadow-lg active:scale-[0.98] disabled:opacity-60"
+              className={`w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg tracking-wider hover:bg-emerald-600 transition-all shadow-lg active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed ${bebasNeue.className}`}
             >
-              {isSubmitting ? "CREATING ACCOUNT..." : "CREATE ACCOUNT"}
+              {isSubmitting ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  CREATING ACCOUNT...
+                </span>
+              ) : (
+                "CREATE ACCOUNT"
+              )}
             </button>
 
             <p className="text-center text-sm text-slate-400">
               Already have an account?{" "}
               <Link
-                href="/medic/login"
+                href="https://medics.dozamedic.com/"
                 className="text-emerald-600 font-bold hover:underline"
               >
                 Log in

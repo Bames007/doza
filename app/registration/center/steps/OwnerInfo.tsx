@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import {
   User,
@@ -21,6 +21,7 @@ interface OwnerInfoStepProps {
     field: keyof OwnerInfo,
     value: string | boolean,
   ) => void;
+  onInputChange: (field: keyof CenterRegistrationData, value: any) => void;
   onBack: () => void;
   onNext: () => void;
 }
@@ -28,6 +29,7 @@ interface OwnerInfoStepProps {
 const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
   formData,
   onNestedInputChange,
+  onInputChange,
   onBack,
   onNext,
 }) => {
@@ -35,40 +37,63 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className={`w-full max-w-4xl mx-auto px-3 py-6 ${poppins.className} text-slate-900`}
+      className={`w-full ${poppins.className} text-slate-900`}
     >
-      {/* Header */}
-      <div className="mb-8">
-        <div className="inline-flex items-center gap-2 bg-emerald-100 px-3 py-1.5 rounded-lg mb-4">
-          <div className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></div>
-          <span className="text-emerald-900 font-black text-[9px] uppercase tracking-widest">
-            Step 03 — Ownership
+      {/* Header — trimmed */}
+      <header className="mb-6">
+        <div className="flex items-center gap-3 mb-3">
+          <span
+            className={`text-xl text-emerald-600 font-bold leading-none ${bebasNeue.className}`}
+          >
+            02
+          </span>
+          <div className="h-px flex-1 bg-slate-200" />
+          <span className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-500">
+            Owner
           </span>
         </div>
         <h2
-          className={`text-4xl md:text-7xl font-bold leading-none ${bebasNeue.className}`}
+          className={`text-3xl md:text-4xl font-bold leading-tight mb-2 ${bebasNeue.className}`}
         >
-          OWNER <span className="text-emerald-600">DETAILS</span>
+          OWNER <span className="text-emerald-600">INFO</span>
         </h2>
-      </div>
+        <p className="text-slate-600 text-xs md:text-sm">
+          Information of the Center Owner or Authorized Representative for legal
+          and operational purposes.
+        </p>
+      </header>
 
-      <div className="space-y-4">
-        {/* Ownership Check */}
-        <div className="bg-slate-100 p-4 rounded-2xl border border-slate-200">
-          <label className="flex items-center gap-4 cursor-pointer">
+      {/* Center Name — trimmed */}
+      <section className="mb-4">
+        <label className="text-[9px] font-bold text-slate-600 uppercase mb-1 block">
+          Center Name
+        </label>
+        <input
+          type="text"
+          value={formData.centerName || ""}
+          onChange={(e) => onInputChange("centerName", e.target.value)}
+          placeholder="Ex: Doza Medical Center"
+          className="w-full bg-slate-100/80 rounded-lg px-3 py-2.5 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500"
+        />
+      </section>
+
+      <div className="space-y-3">
+        {/* Ownership check — trimmed */}
+        <div className="bg-slate-100 p-3 rounded-xl border border-slate-200">
+          <label className="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={formData.ownerInfo.isOwner}
               onChange={(e) =>
                 onNestedInputChange("ownerInfo", "isOwner", e.target.checked)
               }
-              className="w-6 h-6 rounded border-2 border-slate-400 text-emerald-600 focus:ring-0"
+              className="w-4 h-4 rounded border-2 border-slate-400 text-emerald-600 focus:ring-0"
             />
             <div>
-              <span className="font-bold text-sm block">
+              <span className="font-bold text-xs block">
                 I am the legal owner
               </span>
-              <p className="text-[10px] text-slate-600 font-bold uppercase">
+              <p className="text-[10px] text-slate-600 font-medium uppercase">
                 Confirm authority to register
               </p>
             </div>
@@ -76,8 +101,8 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
         </div>
 
         {!formData.ownerInfo.isOwner && (
-          <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex gap-3">
-            <AlertCircle className="text-amber-600 shrink-0" size={18} />
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl flex gap-2">
+            <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={16} />
             <p className="text-[11px] font-bold text-amber-900 leading-tight">
               AUTHORIZATION REQUIRED: You must have legal permission from the
               owner to proceed.
@@ -85,15 +110,15 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
           </div>
         )}
 
-        {/* Identity Section */}
-        <section className="bg-white border border-slate-200 p-4 md:p-8 rounded-3xl shadow-sm space-y-4">
+        {/* Personal — trimmed */}
+        <section className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-3">
           <h3
-            className={`text-xl md:text-3xl flex items-center gap-2 ${bebasNeue.className}`}
+            className={`text-base flex items-center gap-2 ${bebasNeue.className}`}
           >
-            <User className="text-emerald-600" size={20} /> PERSONAL
+            <User className="text-emerald-600" size={16} /> PERSONAL
           </h3>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div>
               <label className="text-[9px] font-bold text-slate-600 uppercase mb-1 block">
                 Full Legal Name
@@ -104,7 +129,7 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
                 onChange={(e) =>
                   onNestedInputChange("ownerInfo", "fullName", e.target.value)
                 }
-                className="w-full bg-slate-100/80 rounded-xl px-4 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full bg-slate-100/80 rounded-lg px-3 py-2.5 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500"
                 placeholder="John Doe"
               />
             </div>
@@ -119,7 +144,7 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
                   onChange={(e) =>
                     onNestedInputChange("ownerInfo", "position", e.target.value)
                   }
-                  className="w-full bg-slate-100/80 rounded-xl px-4 py-3.5 text-sm font-bold outline-none appearance-none"
+                  className="w-full bg-slate-100/80 rounded-lg px-3 py-2.5 text-sm font-bold outline-none appearance-none"
                 >
                   <option value="Owner">Owner</option>
                   <option value="Director">Director</option>
@@ -127,24 +152,24 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
                   <option value="Administrator">Administrator</option>
                 </select>
                 <Briefcase
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600"
-                  size={16}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none"
+                  size={14}
                 />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section className="bg-white border border-slate-200 p-4 md:p-8 rounded-3xl shadow-sm space-y-4">
+        {/* Contact — trimmed */}
+        <section className="bg-white border border-slate-200 p-4 rounded-2xl shadow-sm space-y-3">
           <h3
-            className={`text-xl md:text-3xl flex items-center gap-2 ${bebasNeue.className}`}
+            className={`text-base flex items-center gap-2 ${bebasNeue.className}`}
           >
-            <Mail className="text-emerald-600" size={20} /> CONTACT
+            <Mail className="text-emerald-600" size={16} /> CONTACT
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-slate-100/80 rounded-xl px-4 py-3.5 flex items-center gap-3">
-              <Mail size={16} className="text-slate-600" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="bg-slate-100/80 rounded-lg px-3 py-2.5 flex items-center gap-2">
+              <Mail size={14} className="text-slate-600 shrink-0" />
               <input
                 type="email"
                 value={formData.ownerInfo.email}
@@ -152,11 +177,11 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
                   onNestedInputChange("ownerInfo", "email", e.target.value)
                 }
                 placeholder="Email Address"
-                className="bg-transparent w-full text-sm font-bold outline-none"
+                className="bg-transparent w-full text-sm font-bold outline-none min-w-0"
               />
             </div>
-            <div className="bg-slate-100/80 rounded-xl px-4 py-3.5 flex items-center gap-3">
-              <Phone size={16} className="text-slate-600" />
+            <div className="bg-slate-100/80 rounded-lg px-3 py-2.5 flex items-center gap-2">
+              <Phone size={14} className="text-slate-600 shrink-0" />
               <input
                 type="tel"
                 value={formData.ownerInfo.phone}
@@ -164,15 +189,15 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
                   onNestedInputChange("ownerInfo", "phone", e.target.value)
                 }
                 placeholder="Phone Number"
-                className="bg-transparent w-full text-sm font-bold outline-none"
+                className="bg-transparent w-full text-sm font-bold outline-none min-w-0"
               />
             </div>
           </div>
         </section>
       </div>
 
-      {/* Footer Nav */}
-      <footer className="mt-8 flex flex-col md:flex-row items-center justify-between gap-3 pt-6 border-t border-slate-200">
+      {/* Footer nav — trimmed */}
+      <footer className="mt-5 flex flex-col md:flex-row items-center justify-between gap-2 pt-4 border-t border-slate-200">
         <button
           onClick={onBack}
           className="w-full md:w-auto flex items-center justify-center gap-2 text-slate-900 font-bold text-[10px] uppercase py-2"
@@ -181,7 +206,7 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
         </button>
         <button
           onClick={onNext}
-          className="w-full md:w-auto px-10 py-4 bg-slate-900 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg flex items-center justify-center gap-2"
+          className="w-full md:w-auto px-6 py-3 bg-slate-900 text-white rounded-lg font-bold text-[10px] uppercase tracking-widest shadow-lg flex items-center justify-center gap-2"
         >
           Final Step <ArrowRight size={14} />
         </button>

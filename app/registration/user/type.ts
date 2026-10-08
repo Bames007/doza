@@ -1,3 +1,4 @@
+// app/(registration)/type.ts
 export interface UserRegistrationData {
   personalInfo: {
     firstName: string;
@@ -10,18 +11,22 @@ export interface UserRegistrationData {
     gender: "Male" | "Female" | "";
     avatar: string;
   };
-  selectedPlan: "basic" | "plus" | "premium" | null;
+  referralCode: string;
   agreedToTerms: boolean;
   role: "user" | "medic" | "center";
 }
 
-export interface Plan {
-  id: "basic" | "plus" | "premium";
-  name: string;
-  price: string;
-  tagline?: string;
-  benefits: string[];
-  highlighted?: boolean;
+export interface ReferralValidation {
+  valid: boolean;
+  code?: string;
+  codeId?: string;
+  rewardType?: "discount" | "points" | "cashback";
+  rewardValue?: number;
+  description?: string;
+  assignedToType?: "center" | "medic" | "user";
+  assignedToId?: string;
+  assignedToName?: string;
+  error?: string;
 }
 
 export const avatars = [

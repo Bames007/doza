@@ -1,3 +1,6 @@
+// type.ts (center registration)
+import type { CenterType } from "@/app/center/type";
+
 export interface Location {
   address: string;
   lat: number;
@@ -38,7 +41,7 @@ export interface Legal {
 
 export interface CenterRegistrationData {
   role: "center";
-  centerType: string;
+  centerType: CenterType | "other" | ""; // ← added "other"
   customType?: string;
   centerName: string;
   logo: string | File | null;
@@ -54,7 +57,6 @@ export interface CenterRegistrationData {
   verified?: boolean;
 }
 
-// Type-safe utility types for form handling
 export type FormSection = keyof CenterRegistrationData;
 export type PrimitiveField = string | number | boolean | null;
 export type NestedField =

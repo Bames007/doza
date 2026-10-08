@@ -12,21 +12,15 @@ import {
   Building,
   Mail,
   User,
-  MapPin,
   Phone,
   Lock,
   ChevronRight,
-  LucideIcon, // Import the Type
+  LucideIcon,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../../../home/doza_center/constant";
 import { CenterRegistrationData } from "../type";
-import { db, storage } from "@/app/utils/firebaseConfig";
+import { db } from "@/app/utils/firebaseConfig";
 import { ref, set } from "firebase/database";
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
 
 interface LegalStepProps {
   formData: CenterRegistrationData;
@@ -52,7 +46,6 @@ const LegalStep: React.FC<LegalStepProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentStep, setCurrentStep] = useState<string>("");
 
-  // Logic Helpers - Case insensitive signature matching for better UX
   const isSignatureMatched =
     formData.legal?.signature?.trim().toLowerCase() ===
     formData.ownerInfo?.fullName?.trim().toLowerCase();
@@ -71,7 +64,6 @@ const LegalStep: React.FC<LegalStepProps> = ({
     !isSignatureMatched ||
     !hasRequiredFields;
 
-  // Logic Functions
   const handleSignatureChange = (e: ChangeEvent<HTMLInputElement>) => {
     onNestedInputChange("legal", "signature", e.target.value);
     onNestedInputChange("legal", "date", new Date().toISOString());
@@ -103,11 +95,10 @@ const LegalStep: React.FC<LegalStepProps> = ({
     return `STAFF-${nameCode}-${timestamp}-OWN-001`;
   };
 
-  const sendOtpToEmailAndSave = async (): Promise<boolean> => {
+  const sendOtpEmail = async (otpCode: string): Promise<boolean> => {
     try {
       setCurrentStep("Sending verification code...");
-      const otpCode = generateOtp();
-      const response = await fetch("/api/send-otp-email", {
+      const res = await fetch("/api/send-otp-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -117,53 +108,27 @@ const LegalStep: React.FC<LegalStepProps> = ({
           centerName: formData.centerName,
         }),
       });
-      return response.ok;
-    } catch (error) {
+      return res.ok;
+    } catch {
       return false;
     }
   };
 
-  const uploadLogoToStorage = async (
-    logoData: string | File | null,
-  ): Promise<string | null> => {
-    if (!logoData) return null;
-    try {
-      setCurrentStep("Uploading logo...");
-      const centerId = generateCenterId(formData.centerName);
-      let blob: Blob;
-      let fileExtension = "png";
-
-      if (typeof logoData === "string" && logoData.startsWith("data:image")) {
-        const response = await fetch(logoData);
-        blob = await response.blob();
-        const matches = logoData.match(/^data:image\/([a-zA-Z0-9]+);base64,/);
-        if (matches) fileExtension = matches[1];
-      } else if (logoData instanceof File) {
-        blob = logoData;
-        fileExtension = logoData.name.split(".").pop() || "png";
-      } else return null;
-
-      const logoPath = storageRef(
-        storage,
-        `doza_centers/${centerId}/logo/${centerId}_logo.${fileExtension}`,
-      );
-      const snapshot = await uploadBytes(logoPath, blob);
-      return await getDownloadURL(snapshot.ref);
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const sendConfirmationEmail = async (centerData: any) => {
+  const sendConfirmationEmail = async (payload: {
+    centerId: string;
+    centerName: string;
+    ownerName: string;
+    ownerEmail: string;
+  }): Promise<boolean> => {
     try {
       setCurrentStep("Sending confirmation email...");
-      const response = await fetch("/api/send-confirmation-email", {
+      const res = await fetch("/api/send-confirmation-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(centerData),
+        body: JSON.stringify(payload),
       });
-      return response.ok;
-    } catch (error) {
+      return res.ok;
+    } catch {
       return false;
     }
   };
@@ -174,36 +139,32 @@ const LegalStep: React.FC<LegalStepProps> = ({
     setUploadProgress(0);
 
     try {
+      // Generate everything ONCE
       const centerId = generateCenterId(formData.centerName);
       const staffId = generateStaffId(formData.centerName);
       const otpCode = generateOtp();
 
-      setUploadProgress(10);
-      const logoURL = await uploadLogoToStorage(formData.logo);
-
-      setUploadProgress(30);
-      await sendOtpToEmailAndSave();
+      // "other" / "" fall back to medical_center so the dashboard has a valid key
+      const resolvedCenterType =
+        formData.centerType === "other" || formData.centerType === ""
+          ? "medical_center"
+          : formData.centerType;
 
       const centerData = {
         role: formData.role,
-        centerType: formData.centerType,
+        centerType: resolvedCenterType,
+        customType: formData.customType || "",
         centerName: formData.centerName,
-        logo: logoURL,
-        location: {
-          address: formData.location?.address || "",
-          lat: formData.location?.lat || 0,
-          lng: formData.location?.lng || 0,
-        },
-        registrationNumbers: {
-          cac: formData.registrationNumbers?.cac || "",
-          state: formData.registrationNumbers?.state || "",
-          federal: formData.registrationNumbers?.federal || "",
-        },
+
+        // Placeholder fields — dashboard will fill these
+        logo: null,
+        location: { address: "", lat: 0, lng: 0 },
         contact: {
-          phone: formData.contact?.phone || "",
-          email: formData.contact?.email || "",
-          website: formData.contact?.website || "",
+          phone: formData.ownerInfo?.phone || "",
+          email: formData.ownerInfo?.email || "",
+          website: "",
         },
+
         ownerInfo: {
           isOwner: true,
           fullName: formData.ownerInfo?.fullName || "",
@@ -211,19 +172,23 @@ const LegalStep: React.FC<LegalStepProps> = ({
           phone: formData.ownerInfo?.phone || "",
           position: formData.ownerInfo?.position || "Owner",
         },
+
         legal: {
           agreed: formData.legal?.agreed || false,
           signature: formData.legal?.signature || "",
           date: formData.legal?.date || new Date().toISOString(),
         },
-        centerId: centerId,
+
+        centerId,
         createdAt: new Date().toISOString(),
         status: "pending",
         verified: false,
         verificationOtp: otpCode,
+        profileCompleted: false,
+
         staff: {
           [staffId]: {
-            staffId: staffId,
+            staffId,
             personalInfo: {
               fullName: formData.ownerInfo.fullName,
               email: formData.ownerInfo.email,
@@ -240,20 +205,21 @@ const LegalStep: React.FC<LegalStepProps> = ({
             isOwner: true,
           },
         },
-        facilityDetails: {
-          bedCapacity: (formData.specificDetails?.numberOfBeds as number) || 0,
-          icuBeds: (formData.specificDetails?.icuBeds as number) || 0,
-        },
+
         searchIndex: {
           name_lower: formData.centerName.toLowerCase(),
-          type_lower: formData.centerType.toLowerCase(),
+          type_lower: resolvedCenterType.toLowerCase(),
         },
+
         audit: {
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           createdBy: formData.ownerInfo?.email || "",
         },
       };
+
+      setUploadProgress(25);
+      await sendOtpEmail(otpCode);
 
       setUploadProgress(60);
       setCurrentStep("Saving to DOZA database...");
@@ -265,13 +231,13 @@ const LegalStep: React.FC<LegalStepProps> = ({
         centerName: formData.centerName,
         ownerName: formData.ownerInfo.fullName,
         ownerEmail: formData.ownerInfo.email,
-        otp: otpCode,
       });
 
       setUploadProgress(100);
       setCurrentStep("Registration complete!");
       setTimeout(onSubmit, 1500);
     } catch (error) {
+      console.error("Registration error:", error);
       setUploadError("Failed to save registration. Please try again.");
       setIsProcessing(false);
     }
@@ -279,40 +245,52 @@ const LegalStep: React.FC<LegalStepProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`w-full max-w-4xl mx-auto pb-16 px-4 sm:px-0 ${poppins.className}`}
+      className={`w-full ${poppins.className} text-slate-900`}
     >
-      {/* Header */}
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-medium tracking-widest uppercase mb-4 border border-emerald-100">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      {/* Alex Brush font — loaded once, scoped to .font-signature */}
+      <style jsx global>{`
+        @import url("https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap");
+        .font-signature {
+          font-family: "Alex Brush", cursive;
+        }
+      `}</style>
+
+      {/* Header — matches CenterTypeStep */}
+      <header className="mb-5">
+        <div className="flex items-center gap-3 mb-3">
+          <span
+            className={`text-xl text-emerald-600 font-bold leading-none ${bebasNeue.className}`}
+          >
+            03
           </span>
-          Step 4: Verification
+          <div className="h-px flex-1 bg-slate-200" />
+          <span className="text-[9px] font-black uppercase tracking-[0.18em] text-slate-500">
+            Protocol
+          </span>
         </div>
         <h2
-          className={`text-4xl sm:text-5xl font-normal text-slate-800 tracking-tight mb-3 ${bebasNeue.className}`}
+          className={`text-3xl md:text-4xl font-bold leading-tight mb-2 ${bebasNeue.className}`}
         >
-          Final Submission
+          FINAL <span className="text-emerald-600">SUBMISSION</span>
         </h2>
-        <p className="text-slate-500 font-light text-sm max-w-md mx-auto">
+        <p className="text-slate-600 text-xs md:text-sm">
           Review your registration data and sign the digital agreement to
           proceed.
         </p>
-      </div>
+      </header>
 
-      <div className="space-y-6">
-        {/* Registration Summary Card */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-          <div className="bg-slate-50/50 px-6 py-4 border-b border-slate-100 flex items-center gap-2">
-            <Building size={16} className="text-slate-400" />
-            <h3 className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+      <div className="space-y-4">
+        {/* Registration Summary */}
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-slate-50 px-4 py-2.5 border-b border-slate-200 flex items-center gap-2">
+            <Building size={14} className="text-slate-500" />
+            <h3 className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">
               Registration Summary
             </h3>
           </div>
-          <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+          <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
             <SummaryItem
               icon={Building}
               label="Center Name"
@@ -321,7 +299,13 @@ const LegalStep: React.FC<LegalStepProps> = ({
             <SummaryItem
               icon={Shield}
               label="Center Type"
-              value={formData.centerType}
+              value={
+                formData.centerType === "other"
+                  ? formData.customType || "Other"
+                  : formData.centerType
+                      .replace(/_/g, " ")
+                      .replace(/\b\w/g, (c) => c.toUpperCase())
+              }
             />
             <SummaryItem
               icon={User}
@@ -334,58 +318,56 @@ const LegalStep: React.FC<LegalStepProps> = ({
               value={formData.ownerInfo?.email}
             />
             <SummaryItem
-              icon={MapPin}
-              label="Official Address"
-              value={formData.location?.address}
-              isTruncated
-            />
-            <SummaryItem
               icon={Phone}
               label="Phone Number"
-              value={formData.contact?.phone}
+              value={formData.ownerInfo?.phone}
             />
+          </div>
+          <div className="px-4 py-2 bg-emerald-50/60 border-t border-emerald-100 text-[11px] text-emerald-700 font-medium">
+            ✓ Logo, address and other details can be added from your dashboard
+            after registration.
           </div>
         </div>
 
-        {/* Legal Terms Scrollbox */}
-        <div className="bg-slate-50/50 rounded-2xl p-6 border border-slate-100">
-          <div className="flex items-center gap-2 mb-4">
-            <FileText size={18} className="text-slate-400" />
-            <h3 className="text-sm font-medium text-slate-700">
+        {/* Terms */}
+        <div className="bg-slate-50/60 rounded-2xl p-4 border border-slate-200">
+          <div className="flex items-center gap-2 mb-3">
+            <FileText size={16} className="text-slate-500" />
+            <h3 className="text-xs font-bold text-slate-700">
               Terms & Conditions
             </h3>
           </div>
-          <div className="bg-white rounded-xl border border-slate-200/60 p-5 h-48 overflow-y-auto text-[13px] leading-relaxed text-slate-500 font-light space-y-4 shadow-inner">
+          <div className="bg-white rounded-xl border border-slate-200 p-4 h-40 overflow-y-auto text-[12px] leading-relaxed text-slate-600 space-y-3 shadow-inner">
             <p>
-              <strong className="font-medium text-slate-800">
+              <strong className="font-semibold text-slate-800">
                 1. Medical Standards:
               </strong>{" "}
               You certify compliance with all regional medical regulations and
-              DOZA board standards.
+              Doza Medic standards.
             </p>
             <p>
-              <strong className="font-medium text-slate-800">
+              <strong className="font-semibold text-slate-800">
                 2. Data Accuracy:
               </strong>{" "}
               You affirm that all information provided is accurate and
               verifiable.
             </p>
             <p>
-              <strong className="font-medium text-slate-800">
+              <strong className="font-semibold text-slate-800">
                 3. Regular Inspections:
               </strong>{" "}
-              You agree to permit inspections by DOZA Medical Board officials to
+              You agree to permit inspections by Doza Medic Board officials to
               verify standards.
             </p>
             <p>
-              <strong className="font-medium text-slate-800">
+              <strong className="font-semibold text-slate-800">
                 4. Patient Safety:
               </strong>{" "}
               You commit to maintaining the highest standards of patient safety
               and confidentiality.
             </p>
             <p>
-              <strong className="font-medium text-slate-800">
+              <strong className="font-semibold text-slate-800">
                 5. Maintenance:
               </strong>{" "}
               You agree to keep all licenses and certifications valid and
@@ -394,66 +376,86 @@ const LegalStep: React.FC<LegalStepProps> = ({
           </div>
         </div>
 
-        {/* Agreement Interaction */}
-        <div className="space-y-4">
+        {/* Agreement + Signature */}
+        <div className="space-y-3">
           <label
-            className={`flex items-start gap-4 p-5 rounded-2xl cursor-pointer transition-all border ${formData.legal.agreed ? "bg-emerald-50/30 border-emerald-200 shadow-sm" : "bg-white border-slate-100"}`}
+            className={`flex items-start gap-3 p-4 rounded-2xl cursor-pointer transition-all border ${
+              formData.legal.agreed
+                ? "bg-emerald-50/40 border-emerald-300 shadow-sm"
+                : "bg-white border-slate-200"
+            }`}
           >
             <input
               type="checkbox"
               checked={formData.legal.agreed}
               onChange={handleAgreementChange}
-              className="w-5 h-5 mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 transition-colors"
+              className="peer sr-only"
             />
-            <span className="text-sm text-slate-600 font-light leading-relaxed">
+            <span
+              aria-hidden="true"
+              className={`mt-0.5 shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
+                formData.legal.agreed
+                  ? "bg-emerald-600 border-emerald-600"
+                  : "bg-white border-slate-300"
+              }`}
+            >
+              {formData.legal.agreed && (
+                <CheckCircle size={12} className="text-white" strokeWidth={3} />
+              )}
+            </span>
+            <span className="text-xs text-slate-700 leading-relaxed">
               I have read, understood, and agree to be bound by the terms above.
               I certify that all information provided is accurate and complete.
             </span>
           </label>
 
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
-            <div className="flex justify-between items-end mb-3">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+            <div className="flex justify-between items-end mb-2">
               <div>
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                   Electronic Signature
                 </p>
-                <p className="text-xs text-slate-500 font-light">
+                <p className="text-[11px] text-slate-500">
                   Type:{" "}
-                  <span className="font-medium text-slate-700">
-                    {formData.ownerInfo?.fullName}
+                  <span className="font-semibold text-slate-700">
+                    {formData.ownerInfo?.fullName || "—"}
                   </span>
                 </p>
               </div>
               {isSignatureMatched && (
-                <CheckCircle size={16} className="text-emerald-500 mb-1" />
+                <CheckCircle size={16} className="text-emerald-500 mb-0.5" />
               )}
             </div>
             <input
               type="text"
-              placeholder="Type full name to sign"
+              placeholder="Type your full name to sign"
               value={formData.legal.signature}
               onChange={handleSignatureChange}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-base font-light text-slate-700 outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/5 transition-all placeholder:text-slate-300"
+              autoCapitalize="words"
+              autoCorrect="off"
+              spellCheck={false}
+              className="font-signature w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-3xl text-center text-slate-800 outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:text-slate-300 placeholder:text-lg placeholder:font-sans"
             />
             <AnimatePresence>
               {formData.legal.signature && !isSignatureMatched && (
                 <motion.p
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="text-rose-400 text-[11px] mt-2 flex items-center gap-1 overflow-hidden"
+                  exit={{ opacity: 0, height: 0 }}
+                  className="text-rose-500 text-[11px] mt-2 flex items-center gap-1 overflow-hidden"
                 >
-                  <AlertCircle size={12} /> Signature must match the
-                  administrator name exactly.
+                  <AlertCircle size={12} /> Signature must match the owner's
+                  name exactly.
                 </motion.p>
               )}
             </AnimatePresence>
           </div>
         </div>
 
-        {/* Progress & Error Displays */}
+        {/* Progress */}
         {(isProcessing || uploadProgress > 0) && (
-          <div className="py-2">
-            <div className="flex justify-between text-[11px] text-slate-400 mb-1.5 font-medium uppercase tracking-tighter">
+          <div className="py-1">
+            <div className="flex justify-between text-[10px] text-slate-500 mb-1.5 font-bold uppercase tracking-tighter">
               <span className="flex items-center gap-2">
                 <Upload size={12} className="animate-bounce" /> {currentStep}
               </span>
@@ -470,37 +472,37 @@ const LegalStep: React.FC<LegalStepProps> = ({
         )}
 
         {uploadError && (
-          <div className="p-4 bg-rose-50 border border-rose-100 rounded-xl flex items-center gap-3 text-rose-600 text-xs">
-            <AlertCircle size={16} /> {uploadError}
+          <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-center gap-2 text-rose-600 text-xs">
+            <AlertCircle size={14} /> {uploadError}
           </div>
         )}
 
-        {/* Footer Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100">
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row gap-2 pt-4 border-t border-slate-200">
           <button
             onClick={onBack}
             disabled={isProcessing}
-            className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-medium text-slate-500 hover:bg-slate-50 transition-all text-sm border border-slate-200 disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-slate-700 hover:bg-slate-100 transition-all text-[10px] uppercase tracking-widest border border-slate-200 disabled:opacity-50"
           >
-            <ArrowLeft size={16} /> Back to Owner Details
+            <ArrowLeft size={14} /> Back
           </button>
 
           <button
             onClick={saveToFirebase}
             disabled={isSubmitDisabled}
-            className="flex-[1.5] relative group overflow-hidden py-4 px-6 bg-slate-900 text-white rounded-xl font-medium text-sm transition-all disabled:opacity-20 shadow-xl hover:bg-slate-800 active:scale-[0.98]"
+            className="flex-[1.5] relative group overflow-hidden py-3 px-5 bg-slate-900 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all disabled:opacity-30 shadow-lg hover:bg-emerald-600 active:scale-[0.98]"
           >
             <span className="flex items-center justify-center gap-2 relative z-10">
               {isProcessing ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Processing Submission...
+                  <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Processing…
                 </>
               ) : (
                 <>
-                  Submit to DOZA Medical Board
+                  Submit to Doza Medic
                   <ChevronRight
-                    size={16}
+                    size={14}
                     className="group-hover:translate-x-1 transition-transform"
                   />
                 </>
@@ -508,42 +510,30 @@ const LegalStep: React.FC<LegalStepProps> = ({
             </span>
           </button>
         </div>
-
-        <div className="flex items-center justify-center gap-2 text-slate-300 pt-2">
-          <Lock size={12} />
-          <span className="text-[10px] uppercase tracking-[0.2em] font-light">
-            Secure 256-bit Encrypted Submission
-          </span>
-        </div>
       </div>
     </motion.div>
   );
 };
 
-// Internal sub-component - Correctly typed for Lucide Icons
 const SummaryItem = ({
   label,
   value,
   icon: IconComponent,
-  isTruncated = false,
 }: {
   label: string;
   value?: string;
-  icon: LucideIcon; // Changed to LucideIcon type
-  isTruncated?: boolean;
+  icon: LucideIcon;
 }) => (
-  <div className="flex flex-col gap-1.5">
-    <div className="flex items-center gap-2">
-      <span className="p-1.5 rounded-md bg-slate-50 text-slate-400">
-        <IconComponent size={14} strokeWidth={2.2} />
+  <div className="flex flex-col gap-1">
+    <div className="flex items-center gap-1.5">
+      <span className="p-1 rounded-md bg-slate-100 text-slate-500">
+        <IconComponent size={12} strokeWidth={2.2} />
       </span>
-      <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">
         {label}
       </span>
     </div>
-    <span
-      className={`text-[14px] font-normal text-slate-700 ${isTruncated ? "truncate" : ""}`}
-    >
+    <span className="text-[13px] font-medium text-slate-800 truncate">
       {value || "Not provided"}
     </span>
   </div>

@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     images: ["/twitter-image.png"],
     creator: "@dozamedic",
   },
-  manifest: "/webmanifest",
+  manifest: "/site.webmanifest",
   robots: {
     index: true,
     follow: true,

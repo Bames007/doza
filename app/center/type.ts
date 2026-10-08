@@ -10,6 +10,7 @@ export interface User {
 
 export type UserRole =
   | "super_admin"
+  | "admin"
   | "hospital_admin"
   | "doctor"
   | "nurse"
@@ -85,7 +86,9 @@ export type CenterType =
   | "pharmacy"
   | "medical_center"
   | "dental_clinic"
-  | "optical_center";
+  | "optical_center"
+  | "cardiac_center" // ← added
+  | "emergency";
 
 export interface NavigationItem {
   name: string;
