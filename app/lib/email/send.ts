@@ -1,4 +1,4 @@
-import { resend, FROM, APP_URL } from "./client";
+import { resend, FROM } from "./client";
 import {
   welcomeTemplate,
   medicWelcomeTemplate,
@@ -6,7 +6,6 @@ import {
   centerOtpTemplate,
 } from "./templates";
 
-// existing
 export async function sendWelcomeEmail(opts: {
   to: string;
   name: string;
@@ -22,7 +21,6 @@ export async function sendWelcomeEmail(opts: {
   return data;
 }
 
-// new — medic
 export async function sendMedicWelcomeEmail(opts: {
   to: string;
   name: string;
@@ -38,7 +36,6 @@ export async function sendMedicWelcomeEmail(opts: {
   return data;
 }
 
-// new — center confirmation
 export async function sendCenterConfirmationEmail(opts: {
   to: string;
   ownerName: string;
@@ -60,7 +57,6 @@ export async function sendCenterConfirmationEmail(opts: {
   return data;
 }
 
-// new — center OTP
 export async function sendCenterOtpEmail(opts: {
   to: string;
   ownerName: string;

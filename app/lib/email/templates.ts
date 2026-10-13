@@ -2,7 +2,7 @@
 import { LOGO_URL, MARKETING_URL, UNSUBSCRIBE_URL } from "./client";
 
 // ─────────────────────────────────────────────────────────────
-// Subdomain URLs (can also live in client.ts — same values)
+// Subdomain URLs
 // ─────────────────────────────────────────────────────────────
 const USERS_URL =
   process.env.NEXT_PUBLIC_USERS_URL || "https://users.dozamedic.com";
@@ -10,6 +10,16 @@ const MEDICS_URL =
   process.env.NEXT_PUBLIC_MEDICS_URL || "https://medics.dozamedic.com";
 const CENTERS_URL =
   process.env.NEXT_PUBLIC_CENTERS_URL || "https://centers.dozamedic.com";
+
+// FIX: user-controlled values were being interpolated raw into HTML emails.
+// Escape everything that could come from a form input.
+const escapeHtml = (value: unknown): string =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
 const shell = (html: string): string =>
   html
@@ -26,6 +36,7 @@ const shell = (html: string): string =>
 // ─────────────────────────────────────────────────────────────
 export const welcomeTemplate = (name: string, userId: string): string => {
   const unsubscribeLink = `${UNSUBSCRIBE_URL}?u=${encodeURIComponent(userId)}`;
+  const safeName = escapeHtml(name || "THERE");
 
   return shell(`
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -132,7 +143,7 @@ export const welcomeTemplate = (name: string, userId: string): string => {
                                       Welcome to Doza Medic
                                     </p>
                                     <h1 class="hero-title" style="margin:0;padding:0;font-family:'Bebas Neue','Impact','Arial Narrow Bold',sans-serif;font-size:58px;line-height:0.95;letter-spacing:0.5px;color:#121c15;font-weight:400;">
-                                      HI ${name || "THERE"}.<br /><span style="color:#29af45;">YOUR HEALTH. SIMPLIFIED.</span>
+                                      HI ${safeName}.<br /><span style="color:#29af45;">YOUR HEALTH. SIMPLIFIED.</span>
                                     </h1>
                                     <p class="hero-desc" style="margin:20px auto 0;padding:0;max-width:460px;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#5a665e;">
                                       Welcome to Doza Medic — your personal health companion. Discover hospitals, manage records, and stay connected with care providers anytime, anywhere.
@@ -318,6 +329,7 @@ export const welcomeTemplate = (name: string, userId: string): string => {
 // ─────────────────────────────────────────────────────────────
 export const medicWelcomeTemplate = (name: string, userId: string): string => {
   const unsubscribeLink = `${UNSUBSCRIBE_URL}?u=${encodeURIComponent(userId)}`;
+  const safeName = escapeHtml(name || "DOCTOR");
 
   return shell(`
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -397,7 +409,7 @@ export const medicWelcomeTemplate = (name: string, userId: string): string => {
                       <td class="hero-cell" align="center" style="margin:0;padding:60px 40px 50px;text-align:center;">
                         <p style="margin:0 0 8px;padding:0;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#29af45;">Medic Account Created</p>
                         <h1 class="hero-title" style="margin:0;padding:0;font-family:'Bebas Neue','Impact','Arial Narrow Bold',sans-serif;font-size:58px;line-height:0.95;letter-spacing:0.5px;color:#121c15;font-weight:400;">
-                          WELCOME ${name || "DOCTOR"}.<br /><span style="color:#29af45;">YOUR PRACTICE AWAITS.</span>
+                          WELCOME ${safeName}.<br /><span style="color:#29af45;">YOUR PRACTICE AWAITS.</span>
                         </h1>
                         <p class="hero-desc" style="margin:20px auto 0;padding:0;max-width:460px;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#5a665e;">
                           Your Doza Medic account is ready. Log in to complete your profile and submit your credentials for verification.
@@ -556,8 +568,13 @@ export const centerConfirmationTemplate = (opts: {
   ownerName: string;
   centerId: string;
   status: string;
-}): string =>
-  shell(`
+}): string => {
+  // FIX: escape everything user-controlled.
+  const safeOwnerName = escapeHtml(opts.ownerName || "THERE");
+  const safeCenterName = escapeHtml(opts.centerName);
+  const safeCenterId = escapeHtml(opts.centerId);
+
+  return shell(`
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="en">
   <head>
@@ -630,10 +647,10 @@ export const centerConfirmationTemplate = (opts: {
                       <td class="hero-cell" align="center" style="margin:0;padding:60px 40px 50px;text-align:center;">
                         <p style="margin:0 0 8px;padding:0;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#29af45;">Application Received</p>
                         <h1 class="hero-title" style="margin:0;padding:0;font-family:'Bebas Neue','Impact','Arial Narrow Bold',sans-serif;font-size:54px;line-height:0.95;letter-spacing:0.5px;color:#121c15;font-weight:400;">
-                          HI ${opts.ownerName || "THERE"}.<br /><span style="color:#29af45;">WE'RE ON IT.</span>
+                          HI ${safeOwnerName}.<br /><span style="color:#29af45;">WE'RE ON IT.</span>
                         </h1>
                         <p class="hero-desc" style="margin:20px auto 0;padding:0;max-width:460px;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;color:#5a665e;">
-                          We've received your registration for <strong style="color:#121c15;">${opts.centerName}</strong>. Our medical audit team will review it and reach out within 2–5 business days.
+                          We've received your registration for <strong style="color:#121c15;">${safeCenterName}</strong>. Our medical audit team will review it and reach out within 2–5 business days.
                         </p>
                       </td>
                     </tr>
@@ -643,7 +660,7 @@ export const centerConfirmationTemplate = (opts: {
                         <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin:0;padding:0;background-color:#f7faf8;border:1px solid #e2ebe4;border-radius:16px;">
                           <tbody><tr><td style="margin:0;padding:20px 24px;">
                             <p style="margin:0;padding:0;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.6;color:#142018;font-weight:600;">
-                              Reference ID: <span style="font-family:'Bebas Neue','Impact','Arial Narrow Bold',sans-serif;font-size:20px;letter-spacing:1.5px;color:#29af45;font-weight:400;">${opts.centerId}</span>
+                              Reference ID: <span style="font-family:'Bebas Neue','Impact','Arial Narrow Bold',sans-serif;font-size:20px;letter-spacing:1.5px;color:#29af45;font-weight:400;">${safeCenterId}</span>
                             </p>
                           </td></tr></tbody>
                         </table>
@@ -755,6 +772,7 @@ export const centerConfirmationTemplate = (opts: {
   </body>
 </html>
 `);
+};
 
 // ─────────────────────────────────────────────────────────────
 // CENTER OTP (verification code)
@@ -763,8 +781,13 @@ export const centerOtpTemplate = (opts: {
   ownerName: string;
   centerName: string;
   otp: string;
-}): string =>
-  shell(`
+}): string => {
+  // FIX: escape user-controlled values.
+  const safeOwnerName = escapeHtml(opts.ownerName || "THERE");
+  const safeCenterName = escapeHtml(opts.centerName);
+  const safeOtp = escapeHtml(opts.otp);
+
+  return shell(`
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="en">
   <head>
@@ -830,10 +853,10 @@ export const centerOtpTemplate = (opts: {
                       <td class="hero-cell" align="center" style="margin:0;padding:60px 40px 30px;text-align:center;">
                         <p style="margin:0 0 8px;padding:0;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#29af45;">Your Verification Code</p>
                         <h1 class="hero-title" style="margin:0;padding:0;font-family:'Bebas Neue','Impact','Arial Narrow Bold',sans-serif;font-size:48px;line-height:1;letter-spacing:0.5px;color:#121c15;font-weight:400;">
-                          HI ${opts.ownerName || "THERE"}.<br /><span style="color:#29af45;">USE THIS TO CONTINUE.</span>
+                          HI ${safeOwnerName}.<br /><span style="color:#29af45;">USE THIS TO CONTINUE.</span>
                         </h1>
                         <p class="hero-desc" style="margin:16px auto 0;padding:0;max-width:440px;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#5a665e;">
-                          Enter this 6-digit code to verify ownership of <strong style="color:#121c15;">${opts.centerName}</strong>. It expires in 15 minutes.
+                          Enter this 6-digit code to verify ownership of <strong style="color:#121c15;">${safeCenterName}</strong>. It expires in 15 minutes.
                         </p>
                       </td>
                     </tr>
@@ -842,7 +865,7 @@ export const centerOtpTemplate = (opts: {
                       <td class="otp-cell" align="center" style="margin:0;padding:0 40px 40px;">
                         <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto;max-width:360px;width:100%;background-color:#f7faf8;border:1px solid #e2ebe4;border-radius:16px;">
                           <tbody><tr><td align="center" class="otp-box" style="padding:32px 20px;font-family:'Bebas Neue','Impact','Arial Narrow Bold',sans-serif;font-size:44px;letter-spacing:12px;color:#121c15;font-weight:400;text-align:center;">
-                            ${opts.otp}
+                            ${safeOtp}
                           </td></tr></tbody>
                         </table>
                       </td>
@@ -890,3 +913,4 @@ export const centerOtpTemplate = (opts: {
   </body>
 </html>
 `);
+};

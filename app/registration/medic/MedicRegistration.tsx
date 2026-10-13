@@ -12,14 +12,14 @@ import {
   Loader2,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { submitMedicRegistration } from "./RegistrationService";
 import type { MedicRegistrationData } from "./type";
 import { bebasNeue, poppins } from "@/app/home/doza_center/constant";
+import { auth } from "@/app/utils/firebaseConfig"; // FIX: needed to get ID token
+
+const MEDICS_URL = "https://medics.dozamedic.com/";
 
 const MedicRegistration: React.FC = () => {
-  const router = useRouter();
-
   const [formData, setFormData] = useState<MedicRegistrationData>({
     personalInfo: {
       firstName: "",
@@ -75,6 +75,27 @@ const MedicRegistration: React.FC = () => {
     return Object.keys(e).length === 0;
   };
 
+  // FIX: sends the Firebase ID token so the server can authenticate the caller.
+  // The server derives uid/email from the verified token; we only send the name.
+  const fireWelcomeEmail = async () => {
+    try {
+      const idToken = await auth.currentUser?.getIdToken();
+      if (!idToken) return;
+
+      await fetch("/api/email/send-medic-welcome", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({ name: formData.personalInfo.firstName }),
+      });
+    } catch (err) {
+      // Never surface email failures to the user — registration already succeeded.
+      console.warn("medic welcome email failed", err);
+    }
+  };
+
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validateForm()) return;
@@ -83,22 +104,16 @@ const MedicRegistration: React.FC = () => {
     setErrors({});
 
     try {
-      const uid = await submitMedicRegistration(formData);
+      await submitMedicRegistration(formData);
 
-      // Fire-and-forget welcome email. Never block registration on it.
-      fetch("/api/email/send-medic-welcome", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.personalInfo.email,
-          name: formData.personalInfo.firstName,
-          userId: uid,
-        }),
-      }).catch((err) => console.warn("medic welcome email failed", err));
+      // Fire-and-forget, but only after auth state is populated.
+      void fireWelcomeEmail();
 
       setSubmitSuccess(true);
-    } catch (err: any) {
-      setErrors({ form: err.message || "Registration failed" });
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Registration failed";
+      setErrors({ form: message });
     } finally {
       setIsSubmitting(false);
     }
@@ -130,12 +145,15 @@ const MedicRegistration: React.FC = () => {
             Log in to complete your professional profile and submit your
             credentials.
           </p>
-          <button
-            onClick={() => router.push("https://medics.dozamedic.com/")}
+
+          {/* FIX: plain anchor for an external subdomain. router.push() does
+              not handle absolute URLs. */}
+          <a
+            href={MEDICS_URL}
             className={`block w-full bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 transition tracking-wide ${bebasNeue.className}`}
           >
             GO TO LOGIN
-          </button>
+          </a>
         </motion.div>
       </div>
     );
@@ -393,12 +411,12 @@ const MedicRegistration: React.FC = () => {
 
             <p className="text-center text-sm text-slate-400">
               Already have an account?{" "}
-              <Link
-                href="https://medics.dozamedic.com/"
+              <a
+                href={MEDICS_URL}
                 className="text-emerald-600 font-bold hover:underline"
               >
                 Log in
-              </Link>
+              </a>
             </p>
           </div>
         </form>

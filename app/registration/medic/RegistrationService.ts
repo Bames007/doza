@@ -1,5 +1,5 @@
 // app/medic/register/RegistrationService.ts
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, deleteUser } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { db, auth } from "@/app/utils/firebaseConfig";
 import type { MedicRegistrationData } from "./type";
@@ -7,9 +7,8 @@ import type { MedicRegistrationData } from "./type";
 export const submitMedicRegistration = async (data: MedicRegistrationData) => {
   const email = data.personalInfo.email.trim().toLowerCase();
 
-  // 1. Create the Firebase Auth user — this is the source of truth for
-  //    "is this email already taken?" Firebase throws auth/email-already-in-use
-  //    if it is, so we don't need a separate DB check.
+  // 1. Create the Firebase Auth user — the source of truth for
+  //    "is this email already taken?"
   let uid: string;
   try {
     const cred = await createUserWithEmailAndPassword(
@@ -33,7 +32,7 @@ export const submitMedicRegistration = async (data: MedicRegistrationData) => {
     throw err;
   }
 
-  // 2. Build the medic record — keyed by the Auth UID
+  // 2. Build the medic record.
   const now = new Date().toISOString();
 
   const medicRecord = {
@@ -45,7 +44,6 @@ export const submitMedicRegistration = async (data: MedicRegistrationData) => {
       email,
       phone: data.personalInfo.phone.trim(),
       gender: data.personalInfo.gender,
-      // No password field — Firebase Auth holds it
     },
 
     professionalInfo: {
@@ -82,24 +80,43 @@ export const submitMedicRegistration = async (data: MedicRegistrationData) => {
 
     credentials: { documents: [], verified: false },
 
+    // FIX: previously hard-coded agreedToPrivacy to false while the UI
+    // collects a combined consent. Record what the user actually agreed to.
     legal: {
       agreedToTerms: data.agreedToTerms,
-      agreedToPrivacy: false,
+      agreedToPrivacy: data.agreedToTerms,
       agreedToCommitment: false,
       signature: "",
-      date: "",
+      date: now,
     },
 
     status: "pending" as const,
     verified: false,
     profileComplete: false,
-    uid, // stored inside too, handy for debugging
+    uid,
     createdAt: now,
     lastUpdated: now,
   };
 
-  // 3. Save keyed by UID — direct write, no query, no index
-  await set(ref(db, `doza_medics/${uid}`), medicRecord);
+  // 3. Save keyed by UID. FIX: roll back the Auth user if this fails so
+  //    the user isn't stranded with an account that has no profile.
+  try {
+    await set(ref(db, `doza_medics/${uid}`), medicRecord);
+  } catch (dbErr) {
+    try {
+      if (auth.currentUser && auth.currentUser.uid === uid) {
+        await deleteUser(auth.currentUser);
+      }
+    } catch (rollbackErr) {
+      console.error(
+        "Failed to roll back auth user after DB write failure",
+        rollbackErr,
+      );
+    }
+    throw new Error(
+      "We couldn't finish setting up your account. Please try again.",
+    );
+  }
 
   return uid;
 };
