@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Check,
   Loader2,
@@ -15,14 +15,363 @@ import {
   Phone,
   Calendar,
   Lock,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { db, auth } from "@/app/utils/firebaseConfig";
 import { UserRegistrationData, ReferralValidation, avatars } from "./type";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { bebasNeue, poppins } from "@/app/home/doza_center/constant";
 import Link from "next/link";
+
+// ─── Custom Select ──────────────────────────────────────────────────
+
+const CustomSelect = ({
+  value,
+  onChange,
+  options,
+  placeholder = "Select",
+  icon: Icon,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  placeholder?: string;
+  icon?: React.ComponentType<{ className?: string }>;
+}) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="relative w-full" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={`relative w-full pl-10 pr-4 py-3 rounded-xl border bg-white transition-all text-sm flex items-center text-left cursor-pointer outline-none ${
+          open
+            ? "border-emerald-500 ring-4 ring-emerald-500/10"
+            : "border-slate-200 hover:border-slate-300"
+        }`}
+      >
+        {Icon && (
+          <Icon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        )}
+        <span
+          className={`flex-1 truncate ${
+            value ? "text-slate-900" : "text-slate-400"
+          }`}
+        >
+          {value || placeholder}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 shrink-0 pointer-events-none transition-transform duration-300 ${
+            open ? "rotate-180 text-emerald-600" : "text-slate-400"
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 4, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute left-0 right-0 top-full mt-2 bg-white/95 backdrop-blur-2xl border border-slate-200/80 rounded-2xl shadow-2xl p-2 z-50 max-h-72 overflow-y-auto"
+          >
+            <div className="space-y-1">
+              {options.map((opt) => {
+                const isSelected = opt === value;
+                return (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => {
+                      onChange(opt);
+                      setOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-200 text-left ${
+                      isSelected
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/20"
+                        : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-900"
+                    }`}
+                  >
+                    <span className="truncate">{opt}</span>
+                    {isSelected && (
+                      <Check className="w-4 h-4 text-white shrink-0 ml-2" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// ─── Custom Date Picker ─────────────────────────────────────────────
+
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const DAY_SHORT = ["S", "M", "T", "W", "T", "F", "S"];
+
+const CustomDatePicker = ({
+  value,
+  onChange,
+  placeholder = "Select Date",
+  icon: Icon,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  icon?: React.ComponentType<{ className?: string }>;
+}) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const selectedDate = value ? new Date(value + "T00:00:00") : null;
+  const [viewDate, setViewDate] = useState<Date>(
+    selectedDate ?? new Date(2000, 0, 1),
+  );
+
+  // Click outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Sync view when value changes externally
+  useEffect(() => {
+    if (selectedDate) setViewDate(selectedDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const prevMonth = () => setViewDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setViewDate(new Date(year, month + 1, 1));
+
+  const selectDay = (day: number) => {
+    const d = new Date(year, month, day);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    onChange(iso);
+    setOpen(false);
+  };
+
+  const formatDisplay = (d: Date | null) => {
+    if (!d) return placeholder;
+    return d.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // Year range for the year-picker dropdown (last 100 years)
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
+  const [yearOpen, setYearOpen] = useState(false);
+
+  return (
+    <div className="relative w-full" ref={ref}>
+      {/* Trigger */}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={`relative w-full pl-10 pr-4 py-3 rounded-xl border bg-white transition-all text-sm flex items-center text-left cursor-pointer outline-none ${
+          open
+            ? "border-emerald-500 ring-4 ring-emerald-500/10"
+            : "border-slate-200 hover:border-slate-300"
+        }`}
+      >
+        {Icon && (
+          <Icon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        )}
+        <span
+          className={`flex-1 truncate ${
+            value ? "text-emerald-600 font-semibold" : "text-slate-400"
+          }`}
+        >
+          {formatDisplay(selectedDate)}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 shrink-0 pointer-events-none transition-transform duration-300 ${
+            open ? "rotate-180 text-emerald-600" : "text-slate-400"
+          }`}
+        />
+      </button>
+
+      {/* Calendar panel */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 4, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute left-0 right-0 top-full mt-2 bg-white/95 backdrop-blur-2xl border border-slate-200/80 rounded-2xl shadow-2xl p-3 z-50"
+          >
+            {/* Header: month + year, prev/next */}
+            <div className="flex items-center justify-between mb-3">
+              <button
+                type="button"
+                onClick={prevMonth}
+                className="p-1.5 rounded-lg hover:bg-emerald-50 text-slate-500 hover:text-emerald-600 transition-colors"
+                aria-label="Previous month"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center gap-1 relative">
+                <span className="text-sm font-bold text-slate-800">
+                  {MONTH_NAMES[month]}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setYearOpen((v) => !v)}
+                  className="text-sm font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg hover:bg-emerald-50 transition-colors"
+                >
+                  {year}
+                  <ChevronDown
+                    className={`w-3 h-3 transition-transform ${
+                      yearOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {/* Year dropdown */}
+                <AnimatePresence>
+                  {yearOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full right-0 mt-2 w-24 max-h-48 overflow-y-auto bg-white border border-slate-200/80 rounded-xl shadow-2xl p-1 z-10"
+                    >
+                      {years.map((y) => (
+                        <button
+                          key={y}
+                          type="button"
+                          onClick={() => {
+                            setViewDate(new Date(y, month, 1));
+                            setYearOpen(false);
+                          }}
+                          className={`w-full text-center px-2 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                            y === year
+                              ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white"
+                              : "text-slate-700 hover:bg-emerald-50"
+                          }`}
+                        >
+                          {y}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <button
+                type="button"
+                onClick={nextMonth}
+                className="p-1.5 rounded-lg hover:bg-emerald-50 text-slate-500 hover:text-emerald-600 transition-colors"
+                aria-label="Next month"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Day-of-week row */}
+            <div className="grid grid-cols-7 gap-1 mb-1">
+              {DAY_SHORT.map((d, i) => (
+                <div
+                  key={i}
+                  className="text-[10px] font-bold text-slate-400 uppercase text-center py-1"
+                >
+                  {d}
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar grid */}
+            <div className="grid grid-cols-7 gap-1">
+              {Array.from({ length: firstDay }).map((_, i) => (
+                <div key={`e-${i}`} />
+              ))}
+              {Array.from({ length: daysInMonth }).map((_, i) => {
+                const day = i + 1;
+                const cellDate = new Date(year, month, day);
+                const isSelected =
+                  !!selectedDate &&
+                  cellDate.getFullYear() === selectedDate.getFullYear() &&
+                  cellDate.getMonth() === selectedDate.getMonth() &&
+                  cellDate.getDate() === selectedDate.getDate();
+                const isToday = cellDate.getTime() === today.getTime();
+
+                return (
+                  <button
+                    key={day}
+                    type="button"
+                    onClick={() => selectDay(day)}
+                    className={`aspect-square rounded-lg text-xs font-semibold transition-all duration-150 flex items-center justify-center ${
+                      isSelected
+                        ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/30"
+                        : isToday
+                          ? "text-emerald-700 bg-emerald-50 hover:bg-emerald-100"
+                          : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-900"
+                    }`}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// ─── Main Component ─────────────────────────────────────────────────
 
 const UserRegistration: React.FC = () => {
   const [formData, setFormData] = useState<UserRegistrationData>({
@@ -513,22 +862,17 @@ const UserRegistration: React.FC = () => {
                 )}
               </div>
 
-              {/* Date of Birth */}
+              {/* Date of Birth — custom picker */}
               <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Date of Birth
                 </label>
-                <div className="relative">
-                  <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="date"
-                    value={formData.personalInfo.dateOfBirth}
-                    onChange={(e) =>
-                      handleInputChange("dateOfBirth", e.target.value)
-                    }
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm"
-                  />
-                </div>
+                <CustomDatePicker
+                  value={formData.personalInfo.dateOfBirth}
+                  onChange={(v) => handleInputChange("dateOfBirth", v)}
+                  placeholder="Select Date"
+                  icon={Calendar}
+                />
                 {errors.dateOfBirth && (
                   <p className="text-rose-500 text-xs mt-1">
                     {errors.dateOfBirth}
@@ -536,20 +880,18 @@ const UserRegistration: React.FC = () => {
                 )}
               </div>
 
-              {/* Gender */}
+              {/* Gender — custom dropdown */}
               <div className="md:col-span-2">
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Gender
                 </label>
-                <select
+                <CustomSelect
                   value={formData.personalInfo.gender}
-                  onChange={(e) => handleInputChange("gender", e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm cursor-pointer"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
+                  onChange={(v) => handleInputChange("gender", v)}
+                  options={["Male", "Female"]}
+                  placeholder="Select Gender"
+                  icon={User}
+                />
                 {errors.gender && (
                   <p className="text-rose-500 text-xs mt-1">{errors.gender}</p>
                 )}
@@ -689,7 +1031,8 @@ const UserRegistration: React.FC = () => {
 
           {/* Submit */}
           <div className="flex flex-col gap-4">
-            <label className="flex items-start gap-3">
+            {/* Custom rounded green checkbox */}
+            <label className="flex items-start gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={formData.agreedToTerms}
@@ -699,16 +1042,29 @@ const UserRegistration: React.FC = () => {
                     agreedToTerms: e.target.checked,
                   }))
                 }
-                className="mt-0.5 w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                className="sr-only peer"
               />
-              <span className="text-sm text-slate-600">
+              <span
+                className="mt-0.5 w-5 h-5 shrink-0 rounded-lg border-2 border-slate-300 bg-white flex items-center justify-center transition-all duration-200
+                  peer-checked:bg-emerald-600 peer-checked:border-emerald-600
+                  peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-500/20
+                  group-hover:border-emerald-400"
+              >
+                <Check
+                  className={`w-3.5 h-3.5 text-white transition-opacity duration-150 ${
+                    formData.agreedToTerms ? "opacity-100" : "opacity-0"
+                  }`}
+                  strokeWidth={3}
+                />
+              </span>
+              <span className="text-sm text-slate-600 select-none">
                 I agree to the{" "}
                 <Link
                   href="/terms"
                   className="font-semibold text-emerald-600 hover:underline"
                   target="_blank"
                 >
-                  Terms & Conditions
+                  Terms &amp; Conditions
                 </Link>{" "}
                 and{" "}
                 <Link

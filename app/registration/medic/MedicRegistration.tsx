@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
   AlertCircle,
@@ -10,14 +10,114 @@ import {
   Phone,
   Lock,
   Loader2,
+  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import { submitMedicRegistration } from "./RegistrationService";
 import type { MedicRegistrationData } from "./type";
 import { bebasNeue, poppins } from "@/app/home/doza_center/constant";
-import { auth } from "@/app/utils/firebaseConfig"; // FIX: needed to get ID token
+import { auth } from "@/app/utils/firebaseConfig";
 
 const MEDICS_URL = "https://medics.dozamedic.com/";
+
+// ─── Custom Select ──────────────────────────────────────────────────
+
+const CustomSelect = ({
+  value,
+  onChange,
+  options,
+  placeholder = "Select",
+  icon: Icon,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  placeholder?: string;
+  icon?: React.ComponentType<{ className?: string }>;
+}) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div className="relative w-full" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={`relative w-full pl-10 pr-4 py-3 rounded-xl border bg-white transition-all text-sm flex items-center text-left cursor-pointer outline-none ${
+          open
+            ? "border-emerald-500 ring-4 ring-emerald-500/10"
+            : "border-slate-200 hover:border-slate-300"
+        }`}
+      >
+        {Icon && (
+          <Icon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        )}
+        <span
+          className={`flex-1 truncate ${
+            value ? "text-slate-900" : "text-slate-400"
+          }`}
+        >
+          {value || placeholder}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 shrink-0 pointer-events-none transition-transform duration-300 ${
+            open ? "rotate-180 text-emerald-600" : "text-slate-400"
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 4, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute left-0 right-0 top-full mt-2 bg-white/95 backdrop-blur-2xl border border-slate-200/80 rounded-2xl shadow-2xl p-2 z-50 max-h-72 overflow-y-auto"
+          >
+            <div className="space-y-1">
+              {options.map((opt) => {
+                const isSelected = opt === value;
+                return (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => {
+                      onChange(opt);
+                      setOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-200 text-left ${
+                      isSelected
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/20"
+                        : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-900"
+                    }`}
+                  >
+                    <span className="truncate">{opt}</span>
+                    {isSelected && (
+                      <Check className="w-4 h-4 text-white shrink-0 ml-2" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// ─── Main Component ─────────────────────────────────────────────────
 
 const MedicRegistration: React.FC = () => {
   const [formData, setFormData] = useState<MedicRegistrationData>({
@@ -75,8 +175,6 @@ const MedicRegistration: React.FC = () => {
     return Object.keys(e).length === 0;
   };
 
-  // FIX: sends the Firebase ID token so the server can authenticate the caller.
-  // The server derives uid/email from the verified token; we only send the name.
   const fireWelcomeEmail = async () => {
     try {
       const idToken = await auth.currentUser?.getIdToken();
@@ -91,7 +189,6 @@ const MedicRegistration: React.FC = () => {
         body: JSON.stringify({ name: formData.personalInfo.firstName }),
       });
     } catch (err) {
-      // Never surface email failures to the user — registration already succeeded.
       console.warn("medic welcome email failed", err);
     }
   };
@@ -105,10 +202,7 @@ const MedicRegistration: React.FC = () => {
 
     try {
       await submitMedicRegistration(formData);
-
-      // Fire-and-forget, but only after auth state is populated.
       void fireWelcomeEmail();
-
       setSubmitSuccess(true);
     } catch (err: unknown) {
       const message =
@@ -146,8 +240,6 @@ const MedicRegistration: React.FC = () => {
             credentials.
           </p>
 
-          {/* FIX: plain anchor for an external subdomain. router.push() does
-              not handle absolute URLs. */}
           <a
             href={MEDICS_URL}
             className={`block w-full bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 transition tracking-wide ${bebasNeue.className}`}
@@ -182,7 +274,6 @@ const MedicRegistration: React.FC = () => {
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Step 1: Personal Details */}
           <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm shadow-emerald-900/5 border border-emerald-100/70">
             <h2
               className={`text-lg font-bold text-slate-800 mb-6 flex items-center gap-2 ${bebasNeue.className}`}
@@ -287,15 +378,13 @@ const MedicRegistration: React.FC = () => {
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
                   Gender
                 </label>
-                <select
+                <CustomSelect
                   value={formData.personalInfo.gender}
-                  onChange={(e) => handleInputChange("gender", e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none text-sm cursor-pointer"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
+                  onChange={(v) => handleInputChange("gender", v)}
+                  options={["Male", "Female"]}
+                  placeholder="Select Gender"
+                  icon={User}
+                />
                 {errors.gender && (
                   <p className="text-rose-500 text-xs mt-1">{errors.gender}</p>
                 )}
@@ -351,74 +440,48 @@ const MedicRegistration: React.FC = () => {
             </div>
           </div>
 
-          {/* Submit */}
-          <div className="flex flex-col gap-4">
-            <label className="flex items-start gap-3">
-              <input
-                type="checkbox"
-                checked={formData.agreedToTerms}
-                onChange={(e) =>
-                  setFormData({ ...formData, agreedToTerms: e.target.checked })
-                }
-                className="mt-0.5 w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-              />
-              <span className="text-sm text-slate-600">
-                I agree to the{" "}
-                <Link
-                  href="/terms"
-                  className="font-semibold text-emerald-600 hover:underline"
-                  target="_blank"
-                >
-                  Terms &amp; Conditions
-                </Link>{" "}
-                and{" "}
-                <Link
-                  href="/privacy"
-                  className="font-semibold text-emerald-600 hover:underline"
-                  target="_blank"
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </span>
-            </label>
-
-            {errors.terms && (
-              <p className="text-rose-500 text-xs">{errors.terms}</p>
-            )}
-
-            {errors.form && (
-              <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-600 text-sm flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>{errors.form}</span>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full bg-slate-900 text-white py-5 rounded-2xl font-bold text-lg tracking-wider hover:bg-emerald-600 transition-all shadow-lg active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed ${bebasNeue.className}`}
+          <label className="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={formData.agreedToTerms}
+              onChange={(e) =>
+                setFormData({ ...formData, agreedToTerms: e.target.checked })
+              }
+              className="sr-only peer"
+            />
+            <span
+              className="mt-0.5 w-5 h-5 shrink-0 rounded-lg border-2 border-slate-300 bg-white flex items-center justify-center transition-all duration-200
+      peer-checked:bg-emerald-600 peer-checked:border-emerald-600
+      peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-500/20
+      group-hover:border-emerald-400"
             >
-              {isSubmitting ? (
-                <span className="inline-flex items-center gap-2">
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  CREATING ACCOUNT...
-                </span>
-              ) : (
-                "CREATE ACCOUNT"
-              )}
-            </button>
-
-            <p className="text-center text-sm text-slate-400">
-              Already have an account?{" "}
-              <a
-                href={MEDICS_URL}
-                className="text-emerald-600 font-bold hover:underline"
+              <Check
+                className={`w-3.5 h-3.5 text-white transition-opacity duration-150 ${
+                  formData.agreedToTerms ? "opacity-100" : "opacity-0"
+                }`}
+                strokeWidth={3}
+              />
+            </span>
+            <span className="text-sm text-slate-600 select-none">
+              I agree to the{" "}
+              <Link
+                href="/terms"
+                className="font-semibold text-emerald-600 hover:underline"
+                target="_blank"
               >
-                Log in
-              </a>
-            </p>
-          </div>
+                Terms &amp; Conditions
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="font-semibold text-emerald-600 hover:underline"
+                target="_blank"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </span>
+          </label>
         </form>
       </main>
     </div>

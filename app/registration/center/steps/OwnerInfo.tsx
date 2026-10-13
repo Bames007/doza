@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ArrowLeft,
   AlertCircle,
+  Check,
 } from "lucide-react";
 import { bebasNeue, poppins } from "../../../home/doza_center/constant";
 import { CenterRegistrationData, OwnerInfo } from "../type";
@@ -79,16 +80,30 @@ const OwnerInfoStep: React.FC<OwnerInfoStepProps> = ({
 
       <div className="space-y-3">
         {/* Ownership check — trimmed */}
+        {/* Ownership check — trimmed */}
         <div className="bg-slate-100 p-3 rounded-xl border border-slate-200">
-          <label className="flex items-center gap-3 cursor-pointer">
+          <label className="flex items-center gap-3 cursor-pointer group">
             <input
               type="checkbox"
               checked={formData.ownerInfo.isOwner}
               onChange={(e) =>
                 onNestedInputChange("ownerInfo", "isOwner", e.target.checked)
               }
-              className="w-4 h-4 rounded border-2 border-slate-400 text-emerald-600 focus:ring-0"
+              className="sr-only peer"
             />
+            <span
+              className="w-4 h-4 shrink-0 rounded-md border-2 border-slate-400 bg-white flex items-center justify-center transition-all duration-200
+        peer-checked:bg-emerald-600 peer-checked:border-emerald-600
+        peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-500/20
+        group-hover:border-emerald-500"
+            >
+              <Check
+                className={`w-3 h-3 text-white transition-opacity duration-150 ${
+                  formData.ownerInfo.isOwner ? "opacity-100" : "opacity-0"
+                }`}
+                strokeWidth={3.5}
+              />
+            </span>
             <div>
               <span className="font-bold text-xs block">
                 I am the legal owner
