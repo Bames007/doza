@@ -21,7 +21,6 @@ import { auth } from "@/app/utils/firebaseConfig";
 const MEDICS_URL = "https://medics.dozamedic.com/";
 
 // ─── Custom Select ──────────────────────────────────────────────────
-
 const CustomSelect = ({
   value,
   onChange,
@@ -118,7 +117,6 @@ const CustomSelect = ({
 };
 
 // ─── Main Component ─────────────────────────────────────────────────
-
 const MedicRegistration: React.FC = () => {
   const [formData, setFormData] = useState<MedicRegistrationData>({
     personalInfo: {
@@ -440,48 +438,106 @@ const MedicRegistration: React.FC = () => {
             </div>
           </div>
 
-          <label className="flex items-start gap-3 cursor-pointer group">
-            <input
-              type="checkbox"
-              checked={formData.agreedToTerms}
-              onChange={(e) =>
-                setFormData({ ...formData, agreedToTerms: e.target.checked })
-              }
-              className="sr-only peer"
-            />
-            <span
-              className="mt-0.5 w-5 h-5 shrink-0 rounded-lg border-2 border-slate-300 bg-white flex items-center justify-center transition-all duration-200
-      peer-checked:bg-emerald-600 peer-checked:border-emerald-600
-      peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-500/20
-      group-hover:border-emerald-400"
+          {/* ═══════════════════════════════════════════════════════
+              SUBMIT SECTION — RESTORED
+          ═══════════════════════════════════════════════════════ */}
+          <div className="space-y-4">
+            {/* Form-level error (network, server, auth) */}
+            {errors.form && (
+              <div
+                role="alert"
+                className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-3 text-rose-700 text-sm"
+              >
+                <AlertCircle size={18} className="mt-0.5 shrink-0" />
+                <span>{errors.form}</span>
+              </div>
+            )}
+
+            {/* Terms checkbox — with inline error */}
+            <div>
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={formData.agreedToTerms}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      agreedToTerms: e.target.checked,
+                    })
+                  }
+                  className="sr-only peer"
+                />
+                <span
+                  className="mt-0.5 w-5 h-5 shrink-0 rounded-lg border-2 border-slate-300 bg-white flex items-center justify-center transition-all duration-200
+                    peer-checked:bg-emerald-600 peer-checked:border-emerald-600
+                    peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-500/20
+                    group-hover:border-emerald-400"
+                >
+                  <Check
+                    className={`w-3.5 h-3.5 text-white transition-opacity duration-150 ${
+                      formData.agreedToTerms ? "opacity-100" : "opacity-0"
+                    }`}
+                    strokeWidth={3}
+                  />
+                </span>
+                <span className="text-sm text-slate-600 select-none">
+                  I agree to the{" "}
+                  <Link
+                    href="/terms"
+                    className="font-semibold text-emerald-600 hover:underline"
+                    target="_blank"
+                  >
+                    Terms &amp; Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/privacy"
+                    className="font-semibold text-emerald-600 hover:underline"
+                    target="_blank"
+                  >
+                    Privacy Policy
+                  </Link>
+                  .
+                </span>
+              </label>
+              {errors.terms && (
+                <p className="text-rose-500 text-xs mt-1.5 ml-8">
+                  {errors.terms}
+                </p>
+              )}
+            </div>
+
+            {/* Submit button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-4 rounded-2xl font-bold text-base tracking-wide transition-all active:scale-[0.98] disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+                isSubmitting
+                  ? "bg-slate-300 text-slate-600 shadow-none"
+                  : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/25"
+              }`}
             >
-              <Check
-                className={`w-3.5 h-3.5 text-white transition-opacity duration-150 ${
-                  formData.agreedToTerms ? "opacity-100" : "opacity-0"
-                }`}
-                strokeWidth={3}
-              />
-            </span>
-            <span className="text-sm text-slate-600 select-none">
-              I agree to the{" "}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Creating account…
+                </>
+              ) : (
+                "Create account"
+              )}
+            </button>
+
+            {/* Login link */}
+            <p className="text-center text-sm text-slate-500">
+              Already have an account?{" "}
               <Link
-                href="/terms"
-                className="font-semibold text-emerald-600 hover:underline"
-                target="_blank"
+                href="/medic/login"
+                className="text-emerald-600 font-bold hover:underline"
               >
-                Terms &amp; Conditions
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/privacy"
-                className="font-semibold text-emerald-600 hover:underline"
-                target="_blank"
-              >
-                Privacy Policy
+                Log in
               </Link>
-              .
-            </span>
-          </label>
+            </p>
+          </div>
         </form>
       </main>
     </div>
