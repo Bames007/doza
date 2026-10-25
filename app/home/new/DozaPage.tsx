@@ -42,7 +42,7 @@ export default function DozaMainPage({ onRoleSelect }: DozaMainPageProps) {
       </section>
       <RoleSelector onSelectRole={onRoleSelect} />
 
-      <MeetFounder />
+      {/* <MeetFounder /> */}
       <section id="safety">
         <Safety />
       </section>
