@@ -14,8 +14,9 @@ const ROLES = [
     label: "Doza User",
     tag: "Personal Health",
     desc: "Track vitals, manage medications, and stay connected with your care team.",
+    // Person tracking their health with a smartwatch — lifestyle, personal
     image:
-      "https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=2000&auto=format",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2000&auto=format",
     icon: User,
   },
   {
@@ -23,8 +24,9 @@ const ROLES = [
     label: "Doza Medic",
     tag: "Clinical Practice",
     desc: "Access patient histories, prescribe digitally, and collaborate across centers.",
+    // Doctor with stethoscope — unmistakably clinical
     image:
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format",
+      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2000&auto=format",
     icon: Stethoscope,
   },
   {
@@ -32,6 +34,7 @@ const ROLES = [
     label: "Doza Center",
     tag: "Hospital Operations",
     desc: "Real-time patient flow, integrated records, and predictive analytics.",
+    // Hospital corridor — unchanged
     image:
       "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2000&auto=format",
     icon: Building2,
