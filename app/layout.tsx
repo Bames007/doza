@@ -1,10 +1,10 @@
+// app/layout.tsx
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Poppins, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import FloatingFeedbackButton from "./ui/FloatingFeedbackButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,39 +29,38 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://doza.com"),
-  title: "Doza Healthcare Platform for Patients, Medics & Centers",
+  metadataBase: new URL("https://dozamedic.com"),
+  title: "Doza Medic Platform for Patients, Medics & Centers",
   description:
     "Transform your healthcare experience with Doza's comprehensive platform. Connect patients, medical professionals, and healthcare centers through tools, EMR systems, and seamless healthcare management.",
   keywords:
     "healthcare platform, medical software, EMR systems, patient management, medic network, healthcare centers, healthcare, telemedicine, medical appointments",
-  authors: [{ name: "Doza Healthcare" }],
-  creator: "Doza Healthcare",
-  publisher: "Doza Healthcare",
+  authors: [{ name: "Doza Medic" }],
+  creator: "Doza Medic",
+  publisher: "Doza Medic",
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
     shortcut: "/logo.png",
   },
   openGraph: {
-    title: "Doza Healthcare Platform",
+    title: "Doza Medic Platform",
     description:
       "Connect patients, medical professionals, and healthcare centers through our comprehensive healthcare platform.",
     images: ["/og-image.png"],
     type: "website",
     locale: "en_US",
-    siteName: "Doza Healthcare",
+    siteName: "Doza Medic",
     url: "https://dozamedic.com",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Doza Healthcare Platform",
+    title: "Doza Medic Platform",
     description:
       "Transform your healthcare experience with Doza's comprehensive platform for patients, medics, and centers.",
     images: ["/twitter-image.png"],
     creator: "@dozamedic",
   },
-  manifest: "/site.webmanifest",
   robots: {
     index: true,
     follow: true,
