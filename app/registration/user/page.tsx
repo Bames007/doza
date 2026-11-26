@@ -504,7 +504,7 @@ const UserRegistration: React.FC = () => {
     async (uid: string) => {
       if (!referral?.valid || !referral.code) return;
       try {
-        await fetch("/api/referral-codes", {
+        const res = await fetch("/api/referral-codes", {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -523,13 +523,18 @@ const UserRegistration: React.FC = () => {
             },
           }),
         });
+
+        if (!res.ok) {
+          const text = await res.text().catch(() => "");
+          console.error("referral PATCH failed", res.status, text);
+          // optional: persist a retry flag on the user profile
+        }
       } catch (err) {
-        console.warn("Failed to increment referral usage", err);
+        console.warn("referral PATCH network error", err);
       }
     },
     [referral, formData.personalInfo],
   );
-
   const sendEmails = useCallback(
     async (uid: string) => {
       try {
